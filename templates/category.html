@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+<section class="page-header">
+    <div class="container-xl">
+        <div class="text-center">
+            <h1 class="mt-0 mb-2">{{current_category.name}}</h1>
+        </div>
+    </div>
+</section>
+
+<!-- section main content -->
+<section class="main-content">
+    <div class="container-xl">
+
+        <div class="row gy-4">
+
+            <div class="col-lg-8">
+
+                <div class="row gy-4">
+                    {% for post in blog_posts %}
+                    <div class="col-sm-6">
+                        
+                        <!-- post -->
+                        <div class="post post-grid rounded bordered">
+                            <div class="thumb top-rounded">
+                                <a href="category.html" class="category-badge position-absolute">{{post.category}}</a>
+                                <span class="post-format">
+                                    <i class="icon-picture"></i>
+                                </span>
+                                <a href="blog-single.html">
+                                    <div class="inner">
+                                        <img src="{{post.image.url}}" alt="post-title" />
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="details">
+                                <ul class="meta list-inline mb-0">
+                                    <li class="list-inline-item"><a href="#"><img src="{%static 'images/other/author.png' %}"
+                                                class="author" alt="author" />{{post.author}}</a></li>
+                                    <li class="list-inline-item">{{post.date}}</li>
+                                </ul>
+                                <h5 class="post-title mb-3 mt-3"><a href="blog-single.html">{{post.title|truncatechars:30}}</a></h5>
+                                <p class="excerpt mb-0">{{post.content|truncatechars:50}}</p>
+                            </div>
+                            <div class="post-bottom clearfix d-flex align-items-center">
+                                <div class="social-share me-auto">
+                                    <button class="toggle-button icon-share"></button>
+                                    <ul class="icons list-unstyled list-inline mb-0">
+                                        <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a>
+                                        </li>
+                                        <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        </li>
+                                        <li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a>
+                                        </li>
+                                        <li class="list-inline-item"><a href="#"><i
+                                                    class="fab fa-telegram-plane"></i></a></li>
+                                        <li class="list-inline-item"><a href="#"><i class="far fa-envelope"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="more-button float-end">
+                                    <a href="blog-single.html"><span class="icon-options"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        {% if blog_posts.has_previous %}
+                        <li class="page-item" aria-current="page">
+                            <a class="page-link" href="?page={{blog_posts.previous_page_number}}">Prev</a>
+                        </li>
+                        {% endif %}
+                        {% for num in blog_posts.paginator.page_range %}
+                        <li class="page-item {% if num == blog_posts.number %}active{% endif %}"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+                        {% endfor %}
+
+                        {% if blog_posts.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{blog_posts.next_page_number}}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            </div>
+            <div class="col-lg-4">
+
+                <!-- sidebar -->
+                <div class="sidebar">
+
+
+                    <!-- widget categories -->
+                    <div class="widget rounded">
+                        <div class="widget-header text-center">
+                            <h3 class="widget-title">Explore Topics</h3>
+                            <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+                        </div>
+                        <div class="widget-content">
+                            <ul class="list">
+                                {% for topic in category %}
+                                <li><a
+                                        href="{% url 'category' topic.slug %}">{{topic.name}}</a><span>({{topic.count}})</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+{% endblock body %}

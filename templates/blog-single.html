@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block body %}
+
+<!-- section main content -->
+<section class="main-content mt-3">
+  <div class="container-xl">
+
+    <div class="row gy-4">
+      <div class="col-lg-8">
+        <!-- post single -->
+        <div class="post post-single">
+          <!-- post header -->
+          <div class="post-header">
+            <h1 class="title mt-0 mb-3">{{post.title}}</h1>
+            <ul class="meta list-inline mb-0">
+              <li class="list-inline-item">
+                <a href="#"
+                  ><img
+                    src="{{ post.author.profile.get_profile_pic }}"
+                    style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
+                    class="author"
+                    alt="author"
+                  />{{post.author}}</a
+                >
+              </li>
+              <li class="list-inline-item"><a href="#">Trending</a></li>
+              <li class="list-inline-item">{{post.date}}</li>
+            </ul>
+          </div>
+          <!-- featured image -->
+          <div class="featured-image">
+            <img src="{{post.image.url}}" alt="post-title" />
+          </div>
+          <!-- post content -->
+          <div class="post-content clearfix">
+            <p>{{post.content}}</p>
+          </div>
+
+        </div>
+
+        <div class="spacer" data-height="50"></div>
+
+        <!-- section header -->
+        <div class="section-header">
+          <h3 class="section-title">Comments ({{comments.count}})</h3>
+          <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+        </div>
+        <!-- post comments -->
+        <div class="comments bordered padding-30 rounded">
+          <ul class="comments">
+            {% for comment in comments %}
+            <!-- comment item -->
+            <li class="comment rounded">
+              <div class="thumb">
+                <img src="{% static 'images/other/author.png' %}" alt="{{comment.name}}" />
+              </div>
+              <div class="details">
+                <h4 class="name"><a href="#">{{comment.name}}</a></h4>
+                <span class="date">{{comment.date}}</span>
+                <p>
+                  {{comment.comment}}
+                </p>
+                {% comment %} <a href="#" class="btn btn-default btn-sm">Reply</a> {% endcomment %}
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="spacer" data-height="50"></div>
+
+        <!-- section header -->
+        <div class="section-header">
+          <h3 class="section-title">Leave Comment</h3>
+          <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+        </div>
+        <!-- comment form -->
+        <div class="comment-form rounded bordered padding-30">
+          <form id="comment-form" class="comment-form" method="POST" action="{% url 'add_comment' post.blog_slug %}">
+            {% csrf_token %}
+            <div class="messages"></div>
+            
+
+            <div class="row">
+              <div class="column col-md-12">
+                <!-- Comment textarea -->
+                <div class="form-group">
+                  <textarea
+                    name="InputComment"
+                    id="InputComment"
+                    class="form-control"
+                    rows="4"
+                    placeholder="Your comment here..."
+                    required="required"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="column col-md-12">
+                <!-- Name input -->
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="InputName"
+                    name="InputName"
+                    placeholder="Your name"
+                    required="required"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              name="submit"
+              id="submit"
+              value="Submit"
+              class="btn btn-default"
+            >
+              Submit</button
+            ><!-- Submit Button -->
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- sidebar -->
+        <div class="sidebar">
+          <!-- widget categories -->
+          <div class="widget rounded">
+            <div class="widget-header text-center">
+              <h3 class="widget-title">Explore Topics</h3>
+              <img
+                src="{%static 'images/wave.svg' %}"
+                class="wave"
+                alt="wave"
+              />
+            </div>
+            <div class="widget-content">
+              <ul class="list">
+                {% for topic in category %}
+                <li>
+                  <a href="#">{{topic.name}}</a><span>({{topic.count}})</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock body %}

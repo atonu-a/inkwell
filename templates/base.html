@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Inkwell - a simple blog website</title>
+	<meta name="description" content="Katen - Minimal Blog & Magazine HTML Theme">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/icon.png' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+		integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<!-- STYLES -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/slick.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/simple-line-icons.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" type="text/css" media="all">
+
+
+
+</head>
+
+<body>
+
+	<!-- preloader -->
+	<div id="preloader">
+		<div class="book">
+			<div class="inner">
+				<div class="left"></div>
+				<div class="middle"></div>
+				<div class="right"></div>
+			</div>
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- site wrapper -->
+	<div class="site-wrapper">
+
+		<div class="main-overlay"></div>
+
+		{% block header %}
+		<header class="header-default">
+			<nav class="navbar navbar-expand-lg">
+				<div class="container-xl">
+					<!-- site logo -->
+					<a class="navbar-brand" href="{%url 'index' %}"><img src="{%static 'images/logo.png' %}"
+							alt="logo" /></a>
+
+					<div class="collapse navbar-collapse">
+						<!-- menus -->
+						<ul class="navbar-nav mr-auto">
+
+							<li class="nav-item dropdown {% if request.path == '/' %} active {% endif %}">
+								<a class="nav-link" href="{%url 'index' %}"><i class="fa-regular fa-house"></i>Home</a>
+
+							</li>
+
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#"><i
+										class="fa-solid fa-layer-group"></i>Categories</a>
+								<ul class="dropdown-menu">
+									{% for cat in category %}
+									<li
+										class="{% if request.path == '/category/'|add:cat.slug|add:'/' %}active{% endif %} dropdown-item">
+										<a href="{% url 'category' cat.slug %}">{{cat.name}}</a>
+									</li>
+									{% endfor %}
+
+								</ul>
+							</li>
+
+
+
+
+
+							<li class="nav-item {% if request.path == '/profile/' %} active {% endif %}">
+								<a class="nav-link" href="{%url 'personal' %}"><i
+										class="fa-regular fa-circle-user"></i>Profile</a>
+
+							</li>
+
+
+							<li>
+								<form method="POST" action="{% url 'logout_view' %}">
+									{% csrf_token %}
+									<button class="nav-link" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
+								</form>
+							</li>
+
+
+						</ul>
+					</div>
+
+					<!-- header right section -->
+					<div class="header-right">
+						<!-- header buttons -->
+
+						<div class="header-buttons">
+							<button class="create icon-button" onclick="window.location.href='/create-post/'">
+    <i class="fa-solid fa-plus"></i>
+</button>
+
+							<button class="search icon-button">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button>
+
+							</button>
+							<button class="burger-menu icon-button">
+								<i class="fa-solid fa-bars"></i>
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</nav>
+		</header>
+		{% endblock header %}
+
+		{% block body %}
+
+
+
+		{% endblock body %}
+
+		<!-- footer -->
+		<footer>
+			<div class="container-xl">
+				<div class="footer-inner">
+					<div class="row d-flex align-items-center gy-4">
+						<!-- copyright text -->
+						<div class="col-md-4">
+							<span class="copyright">© 2026 Designed and Developed by Kakoli❤️ and Atonu
+								❤️</span>
+
+						</div>
+
+						<!-- social icons -->
+						<div class="col-md-4 text-center">
+							<ul class="social-icons list-unstyled list-inline mb-0">
+								<li class="list-inline-item"><a href="https://www.facebook.com/atonu.roychowdhury.1/"><i
+											class="fab fa-facebook-f"></i></a></li>
+								<li class="list-inline-item"><a href="https://www.instagram.com/atonu_roy_74/"><i
+											class="fab fa-instagram"></i></a></li>
+								<li class="list-inline-item"><a href="https://github.com/atonu-a"><i
+											class="fab fa-github"></i></a></li>
+								<li class="list-inline-item"><a href="https://www.linkedin.com/in/atonuroychowdhury/"><i
+											class="fab fa-linkedin"></i></a></li>
+
+							</ul>
+						</div>
+
+						<!-- go to top button -->
+						<div class="col-md-4">
+							<a href="#" id="return-to-top" class="float-md-end"><i class="icon-arrow-up"></i>Back to
+								Top</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+	</div><!-- end site wrapper -->
+
+	<!-- search popup area -->
+	<div class="search-popup">
+		<!-- close button -->
+		<button type="button" class="btn-close" aria-label="Close"></button>
+		<!-- content -->
+		<div class="search-content">
+			<div class="text-center">
+				<h3 class="mb-4 mt-0">Press ESC to close</h3>
+			</div>
+			<!-- form -->
+			<form class="d-flex search-form">
+				<input class="form-control me-2" type="search" placeholder="Search and press enter ..."
+					aria-label="Search">
+				<button class="btn btn-default btn-lg" type="submit"><i class="icon-magnifier"></i></button>
+			</form>
+		</div>
+	</div>
+
+	<!-- canvas menu -->
+	<div class="canvas-menu d-flex align-items-end flex-column">
+		<!-- close button -->
+		<button type="button" class="btn-close" aria-label="Close"></button>
+
+		<!-- logo -->
+		<div class="logo">
+			<img src="{%static 'images/logo.svg' %}" alt="Katen" />
+		</div>
+
+		<!-- menu -->
+		<nav>
+			<ul class="vertical-menu">
+				<li class="{% if request.path == '/' %} active {% endif %}">
+					<a class="" href="{%url 'index' %}"><i class="fa-regular fa-house"></i>Home</a>
+
+				</li>
+
+				<li class="{% if request.path == '/profile/' %} active {% endif %}">
+					<a class="" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i>Profile</a>
+
+				</li>
+
+				<li>
+					<a class="" href="#"><i class="fa-solid fa-layer-group"></i>Categories</a>
+					<ul class="submenu">
+						{% for cat in category %}
+						<li class="{% if request.path == '/category/'|add:cat.slug|add:'/' %}active{% endif %}">
+							<a href="{% url 'category' cat.slug %}">{{cat.name}}</a>
+						</li>
+						{% endfor %}
+						<li><a href="category.html">Category</a></li>
+
+					</ul>
+				</li>
+
+				<li class="{% if request.path == '/login/' %} active {% endif %}">
+					<a href="#" class="" onclick="event.preventDefault(); document.getElementById('logout').submit()"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+					<form method="POST" action="{% url 'logout_view' %}" id="logout" style="display: none;">
+						{% csrf_token %}
+						
+					</form>
+				</li>
+
+
+
+
+
+			</ul>
+		</nav>
+
+		<!-- social icons -->
+		<ul class="social-icons list-unstyled list-inline mb-0 mt-auto w-100">
+			<li class="list-inline-item"><a href="https://www.facebook.com/atonu.roychowdhury.1/"><i
+						class="fab fa-facebook-f"></i></a></li>
+			<li class="list-inline-item"><a href="https://www.instagram.com/atonu_roy_74/"><i
+						class="fab fa-instagram"></i></a></li>
+			<li class="list-inline-item"><a href="https://github.com/atonu-a"><i class="fab fa-github"></i></a></li>
+			<li class="list-inline-item"><a href="https://www.linkedin.com/in/atonuroychowdhury/"><i
+						class="fab fa-linkedin"></i></a></li>
+		</ul>
+	</div>
+
+	<!-- JAVA SCRIPTS -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/slick.min.js' %}"></script>
+	<script src="{% static 'js/jquery.sticky-sidebar.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+	<script src="{% static 'js/app.js' %}"></script>
+
+</body>
+
+<!-- Mirrored from maanjaa.com/themeger/katen-demo/html/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 03 Jul 2021 05:08:47 GMT -->
+
+</html>

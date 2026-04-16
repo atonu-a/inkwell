@@ -1,0 +1,496 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block body %}
+
+<!-- hero section -->
+<section id="hero">
+  <div class="container-xl">
+    <div class="row gy-4">
+      <div class="col-lg-8">
+        <!-- featured post large -->
+        {% for post in main_post %}
+        <div class="post featured-post-lg">
+          
+          
+          <div class="details clearfix">
+            <div>
+              <p class="category-badge">Trending</p>
+              <p class="category-badge">Popular</p>
+              <a href="{% url 'category' post.blog_slug %}" class="category-badge">{{post.category}}</a>
+              
+            </div>
+            
+            
+            <h2 class="post-title">
+              <a href="{% url 'blog_detail' post.blog_slug %}"
+                >{{post.title}}</a
+              >
+            </h2>
+            <ul class="meta list-inline mb-0">
+              <li class="list-inline-item"><a href="#">{{post.author}}</a></li>
+              <li class="list-inline-item">{{post.date}}</li>
+            </ul>
+          </div>
+          
+
+          <a href="{% url 'blog_detail' post.blog_slug %}">
+            <div class="thumb rounded">
+              <div
+                class="inner data-bg-image"
+                data-bg-image="{{post.image.url}}"
+              ></div>
+            </div>
+          </a>
+
+        </div>
+        
+        {% endfor %}
+      </div>
+
+      <div class="col-lg-4">
+        <!-- post tabs -->
+        <div class="post-tabs rounded bordered">
+          <!-- tab navs -->
+          <ul
+            class="nav nav-tabs nav-pills nav-fill"
+            id="postsTab"
+            role="tablist"
+          >
+            <li class="nav-item" role="presentation">
+              <button
+                aria-controls="popular"
+                aria-selected="true"
+                class="nav-link active"
+                data-bs-target="#popular"
+                data-bs-toggle="tab"
+                id="popular-tab"
+                role="tab"
+                type="button"
+              >
+                Popular
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                aria-controls="recent"
+                aria-selected="false"
+                class="nav-link"
+                data-bs-target="#recent"
+                data-bs-toggle="tab"
+                id="recent-tab"
+                role="tab"
+                type="button"
+              >
+                Recent
+              </button>
+            </li>
+          </ul>
+          <!-- tab contents -->
+          <div class="tab-content" id="postsTabContent">
+            <!-- loader -->
+            <div class="lds-dual-ring"></div>
+            <!-- popular posts -->
+            <div
+              aria-labelledby="popular-tab"
+              class="tab-pane fade show active"
+              id="popular"
+              role="tabpanel"
+            >
+              <!-- post -->
+              {% for post in popular|slice:":4" %}
+              <div class="post post-list-sm circle">
+                <div class="thumb circle">
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img src="{{post.image.url}}" alt="post-title"  style="object-fit: cover; height:60px; width:60px"/>
+                    </div>
+                  </a>
+                </div>
+                <div class="details clearfix">
+                  <h6 class="post-title my-0">
+                    <a href="{% url 'blog_detail' post.blog_slug %}"
+                      >{{post.title}}</a
+                    >
+                  </h6>
+                  <ul class="meta list-inline mt-1 mb-0">
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                </div>
+              </div>
+              {% endfor %}
+              
+            </div>
+            <!-- recent posts -->
+            <div
+              aria-labelledby="recent-tab"
+              class="tab-pane fade"
+              id="recent"
+              role="tabpanel"
+            >
+              <!-- post -->
+              {% for post in recent|slice:":4" %}
+              <div class="post post-list-sm circle">
+                <div class="thumb circle">
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img src="{{post.image.url}}" alt="post-title" style="object-fit: cover; height:60px; width:60px" />
+                    </div>
+                  </a>
+                </div>
+                <div class="details clearfix">
+                  <h6 class="post-title my-0">
+                    <a href="{% url 'blog_detail' post.blog_slug %}"
+                      >{{post.title}}</a
+                    >
+                  </h6>
+                  <ul class="meta list-inline mt-1 mb-0">
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- section main content -->
+<section class="main-content">
+  <div class="container-xl">
+    <div class="row gy-4">
+      <div class="col-lg-8">
+        <div class="spacer" data-height="50"></div>
+
+
+        <!-- section header -->
+        <div class="section-header">
+          <h3 class="section-title">Trending</h3>
+          <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+        </div>
+        <!-- Trending Section -->
+        <div class="padding-30 rounded bordered">
+          <div class="row gy-5">
+            {% comment %} Left side {% endcomment %}
+            <div class="col-sm-6">
+              <!-- post large -->
+              {% for post in trending_left %}
+              {% if forloop.first %}
+              <div class="post">
+                <div class="thumb rounded">
+                  <a
+                    href="{% url 'category' post.blog_slug %}"
+                    class="category-badge position-absolute"
+                    >{{post.category}}</a
+                  >
+                  <span class="post-format">
+                    <i class="icon-picture"></i>
+                  </span>
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img
+                        src="{{post.image.url}}"
+                        alt="post-title"
+                        style="height: 169px; width:325px; object-fit:cover"
+                      />
+                    </div>
+                  </a>
+                </div>
+                <ul class="meta list-inline mt-4 mb-0">
+                  <li class="list-inline-item">
+                    <a href="#"
+                      ><img
+                        src="{{ post.author.profile.get_profile_pic }}"
+                        style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
+                        class="author"
+                        alt="author"
+                      />{{post.author}}</a
+                    >
+                  </li>
+                  <li class="list-inline-item">{{post.date}}</li>
+                </ul>
+                <h5 class="post-title mb-3 mt-3">
+                  <a href="{% url 'blog_detail' post.blog_slug %}"
+                    >{{post.title|truncatechars:50}}</a
+                  >
+                </h5>
+              </div>
+              
+              
+              <!-- post -->
+              {% else %}
+              <div class="post post-list-sm square before-seperator">
+                <div class="thumb rounded">
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img
+                        src="{{post.image.url}}"
+                        alt="post-title"
+                      />
+                    </div>
+                  </a>
+                </div>
+                <div class="details clearfix">
+                  <h6 class="post-title my-0">
+                    <a href="{% url 'blog_detail' post.blog_slug %}l"
+                      >{{post.title}}</a
+                    >
+                  </h6>
+                  <ul class="meta list-inline mt-1 mb-0">
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+
+
+            {% comment %} Right Side {% endcomment %}
+            <div class="col-sm-6">
+              <!-- post large -->
+              {% for post in trending_right %}
+              {% if forloop.first %}
+              <div class="post">
+                <div class="thumb rounded">
+                  <a
+                    href="{% url 'category' post.blog_slug %}"
+                    class="category-badge position-absolute"
+                    >{{post.category}}</a
+                  >
+                  <span class="post-format">
+                    <i class="icon-picture"></i>
+                  </span>
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img
+                        src="{{post.image.url}}"
+                        alt="post-title"
+                        style="height: 169px; width:325px; object-fit:cover"
+                      />
+                    </div>
+                  </a>
+                </div>
+                <ul class="meta list-inline mt-4 mb-0">
+                  <li class="list-inline-item">
+                    <a href="#"
+                      ><img
+                        src="{{ post.author.profile.get_profile_pic }}"
+                        style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
+                        class="author"
+                        alt="author"
+                      />{{post.author}}</a
+                    >
+                  </li>
+                  <li class="list-inline-item">{{post.date}}</li>
+                </ul>
+                <h5 class="post-title mb-3 mt-3">
+                  <a href="{% url 'blog_detail' post.blog_slug %}"
+                    >{{post.title|truncatechars:50}}</a
+                  >
+                </h5>
+              </div>
+              
+              
+              <!-- post -->
+              {% else %}
+              <div class="post post-list-sm square before-seperator">
+                <div class="thumb rounded">
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img
+                        src="{{post.image.url}}"
+                        alt="post-title"
+                      />
+                    </div>
+                  </a>
+                </div>
+                <div class="details clearfix">
+                  <h6 class="post-title my-0">
+                    <a href="{% url 'blog_detail' post.blog_slug %}l"
+                      >{{post.title}}</a
+                    >
+                  </h6>
+                  <ul class="meta list-inline mt-1 mb-0">
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+
+
+
+          </div>
+        </div>
+
+        <div class="spacer" data-height="50"></div>
+
+
+
+        <!-- section header -->
+        <div class="section-header">
+          <h3 class="section-title">All Posts</h3>
+          <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+        </div>
+
+        <div class="padding-30 rounded bordered">
+          <div class="row">
+            <div class="col-md-12 col-sm-6">
+              <!-- post -->
+              {% for post in posts|slice:":5" %}
+              <div class="post post-list clearfix">
+                <div class="thumb rounded">
+                  <span class="post-format-sm">
+                    <i class="icon-picture"></i>
+                  </span>
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img
+                        src="{{post.image.url}}"
+                        alt="post-title"
+                      />
+                    </div>
+                  </a>
+                </div>
+                <div class="details">
+                  <ul class="meta list-inline mb-3">
+                    <li class="list-inline-item">
+                      <a href="{% url 'personal' %}"
+                        ><img
+                          src="{{ post.author.profile.get_profile_pic }}"
+                          style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
+                          class="author"
+                          alt="author"
+                        />{{post.author}}</a
+                      >
+                    </li>
+                    <li class="list-inline-item"><a href="#">{{post.category}}</a></li>
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                  <h5 class="post-title">
+                    <a href="{% url 'blog_detail' post.blog_slug %}"
+                      >{{post.title}}</a
+                    >
+                  </h5>
+                  <p class="excerpt mb-0">
+                    {{post.content|truncatewords:10}}
+                  </p>
+                  <div class="post-bottom clearfix d-flex align-items-center">
+                    <div class="me-auto">
+                      <button class="like-btn" ><i class="fa-solid fa-thumbs-up" ></i><p id="count">120</p></button>
+                      
+                      
+
+                    </div>
+                    <div class="more-button float-end">
+                      <a href="{% url 'blog_detail' post.blog_slug %}"
+                        ><span class="icon-options"></span
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% comment %} <!-- load more button -->
+          <div class="text-center">
+            <button class="btn btn-simple">Load More</button>
+          </div> {% endcomment %}
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <!-- sidebar -->
+        <div class="sidebar">
+
+          <!-- widget categories -->
+          <div class="widget rounded">
+            <div class="widget-header text-center">
+              <h3 class="widget-title">Explore Topics</h3>
+              <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+            </div>
+            <div class="widget-content">
+              <ul class="list">
+                {% for topic in category %}
+                <li><a href="{% url 'category' topic.slug %}">{{topic.name}}</a><span>({{topic.count}})</span></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <!-- widget post carousel -->
+          <div class="widget rounded">
+            <div class="widget-header text-center">
+              <h3 class="widget-title">Celebration</h3>
+              <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+            </div>
+            <div class="widget-content">
+              
+              <div class="post-carousel-widget">
+                <!-- post -->
+                {% for post in recent %}
+                <div class="post post-carousel">
+                  <div class="thumb rounded">
+                    <a
+                      href="{% url 'category' post.blog_slug %}"
+                      class="category-badge position-absolute"
+                      >{{post.category}}</a
+                    >
+                    <a href="{% url 'blog_detail' post.blog_slug %}">
+                      <div class="inner">
+                        <img
+                          src="{{post.image.url}}"
+                          alt="post-title"
+                        />
+                      </div>
+                    </a>
+                  </div>
+                  <h5 class="post-title mb-0 mt-4">
+                    <a href="{%url 'blog_detail' post.blog_slug%}"
+                      >{{post.title|truncatewords:'4'}}</a
+                    >
+                  </h5>
+                  <ul class="meta list-inline mt-2 mb-0">
+                    <li class="list-inline-item"><a href="#">{{post.author}}</a></li>
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                </div>
+                {% endfor %}
+              </div> 
+              
+              <!-- carousel arrows -->
+              <div class="slick-arrows-bot">
+                <button
+                  type="button"
+                  data-role="none"
+                  class="carousel-botNav-prev slick-custom-buttons"
+                  aria-label="Previous"
+                >
+                  <i class="icon-arrow-left"></i>
+                </button>
+                <button
+                  type="button"
+                  data-role="none"
+                  class="carousel-botNav-next slick-custom-buttons"
+                  aria-label="Next"
+                >
+                  <i class="icon-arrow-right"></i>
+                </button>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock body %}

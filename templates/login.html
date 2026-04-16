@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block header %}
+    		<header class="header-default">
+			<nav class="navbar navbar-expand-lg">
+				<div class="container-xl">
+					<!-- site logo -->
+					<a class="navbar-brand" href="{%url 'index' %}"><img src="{%static 'images/logo.png' %}" alt="logo" /></a>
+
+				</div>
+			</nav>
+		</header>
+{% endblock header %}
+{% block body %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-70">
+    <div class="card shadow-sm border-0 p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 fw-bold text-dark">Login to Your Account</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <small>Invalid username or password.</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="username" class="form-label small fw-semibold text-secondary">Username</label>
+                    <input type="text" name="username" id="username" 
+                           class="form-control" placeholder="Enter your username" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label small fw-semibold text-secondary">Password</label>
+                    <input type="password" name="password" id="password" 
+                           class="form-control" placeholder="Enter your password" required>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-default">Sign In</button>
+                </div>
+            </form>
+
+
+            <div class="text-center mt-4">
+                <p class="small text-muted mb-0">Don't have an account? 
+                    <a href="{% url 'register_view' %}" class="text-decoration-none fw-bold">Create one now</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
