@@ -70,6 +70,7 @@ def profile_view(request):
         "category_count":category_count,
         "blogs_count":blogs_count,
         "posts" : paginated_posts,
+        "category" : category
         
     }
     
