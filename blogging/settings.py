@@ -80,4 +80,3 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
