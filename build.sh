@@ -5,3 +5,5 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 
+python manage.py createsuperuser --no-input --username Atonu --email atonu734432gmail.com || true
+
