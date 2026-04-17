@@ -1,11 +1,8 @@
-{% extends "base.html" %}
-{% load static %} 
-{% block body %}
+{% extends "base.html" %} {% load static %} {% block body %}
 
 <!-- section main content -->
 <section class="main-content mt-3">
   <div class="container-xl">
-
     <div class="row gy-4">
       <div class="col-lg-8">
         <!-- post single -->
@@ -18,7 +15,12 @@
                 <a href="#"
                   ><img
                     src="{{ post.author.profile.get_profile_pic }}"
-                    style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
+                    style="
+                      height: 32px;
+                      width: 32px;
+                      object-fit: cover;
+                      border-radius: 50%;
+                    "
                     class="author"
                     alt="author"
                   />{{post.author}}</a
@@ -35,15 +37,25 @@
           <!-- post content -->
           <div class="post-content clearfix">
             <p>{{post.content}}</p>
-          </div>
 
+            <button
+              type="button"
+              id="like-btn-{{ post.blog_slug }}"
+              class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
+              data-url="{% url 'like' post.blog_slug %}"
+              onclick="likePost(this)"
+            >
+              <i class="fa-solid fa-thumbs-up"></i>
+              <span class="like-count">{{ post.total_likes }}</span>
+            </button>
+          </div>
         </div>
 
         <div class="spacer" data-height="50"></div>
 
         <!-- section header -->
         <div class="section-header">
-          <h3 class="section-title">Comments ({{comments.count}})</h3>
+          <h3 class="section-title" id="comments">Comments ({{comments.count}})</h3>
           <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
         </div>
         <!-- post comments -->
@@ -53,15 +65,31 @@
             <!-- comment item -->
             <li class="comment rounded">
               <div class="thumb">
-                <img src="{% static 'images/other/author.png' %}" alt="{{comment.name}}" />
+                <img
+                  src="{{comment.name.profile.get_profile_pic}}"
+                  alt="{{comment.name}}"
+                  style="
+                    height: 32px;
+                    width: 32px;
+                    object-fit: cover;
+                    border-radius: 50%;
+                  "
+                />
               </div>
               <div class="details">
                 <h4 class="name"><a href="#">{{comment.name}}</a></h4>
                 <span class="date">{{comment.date}}</span>
-                <p>
-                  {{comment.comment}}
-                </p>
-                {% comment %} <a href="#" class="btn btn-default btn-sm">Reply</a> {% endcomment %}
+                <p>{{comment.comment}}</p>
+                {% if request.user == comment.name or request.user.is_staff %}
+                <a
+                  href="{% url 'delete_comment' comment.id %}"
+                  class="text-danger"
+                  
+                >
+                <i class="fa-solid fa-trash-can"></i>
+
+                </a>
+                {% endif %}
               </div>
             </li>
             {% endfor %}
@@ -77,10 +105,14 @@
         </div>
         <!-- comment form -->
         <div class="comment-form rounded bordered padding-30">
-          <form id="comment-form" class="comment-form" method="POST" action="{% url 'add_comment' post.blog_slug %}">
+          <form
+            id="comment-form"
+            class="comment-form"
+            method="POST"
+            action="{% url 'add_comment' post.blog_slug %}"
+          >
             {% csrf_token %}
             <div class="messages"></div>
-            
 
             <div class="row">
               <div class="column col-md-12">
@@ -94,19 +126,6 @@
                     placeholder="Your comment here..."
                     required="required"
                   ></textarea>
-                </div>
-              </div>
-              <div class="column col-md-12">
-                <!-- Name input -->
-                <div class="form-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="InputName"
-                    name="InputName"
-                    placeholder="Your name"
-                    required="required"
-                  />
                 </div>
               </div>
             </div>
@@ -147,11 +166,40 @@
               </ul>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function likePost(btn) {
+    const url = btn.dataset.url;
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        const countSpan = btn.querySelector(".like-count");
+        countSpan.textContent = data.total_likes;
+        if (data.liked) {
+          btn.classList.add("btn-default");
+          btn.classList.remove("btn-dark");
+        } else {
+          btn.classList.add("btn-dark");
+          btn.classList.remove("btn-default");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+</script>
 
 {% endblock body %}

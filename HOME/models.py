@@ -42,8 +42,13 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, related_name='blog', on_delete=models.CASCADE)
     blog_slug = AutoSlugField(populate_from ="title", unique=True)
     date = models.DateField(auto_now_add=True)
-    status = models.CharField(choices=STATUS, max_length=1,default="DRAFT")
+    status = models.CharField(choices=STATUS, max_length=1,default="PUBLISH")
     section = models.CharField(max_length=20, choices=SECTION, default="Recent")
+    likes = models.ManyToManyField(User, related_name="posts", blank=True)
+    
+    def total_likes(self):
+        return self.likes.count()
+    
     def __str__(self) -> str:
         return f"{self.title} ({self.category})"
 # Create your models here.
@@ -53,11 +58,9 @@ class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     post = models.ForeignKey(Blog, related_name="comments", on_delete=models.CASCADE)
     blog_id = models.IntegerField(blank=True, null=True)
-    name = models.CharField(max_length=100)
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(default=timezone.now)
     comment = models.TextField()
-    email = models.EmailField()
-    website = models.URLField(blank=True, null=True)
     parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE,related_name="replies")
     
     def save(self, *args, **kwargs):

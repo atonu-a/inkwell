@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from HOME.models import Blog, Category
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 
@@ -52,10 +54,9 @@ def login_view(request):
 
 @login_required(login_url='login')
 def profile_view(request):
-    posts = Blog.objects.all().order_by("-id")
+    posts = Blog.objects.filter(author=request.user).order_by("-id")
     category = Category.objects.all().order_by("-id")
-    category_count = Category.objects.all().count()
-    blogs_count = Blog.objects.all().count()
+    blogs_count = posts.count()
     
     search_query = request.GET.get("title")
     if search_query :
@@ -67,7 +68,7 @@ def profile_view(request):
     
     
     context = {
-        "category_count":category_count,
+
         "blogs_count":blogs_count,
         "posts" : paginated_posts,
         "category" : category
@@ -90,8 +91,11 @@ def create_post(request):
         image = request.FILES.get('image')
         content = request.POST.get('content')
         category_id = request.POST.get('category')
-        status = request.POST.get('status')
-        section = request.POST.get('section')
+        status = "1"
+        section = "Recent"
+        if request.user.is_staff:
+            status = request.POST.get("status")
+            section = request.POST.get("section")
         
         
         category = Category.objects.get(id=category_id)
@@ -113,6 +117,11 @@ def create_post(request):
     
     return render(request,"create.html",{"categories": categories})
 
+def delete_post(request, slug):
+    post = Blog.objects.get(blog_slug = slug)
+    post.delete()
+    return redirect("personal")
+
 def add_category(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -121,4 +130,23 @@ def add_category(request):
         )
         return redirect("create_post")
     return redirect("create_post")
+
+def author_profile(request, username):
+    author_name = get_object_or_404(User, username=username)
+    posts = Blog.objects.all().filter(author=author_name).order_by("-id")
+    blogs_count = posts.count()
+    
+    search_query = request.GET.get("title")
+    if search_query :
+        posts = posts.filter(title__icontains= search_query)
+        
+    paginator = Paginator(posts,6)
+    page_num = request.GET.get('page')
+    paginated_posts = paginator.get_page(page_num)
+    context = {
+        'author_name': author_name,
+        'posts': paginated_posts,
+        'blogs_count' : blogs_count
+    }
+    return render(request, 'author_profile.html', context)
         
