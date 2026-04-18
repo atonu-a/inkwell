@@ -50,11 +50,11 @@
 
             <div class="post post-grid rounded bordered">
               <div class="thumb top-rounded">
-                <a href="category.html" class="category-badge position-absolute">{{post.category}}</a>
+                <a href="{% url 'category' post.blog_slug %}" class="category-badge position-absolute">{{post.category}}</a>
                 <span class="post-format">
                   <i class="icon-picture"></i>
                 </span>
-                <a href="blog-single.html">
+                <a href="{% url 'blog_detail' post.blog_slug %}">
                   <div class="inner">
                     <img src="{{post.image.url}}" alt="post-title" />
                   </div>

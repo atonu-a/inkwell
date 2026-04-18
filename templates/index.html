@@ -218,7 +218,7 @@
                   <li class="list-inline-item">{{post.date}}</li>
                 </ul>
                 <h5 class="post-title mb-3 mt-3">
-                  <a href="blog-single.html" title="{{post.title}}"
+                  <a href="{% url 'blog_detail' post.blog_slug %}" title="{{post.title}}"
                     >{{post.title|truncatechars:25}}</a
                   >
                 </h5>
@@ -291,7 +291,7 @@
                   <li class="list-inline-item">{{post.date}}</li>
                 </ul>
                 <h5 class="post-title mb-3 mt-3">
-                  <a href="blog-single.html" title="{{post.title}}"
+                  <a href="{% url 'blog_detail' post.blog_slug %}" title="{{post.title}}"
                     >{{post.title|truncatechars:25}}</a
                   >
                 </h5>
