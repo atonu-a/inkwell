@@ -6,11 +6,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('search/', views.search_view, name='search'),
     path("category/<str:slug>/", views.category, name="category"),
     path("<str:slug>/", views.blog_detail, name = 'blog_detail'),  
     path("like/<slug:slug>/", views.like_view, name="like"),
     path("<slug:slug>/add_comment/", views.add_comment, name="add_comment"),
     path('delete-comment/<int:id>/', views.delete_comment, name='delete_comment'),
+
     
     
 ]

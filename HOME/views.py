@@ -134,3 +134,21 @@ def delete_comment(request, id):
     else:
 
         return redirect('index')
+    
+    
+def search_view(request):
+    query = request.GET.get("q", "")
+    results = []
+    
+    if query:
+        results = Blog.objects.filter(
+            title__icontains=query
+        ) | Blog.objects.filter(
+            content__icontains=query
+        )
+    context = {
+        "query" : query,
+        "results" : results
+    }
+        
+    return render(request, "search_results.html", context )
