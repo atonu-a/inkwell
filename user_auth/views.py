@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from .models import Profile
 from HOME.models import Blog, Category
 from django.core.paginator import Paginator
@@ -54,7 +55,7 @@ def login_view(request):
 
 @login_required(login_url='login')
 def profile_view(request):
-    posts = Blog.objects.filter(author=request.user).order_by("-id")
+    posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=request.user).order_by("-id")
     category = Category.objects.all().order_by("-id")
     blogs_count = posts.count()
     
@@ -133,7 +134,9 @@ def add_category(request):
 
 def author_profile(request, username):
     author_name = get_object_or_404(User, username=username)
-    posts = Blog.objects.all().filter(author=author_name).order_by("-id")
+    posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=author_name).order_by("-id")
+    category = Category.objects.all().order_by("-id")
+    
     blogs_count = posts.count()
     
     search_query = request.GET.get("title")
@@ -146,7 +149,8 @@ def author_profile(request, username):
     context = {
         'author_name': author_name,
         'posts': paginated_posts,
-        'blogs_count' : blogs_count
+        'blogs_count' : blogs_count,
+        'category' : category
     }
     return render(request, 'author_profile.html', context)
         

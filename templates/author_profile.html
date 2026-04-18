@@ -4,16 +4,12 @@
   <div class="d-flex flex-column">
     <div class="d-flex gap-2 gap-md-5">
 
-      <img
-        class="rounded-circle border"
-        src="{{ author_name.profile.get_profile_pic }}"
-        style="
+      <img class="rounded-circle border" src="{{ author_name.profile.get_profile_pic }}" style="
           width: 100px;
           height: 100px;
           object-fit: cover;
           margin-bottom: 20px;
-        "
-      />
+        " />
       <div class="d-flex flex-column">
         <h4 style="margin-bottom: 0">{{author_name.profile.full_name}}</h4>
         <p><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
@@ -28,9 +24,11 @@
   </div>
 
   <div class="border-0 border-top border-bottom border-default border-5">
-    <p class="text-danger fw-bold">Total Posts <h4>({{blogs_count}})</h4></p>
-    
-    
+    <p class="text-danger fw-bold">Total Posts
+    <h4>({{blogs_count}})</h4>
+    </p>
+
+
   </div>
 </section>
 
@@ -52,9 +50,7 @@
 
             <div class="post post-grid rounded bordered">
               <div class="thumb top-rounded">
-                <a href="category.html" class="category-badge position-absolute"
-                  >{{post.category}}</a
-                >
+                <a href="category.html" class="category-badge position-absolute">{{post.category}}</a>
                 <span class="post-format">
                   <i class="icon-picture"></i>
                 </span>
@@ -67,38 +63,33 @@
               <div class="details">
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
-                    <a href="#"
-                      ><img
-                        src="{{ post.author.profile.get_profile_pic }}"
-                        style="height:32px; width: 32px; object-fit:cover; border-radius:50%;"
-                        class="author"
-                        alt="author"
-                      />{{post.author}}</a>
+                    <a href="#"><img src="{{ post.author.profile.get_profile_pic }}"
+                        style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
+                        alt="author" />{{post.author}}</a>
                   </li>
                   <li class="list-inline-item">{{post.date}}</li>
                 </ul>
                 <h5 class="post-title mb-3 mt-3">
-                  <a href="{% url 'blog_detail' post.blog_slug %}" title="{{post.title}}">{{post.title|truncatechars:25}}</a>
+                  <a href="{% url 'blog_detail' post.blog_slug %}"
+                    title="{{post.title}}">{{post.title|truncatechars:25}}</a>
                 </h5>
                 <p class="excerpt mb-0">{{post.content|truncatechars:30}}</p>
               </div>
               <div class="post-bottom clearfix d-flex align-items-center">
                 <div class="social-share me-auto">
-<button
-                        type="button"
-                        id="like-btn-{{ post.blog_slug }}"
-                        class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
-                        data-url="{% url 'like' post.blog_slug %}"
-                        onclick="likePost(this)"
-                      >
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span class="like-count">{{ post.total_likes }}</span>
-                      </button>
+                  <button type="button" id="like-btn-{{ post.blog_slug }}"
+                    class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
+                    data-url="{% url 'like' post.blog_slug %}" onclick="likePost(this)">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <span class="like-count">{{ post.total_likes }}</span>
+                  </button>
+                  <a class="btn btn-sm btn-dark" href="">
+                    <i class="fa-solid fa-comment">
+                    </i> {{post.comment_count}}
+                  </a>
                 </div>
                 <div class="more-button float-end">
-                  <a href="{% url 'blog_detail' post.blog_slug %}"
-                    ><span class="icon-options"></span
-                  ></a>
+                  <a href="{% url 'blog_detail' post.blog_slug %}"><span class="icon-options"></span></a>
 
                 </div>
               </div>
@@ -111,9 +102,7 @@
           <ul class="pagination justify-content-center">
             {% if posts.has_previous %}
             <li class="page-item" aria-current="page">
-              <a class="page-link" href="?page={{posts.previous_page_number}}"
-                >Prev</a
-              >
+              <a class="page-link" href="?page={{posts.previous_page_number}}">Prev</a>
             </li>
             {% endif %} {% for num in posts.paginator.page_range %}
             <li class="page-item {% if num == posts.number %}active{% endif %}">
@@ -121,9 +110,7 @@
             </li>
             {% endfor %} {% if posts.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{posts.next_page_number}}"
-                >Next</a
-              >
+              <a class="page-link" href="?page={{posts.next_page_number}}">Next</a>
             </li>
             {% endif %}
           </ul>
