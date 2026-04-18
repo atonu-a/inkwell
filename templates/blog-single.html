@@ -26,7 +26,7 @@
                   />{{post.author}}</a
                 >
               </li>
-              <li class="list-inline-item"><a href="#">Trending</a></li>
+              <li class="list-inline-item"><p>{{post.category}}</a><p>
               <li class="list-inline-item">{{post.date}}</li>
             </ul>
           </div>
@@ -36,7 +36,7 @@
           </div>
           <!-- post content -->
           <div class="post-content clearfix">
-            <p>{{post.content}}</p>
+            <p>{{post.content|linebreaks}}</p>
 
             <button
               type="button"
