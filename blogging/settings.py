@@ -17,6 +17,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
+    'cloudinary_storage', # এটি অবশ্যই থাকতে হবে এবং সবার উপরে দিন
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,8 +27,8 @@ INSTALLED_APPS = [
     'cloudinary',
     'HOME',
     'user_auth',
-
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
