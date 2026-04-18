@@ -2,6 +2,9 @@ import os
 import dj_database_url  
 from pathlib import Path
 from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 load_dotenv()
 
@@ -85,11 +88,11 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Cloudinary Settings (নিরাপত্তার জন্য এনভায়রনমেন্ট ভেরিয়েবল ব্যবহার করছি)
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'ddrochzoq',
-    'API_KEY': '777934299311366',
-    'API_SECRET': 'wPJRJVSwIB9CwB_3tGO7GkMSg6M',
-}
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
