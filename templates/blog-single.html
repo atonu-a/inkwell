@@ -12,7 +12,7 @@
             <h1 class="title mt-0 mb-3">{{post.title}}</h1>
             <ul class="meta list-inline mb-0">
               <li class="list-inline-item">
-                <a href="#"
+                <a href="{% url 'author_profile' post.author.username %}"
                   ><img
                     src="{{ post.author.profile.get_profile_pic }}"
                     style="
@@ -26,7 +26,7 @@
                   />{{post.author}}</a
                 >
               </li>
-              <li class="list-inline-item"><a href="#">Trending</a></li>
+              <li class="list-inline-item"><a href="{% url 'blog_detail' post.blog_slug %}">{{post.category}}</a></li>
               <li class="list-inline-item">{{post.date}}</li>
             </ul>
           </div>
@@ -36,7 +36,7 @@
           </div>
           <!-- post content -->
           <div class="post-content clearfix">
-            <p>{{post.content}}</p>
+            <p>{{post.content|linebreaks}}</p>
 
             <button
               type="button"
