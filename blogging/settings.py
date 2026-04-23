@@ -101,10 +101,10 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # শুধু এই লাইনটি পরিবর্তন করুন
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage", 
     },
 }
 
-WHITENOISE_MANIFEST_STRICT = False
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# পুরনো ভেরিয়েবলটিও আপডেট করে দিন
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
