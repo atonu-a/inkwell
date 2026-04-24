@@ -12,8 +12,8 @@ def index(request):
     posts = Blog.objects.annotate(comment_count=Count('comments')).order_by("?")
     main_post = Blog.objects.filter(section="Main_Post").order_by("-id")[:1]
     recent = Blog.objects.all().order_by("-id")
-    popular = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count')
-    trending = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:2]
+    popular = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count', "-id")
+    trending = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:2]
     category = Category.objects.annotate(count=Count('blog'))
 
     context = {       
