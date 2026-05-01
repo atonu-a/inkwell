@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
-    slug = AutoSlugField(populate_from ="name", unique=True )
+    name = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from ="name", unique=True, max_length=255)
     
     def save(self, *args, **kwargs):
         if not self.slug:
