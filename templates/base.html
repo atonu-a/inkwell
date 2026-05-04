@@ -20,11 +20,20 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
 	<link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" type="text/css" media="all">
 
+	<script src="https://cdn.jsdelivr.net/gh/iamashruu/cursorly.js@latest/dist/cursorly.min.js"></script>
+
 
 
 </head>
 
 <body>
+	<script>
+		const cursor = Cursorly.init({
+			cursor: 15, // Index of the cursor icon (default: 0)
+			effect: { name: "trail", color: "#FE4F70" } // Effect name and color are required
+		});
+	</script>
+
 
 	<!-- preloader -->
 	<div id="preloader">
@@ -69,7 +78,7 @@
 					<!-- site logo -->
 
 					<a class="navbar-brand" href="{%url 'index' %}"><img src="{%static 'images/inkwell_logo.svg' %}"
-							alt="logo" style="height: auto; width: 180px;"/></a>
+							alt="logo" style="height: auto; width: 180px;" /></a>
 
 					<div class="collapse navbar-collapse">
 						<!-- menus -->
@@ -108,7 +117,8 @@
 							<li>
 								<form method="POST" action="{% url 'logout_view' %}">
 									{% csrf_token %}
-									<button class="nav-link" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
+									<button class="nav-link" type="submit"><i
+											class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
 								</form>
 							</li>
 
@@ -121,9 +131,10 @@
 						<!-- header buttons -->
 
 						<div class="header-buttons">
-							<button title="Create a post" class="create icon-button" onclick="window.location.href='/create-post/'">
-    <i class="fa-solid fa-plus"></i>
-</button>
+							<button title="Create a post" class="create icon-button"
+								onclick="window.location.href='/create-post/'">
+								<i class="fa-solid fa-plus"></i>
+							</button>
 
 							<button title="Search" class="search icon-button">
 								<i class="fa-solid fa-magnifying-glass"></i>
@@ -240,10 +251,11 @@
 				</li>
 
 				<li class="{% if request.path == '/login/' %} active {% endif %}">
-					<a href="#" class="" onclick="event.preventDefault(); document.getElementById('logout').submit()"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+					<a href="#" class="" onclick="event.preventDefault(); document.getElementById('logout').submit()"><i
+							class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
 					<form method="POST" action="{% url 'logout_view' %}" id="logout" style="display: none;">
 						{% csrf_token %}
-						
+
 					</form>
 				</li>
 

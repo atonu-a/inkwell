@@ -3,6 +3,7 @@
     "@tailwindcss/cli": "^4.2.2",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/vite": "^4.2.2",
+    "cursorly.js": "^1.0.5",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2"
   }
