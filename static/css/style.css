@@ -3203,3 +3203,51 @@ button:focus {
   width: 100px !important;
   height: 100px !important;
 }
+
+/* Base skeleton block */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e2e8f0;
+  color: transparent !important;
+  border-radius: 6px;
+}
+
+/* Hide text naturally */
+.skeleton * {
+  visibility: hidden !important;
+}
+
+/* Hide images */
+.skeleton img {
+  opacity: 0 !important;
+}
+
+/* Shimmer layer */
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  height: 100%;
+  width: 150%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+body.skeleton-lock {
+  overflow: hidden;
+  height: 100vh;
+}

@@ -7,19 +7,19 @@
       <div class="col-lg-8">
         <!-- featured post large -->
         {% for post in main_post %}
-        <div class="post featured-post-lg">
+        <div class="post featured-post-lg skeleton">
           <div class="details clearfix">
-            <div>
+            <div class="">
               <p class="category-badge">Trending</p>
               <p class="category-badge">Popular</p>
               <a
                 href="{% url 'category' post.category.slug %}"
-                class="category-badge"
+                class="skeleton category-badge"
                 >{{post.category}}</a
               >
             </div>
 
-            <h2 class="post-title">
+            <h2 class="post-title skeleton">
               <a href="{% url 'blog_detail' post.blog_slug %}"
                 >{{post.title}}</a
               >
@@ -95,9 +95,9 @@
               <!-- post -->
               {% for post in popular|slice:":4" %}
               <div class="post post-list-sm circle">
-                <div class="thumb circle">
+                <div class="thumb circle ">
                   <a href="{% url 'blog_detail' post.blog_slug %}">
-                    <div class="inner">
+                    <div class="inner skeleton">
                       <img
                         src="{{post.image.url}}"
                         alt="post-title"
@@ -107,12 +107,12 @@
                   </a>
                 </div>
                 <div class="details clearfix">
-                  <h6 class="post-title my-0">
+                  <h6 class="post-title my-0 skeleton">
                     <a href="{% url 'blog_detail' post.blog_slug %}"
                       >{{post.title}}</a
                     >
                   </h6>
-                  <ul class="meta list-inline mt-1 mb-0">
+                  <ul class="meta list-inline mt-1 mb-0 skeleton">
                     <li class="list-inline-item">{{post.date}}</li>
                   </ul>
                 </div>
@@ -161,10 +161,10 @@
 </section>
 
 <!-- section main content -->
-<section class="main-content">
-  <div class="container-xl">
-    <div class="row gy-4">
-      <div class="col-lg-8">
+<section class="main-content ">
+  <div class="container-xl ">
+    <div class="row gy-4 ">
+      <div class="col-lg-8 skeleton">
         <div class="spacer" data-height="50"></div>
 
         <!-- section header -->
@@ -417,7 +417,7 @@
         <!-- sidebar -->
         <div class="sidebar">
           <!-- widget categories -->
-          <div class="widget rounded">
+          <div class="widget rounded skeleton">
             <div class="widget-header text-center">
               <h3 class="widget-title">Explore Topics</h3>
               <img
