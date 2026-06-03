@@ -3,11 +3,11 @@ $(window).on("load", function () {
   /*=========================================================================
             Preloader
     =========================================================================*/
-  $("#preloader").delay(750).fadeOut("slow");
-      setTimeout(function () {
-        $(".skeleton").removeClass("skeleton");
-        $("body").removeClass("skeleton-lock")
-      }, 100);
+  $("#preloader").delay(50).fadeOut("slow");
+  setTimeout(function () {
+    $(".skeleton").removeClass("skeleton");
+    $("body").removeClass("skeleton-lock");
+  }, 1000);
 });
 
 /*=========================================================================

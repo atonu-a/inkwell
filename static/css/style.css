@@ -3210,7 +3210,7 @@ button:focus {
   overflow: hidden;
   background: #e2e8f0;
   color: transparent !important;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 /* Hide text naturally */
@@ -3250,4 +3250,5 @@ button:focus {
 body.skeleton-lock {
   overflow: hidden;
   height: 100vh;
+  pointer-events: none;
 }
