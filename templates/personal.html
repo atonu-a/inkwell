@@ -3,29 +3,29 @@
   <div class="d-flex flex-column">
     <div class="d-flex gap-2 gap-md-5">
 
-      <img class="rounded-circle border" src="{{ request.user.profile.get_profile_pic }}" style="
+      <img class="rounded-circle border skeleton" src="{{ request.user.profile.get_profile_pic }}" style="
           width: 100px;
           height: 100px;
           object-fit: cover;
           margin-bottom: 20px;
         " />
       <div class="d-flex flex-column">
-        <h4 style="margin-bottom: 0">{{request.user.profile.full_name}}<i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
-        <p><i class="fa-solid fa-at"></i> {{request.user.username}}</p>
+        <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}<i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
+        <p class="skeleton"><i class="fa-solid fa-at"></i> {{request.user.username}}</p>
       </div>
     </div>
 
-    <p><i class="fa-regular fa-clipboard"></i> {{request.user.profile.bio}}</p>
+    <p class="skeleton"><i class="fa-regular fa-clipboard"></i> {{request.user.profile.bio}}</p>
 
-    <p>
+    <p class="skeleton">
       <i class="fa-solid fa-cake-candles"></i> {{request.user.profile.birthday}}
     </p>
   </div>
-  <a class="btn btn-default mb-4 px-3" href="{% url 'onboarding' %}" id="edit">
+  <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
     <i class="fa-solid fa-pen"></i>Edit Profile
   </a>
 
-  <div class="border-0 border-top border-bottom border-default border-5">
+  <div class="border-0 border-top border-bottom border-default border-5 skeleton">
     <p class="text-danger fw-bold">Total Posts
     <h4>({{blogs_count}})</h4>
     </p>
@@ -38,8 +38,8 @@
 <!-- section main content -->
 
 <section class="main-content">
-  <div class="container-xl">
-    <div class="section-header">
+  <div class="container-xl ">
+    <div class="section-header skeleton">
       <h3 class="section-title">All Posts</h3>
       <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
     </div>
@@ -50,7 +50,7 @@
           <div class="col-md-4">
             <!-- post -->
 
-            <div class="post post-grid rounded bordered">
+            <div class="post post-grid rounded bordered skeleton">
               <div class="thumb top-rounded">
                 <a href="{% url 'category' post.blog_slug %}" class="category-badge position-absolute">{{post.category}}</a>
                 <span class="post-format">
