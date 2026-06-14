@@ -1,14 +1,17 @@
 $(window).on("load", function () {
-  "use strict";
-  /*=========================================================================
-            Preloader
-    =========================================================================*/
   $("#preloader").delay(50).fadeOut("slow");
   setTimeout(function () {
     $(".skeleton").removeClass("skeleton");
     $("body").removeClass("skeleton-lock");
   }, 1000);
 });
+
+
+setTimeout(function () {
+  $("#preloader").hide();
+  $(".skeleton").removeClass("skeleton");
+  $("body").removeClass("skeleton-lock");
+}, 8000);
 
 /*=========================================================================
             Home Slider
