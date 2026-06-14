@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<div class="d-flex flex-column justify-content-center align-items-center bg-light text-center px-3 py-5">
+  <div class="card p-5 shadow-sm border-0" style="max-width: 550px; border-radius: 16px;" >
+    
+    <!-- Coming Soon Badge -->
+    <div class="mb-3">
+      <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fs-6 fw-semibold">Coming Soon</span>
+    </div>
+
+    <!-- Main Heading -->
+    <h2 class="text-dark fw-bold mb-3">In-App Messaging System</h2>
+    
+    <!-- Main Message -->
+    <p class="text-secondary mb-4">
+      We are building a brand-new messaging platform to make your communication seamless and secure. This feature will be live very soon!
+    </p>
+
+    <!-- Progress Bar (Visual indicator that work is in progress) -->
+    <div class="progress mb-4" style="height: 6px;">
+      <div class="progress-bar progress-bar-striped progress-bar-animated bg-text-brand" role="progressbar" style="width: 75%"></div>
+    </div>
+    
+    <!-- Footer Subtext -->
+    <small class="text-muted">Thank you for your patience and support.</small>
+  </div>
+</div>
+
+
+
+{% endblock body %}

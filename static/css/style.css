@@ -3252,3 +3252,6 @@ body.skeleton-lock {
   height: 100vh;
   pointer-events: none;
 }
+.brand{
+  background-image: linear-gradient(to top, #FFA387 0%, #FE4F70 51%, #FFA387 100%)!important;
+}

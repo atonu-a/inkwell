@@ -152,3 +152,6 @@ def search_view(request):
     }
         
     return render(request, "search_results.html", context )
+
+def comming_soon(request):
+    return render(request, "comming.html")
