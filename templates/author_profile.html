@@ -11,7 +11,8 @@
           margin-bottom: 20px;
         " />
       <div class="d-flex flex-column">
-        <h4 style="margin-bottom: 0">{{author_name.profile.full_name}}<i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
+        <h4 style="margin-bottom: 0">{{author_name.profile.full_name}}<i class="fa-solid fa-circle-check"
+            style="color: rgb(52, 153, 236);"></i></h4>
         <p><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
       </div>
     </div>
@@ -21,6 +22,17 @@
     <p>
       <i class="fa-solid fa-cake-candles"></i> {{author_name.profile.birthday}}
     </p>
+    <div>
+      <button class="btn btn-default mb-4 px-3" id="follow-btn" data-user-id="{{ author_name.id }}"
+        onclick="toggleFollow(this)">
+        <i class="fa-solid fa-heart-circle-plus"></i>
+        <span>Follow</span>
+      </button>
+      <a class="btn btn-default mb-4 px-3" href="{% url 'messages' %}" id="edit">
+        <i class="fa-solid fa-paper-plane"></i> Message
+      </a>
+    </div>
+
   </div>
 
   <div class="border-0 border-top border-bottom border-default border-5">
@@ -50,7 +62,8 @@
 
             <div class="post post-grid rounded bordered">
               <div class="thumb top-rounded">
-                <a href="{% url 'category' post.blog_slug %}" class="category-badge position-absolute">{{post.category}}</a>
+                <a href="{% url 'category' post.blog_slug %}"
+                  class="category-badge position-absolute">{{post.category}}</a>
                 <span class="post-format">
                   <i class="icon-picture"></i>
                 </span>
@@ -147,6 +160,38 @@
         }
       })
       .catch((error) => console.error("Error:", error));
+  }
+
+
+  function toggleFollow(btn) {
+    const userId = btn.getAttribute('data-user-id');
+    const span = btn.querySelector('span');
+    const i = btn.querySelector('i');
+
+    fetch(`/follow/${userId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())  // ✅ return করতে হবে
+      .then(data => {
+        console.log('Data:', data);
+        if (data.status === 'following') {
+          span.textContent = "Following";
+          i.classList.remove('fa-heart-circle-plus');
+          i.classList.add('fa-heart-circle-check');
+
+          
+        } else {
+          span.textContent = 'Follow';
+          i.classList.remove('fa-heart-circle-check');
+          i.classList.add('fa-heart-circle-plus');
+          
+        }
+      })
+      .catch(err => console.error('Error:', err));
   }
 </script>
 

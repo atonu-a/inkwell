@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout
@@ -7,7 +8,10 @@ from .models import Profile
 from HOME.models import Blog, Category
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from .models import Follow
 
+User = get_user_model()
 # Create your views here.
 
 
@@ -136,6 +140,13 @@ def author_profile(request, username):
     author_name = get_object_or_404(User, username=username)
     posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=author_name).order_by("-id")
     category = Category.objects.all().order_by("-id")
+    is_following = False
+    
+    if request.user.is_authenticated:
+        is_following = Follow.objects.filter(
+            follower=request.user,
+            following = author_name
+        ).exists()
     
     blogs_count = posts.count()
     
@@ -150,7 +161,24 @@ def author_profile(request, username):
         'author_name': author_name,
         'posts': paginated_posts,
         'blogs_count' : blogs_count,
-        'category' : category
+        'category' : category,
+        'is_following': is_following,
     }
     return render(request, 'author_profile.html', context)
-        
+    
+    
+def toggle_follow(request, user_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'login required'}, status=401)
+    
+    if request.method == "POST":
+        target_user = get_object_or_404(User, id=user_id)
+        follow, created = Follow.objects.get_or_create(
+            follower=request.user,
+            following=target_user
+        )
+        if not created:
+            follow.delete()
+            return JsonResponse({'status': 'unfollowed'}) 
+        return JsonResponse({'status': 'following'})
+

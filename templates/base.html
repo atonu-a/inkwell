@@ -225,12 +225,12 @@
 		<button type="button" class="btn-close" aria-label="Close"></button>
 
 		<!-- logo -->
-		<div class="logo">
-			<img src="{%static 'images/logo.svg' %}" alt="Katen" />
-		</div>
+		<!-- <div class="logo">
+			<img src="{%static 'images/inkwell_logo.svg' %}" alt="Katen" />
+		</div> -->
 
 		<!-- menu -->
-		<nav>
+		<nav class="mt-5">
 			<ul class="vertical-menu">
 				<li class="{% if request.path == '/' %} active {% endif %}">
 					<a class="" href="{%url 'index' %}"><i class="fa-regular fa-house"></i>Home</a>
