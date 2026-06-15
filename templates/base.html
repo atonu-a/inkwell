@@ -22,9 +22,28 @@
 
 	<script src="https://cdn.jsdelivr.net/gh/iamashruu/cursorly.js@latest/dist/cursorly.min.js"></script>
 
+	<!-- Loading animations -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+
+
 
 
 </head>
+
+<!-- loading -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+<script>
+	NProgress.configure({ showSpinner: false, speed: 400 });
+	document.addEventListener("click", function (e) {
+		const link = e.target.closest("a");
+		if (link && link.href && !link.href.startsWith("#") && link.target !== "_blank") {
+			NProgress.start();
+		}
+	});
+	window.addEventListener("load", function () {
+		NProgress.done();
+	});
+</script>
 
 <body class="skeleton-lock">
 	<script>
