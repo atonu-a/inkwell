@@ -16,7 +16,7 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'https://inkwell-production-fdb8.up.railway.app',
+    'https://inkwell-blogs.up.railway.app',
     'https://inkwell.pro.bd',
 ]
 
