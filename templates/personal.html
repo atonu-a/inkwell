@@ -13,9 +13,9 @@
         <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}<i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
         <p class="skeleton"><i class="fa-solid fa-at"></i> {{request.user.username}}</p>
         <div class="d-flex">
-          <h6 id="">Followers <span id="followers-count">{{ followers_count }}</span></h6>
+          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count }}</span></h6>
           <h6>&nbsp; •&nbsp; </h6>
-          <h6> Posts {{ blogs_count }}</h6>
+          <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
         </div>
       </div>
     </div>
