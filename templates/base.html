@@ -33,15 +33,17 @@
 <!-- loading -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 <script>
-	NProgress.configure({ showSpinner: false, speed: 400 });
+	// Link click করলে preloader দেখাও
 	document.addEventListener("click", function (e) {
 		const link = e.target.closest("a");
 		if (link && link.href && !link.href.startsWith("#") && link.target !== "_blank") {
-			NProgress.start();
+			document.getElementById("preloader").style.display = "block";
 		}
 	});
+
+	// Page load হলে hide করো
 	window.addEventListener("load", function () {
-		NProgress.done();
+		document.getElementById("preloader").style.display = "none";
 	});
 </script>
 
