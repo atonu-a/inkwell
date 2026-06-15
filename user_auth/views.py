@@ -62,6 +62,7 @@ def profile_view(request):
     posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=request.user).order_by("-id")
     category = Category.objects.all().order_by("-id")
     blogs_count = posts.count()
+    followers_count = request.user.followers.count()
     
     search_query = request.GET.get("title")
     if search_query :
@@ -76,7 +77,8 @@ def profile_view(request):
 
         "blogs_count":blogs_count,
         "posts" : paginated_posts,
-        "category" : category
+        "category" : category,
+        "followers_count":followers_count,
         
     }
     
@@ -148,6 +150,8 @@ def author_profile(request, username):
             following = author_name
         ).exists()
     
+    followers_count = author_name.followers.count()
+    
     blogs_count = posts.count()
     
     search_query = request.GET.get("title")
@@ -163,6 +167,7 @@ def author_profile(request, username):
         'blogs_count' : blogs_count,
         'category' : category,
         'is_following': is_following,
+        'followers_count' : followers_count,
     }
     return render(request, 'author_profile.html', context)
     

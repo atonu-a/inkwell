@@ -13,10 +13,17 @@
       <div class="d-flex flex-column ">
         <h4 class="skeleton" style="margin-bottom: 0">{{author_name.profile.full_name}}<i class="fa-solid fa-circle-check"
             style="color: rgb(52, 153, 236);"></i></h4>
-        <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
+        <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p> 
+        <div class="d-flex">
+          <h6 id="">Followers <span id="followers-count">{{ followers_count }}</span></h6>
+          <h6>&nbsp; •&nbsp; </h6>
+          <h6> Posts {{ blogs_count }}</h6>
+        </div>
       </div>
-    </div>
+      
 
+    </div>
+          
     <p class="skeleton"><i class="fa-regular fa-clipboard"></i> {{author_name.profile.bio}}</p>
 
     <p class="skeleton">
@@ -164,35 +171,35 @@
 
 
   function toggleFollow(btn) {
-    const userId = btn.getAttribute('data-user-id');
-    const span = btn.querySelector('span');
-    const i = btn.querySelector('i');
+      const userId = btn.getAttribute('data-user-id');
+      const span = btn.querySelector('span');
+      const i = btn.querySelector('i');
 
-    fetch(`/follow/${userId}/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())  // ✅ return করতে হবে
-      .then(data => {
-        console.log('Data:', data);
-        if (data.status === 'following') {
-          span.textContent = "Following";
-          i.classList.remove('fa-heart-circle-plus');
-          i.classList.add('fa-heart-circle-check');
-
-          
-        } else {
-          span.textContent = 'Follow';
-          i.classList.remove('fa-heart-circle-check');
-          i.classList.add('fa-heart-circle-plus');
-          
-        }
+      fetch(`/follow/${userId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(err => console.error('Error:', err));
-  }
+        .then(res => res.json())
+        .then(data => {
+          const countEl = document.getElementById('followers-count');
+
+          if (data.status === 'following') {
+            span.textContent = "Following";
+            i.className = 'fa-solid fa-heart-circle-check';  // ✅ icon → i
+
+            countEl.textContent = parseInt(countEl.textContent) + 1;
+          } else {
+            span.textContent = 'Follow';
+            i.className = 'fa-solid fa-heart-circle-plus';   // ✅ icon → i
+
+            countEl.textContent = parseInt(countEl.textContent) - 1;
+          }
+        })
+        .catch(err => console.error('Error:', err));
+    }
 </script>
 
 {% endblock body %}
