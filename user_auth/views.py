@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout
@@ -171,19 +171,19 @@ def author_profile(request, username):
     }
     return render(request, 'author_profile.html', context)
     
-    
+@login_required(login_url="login")
 def toggle_follow(request, user_id):
-    if not request.user.is_authenticated:
-        return JsonResponse({'error': 'login required'}, status=401)
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    target_user = get_object_or_404(User, id=user_id)
     
-    if request.method == "POST":
-        target_user = get_object_or_404(User, id=user_id)
-        follow, created = Follow.objects.get_or_create(
-            follower=request.user,
-            following=target_user
-        )
-        if not created:
-            follow.delete()
-            return JsonResponse({'status': 'unfollowed'}) 
-        return JsonResponse({'status': 'following'})
+
+    follow, created = Follow.objects.get_or_create(
+        follower=request.user,
+        following=target_user
+    )
+    if not created:
+        follow.delete()
+        return JsonResponse({'status': 'unfollowed'}) 
+    return JsonResponse({'status': 'following'})
 
