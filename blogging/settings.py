@@ -18,6 +18,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://inkwell-blogs.up.railway.app',
     'https://inkwell.pro.bd',
+    'https://www.inkwell.pro.bd'
 ]
 
 # Application definition
