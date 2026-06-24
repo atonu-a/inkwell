@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
+import markdown
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -45,6 +46,14 @@ class Blog(models.Model):
     status = models.CharField(choices=STATUS, max_length=1,default="PUBLISH")
     section = models.CharField(max_length=20, choices=SECTION, default="Recent")
     likes = models.ManyToManyField(User, related_name="posts", blank=True)
+    
+    
+    @property
+    def content_html(self):
+        return markdown.markdown(
+            self.content,
+            extensions=["fenced_code","tables"]
+        )
     
     def total_likes(self):
         return self.likes.count()

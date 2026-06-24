@@ -36,7 +36,7 @@
           </div>
           <!-- post content -->
           <div class="post-content clearfix">
-            <p>{{post.content|linebreaks}}</p>
+            <p>{{post.content_html|safe}}</p>
 
             <button
               type="button"
