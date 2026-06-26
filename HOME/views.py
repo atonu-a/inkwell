@@ -17,6 +17,11 @@ def index(request):
             comment_count=Count('comments'),
             total_likes=Count("likes"))
         .order_by("?"))
+    
+    paginator = Paginator(posts, 5)
+    page = request.GET.get("page")
+    posts = paginator.get_page(page)
+    
     main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
     recent = Blog.objects.select_related("author","category").order_by("-id")
     popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
@@ -77,8 +82,6 @@ def category(request, slug):
     }
     return render(request, "category.html",context)
 
-def profile_view(request):
-    return render(request, "personal.html")
 
 @login_required(login_url="login")
 def like_view(request, slug):
