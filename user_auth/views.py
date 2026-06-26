@@ -150,7 +150,16 @@ def add_category(request):
 
 def author_profile(request, username):
     author_name = get_object_or_404(User, username=username)
-    posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=author_name).order_by("-id")
+    posts = (
+        Blog.objects
+        .select_related("author", "category")
+        .prefetch_related('likes')
+        .annotate(
+            comment_count=Count('comments'),
+            total_likes=Count('likes')
+        )
+        .filter(author=author_name).order_by("-id")
+    )
     category = Category.objects.all().order_by("-id")
     is_following = False
     

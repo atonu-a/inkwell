@@ -15,7 +15,8 @@ def index(request):
         .prefetch_related('likes')
         .annotate(
             comment_count=Count('comments'),
-            total_likes=Count("likes"))
+            total_likes=Count("likes")
+        )
         .order_by("?")
     )
     
@@ -59,7 +60,17 @@ def category(request, slug):
     category = Category.objects.annotate(count=Count('blog')).order_by("-id")
     current_category = get_object_or_404(Category, slug=slug)
     blog_category = Category.objects.filter(slug=slug)
-    blog_posts = current_category.blog.all()
+    blog_posts = (
+        current_category.blog
+        .select_related("author", "category")
+        .prefetch_related('likes')
+        .annotate(
+            comment_count=Count('comments'),
+            total_likes=Count("likes")
+        )
+        .filter(author=request.user)
+        .order_by("-id")
+    )
     
     search_query = request.GET.get("title")
     if search_query :

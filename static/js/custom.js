@@ -8,7 +8,7 @@ $(window).on("load", function () {
   setTimeout(function () {
     $(".skeleton").removeClass("skeleton");
     $("body").removeClass("skeleton-lock");
-  }, 1000);
+  }, 500);
 });
 
 
@@ -16,7 +16,7 @@ setTimeout(function () {
   $("#preloader").hide();
   $(".skeleton").removeClass("skeleton");
   $("body").removeClass("skeleton-lock");
-}, 8000);
+}, 500);
 
 /*=========================================================================
             Home Slider
