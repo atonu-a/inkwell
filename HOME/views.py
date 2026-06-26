@@ -9,11 +9,18 @@ from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
-    posts = Blog.objects.annotate(comment_count=Count('comments')).order_by("?")
-    main_post = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
-    recent = Blog.objects.all().order_by("-id")
-    popular = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count', "-id")
-    trending = Blog.objects.annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:2]
+    posts = (
+        Blog.objects
+        .select_related("author","category")
+        .prefetch_related('likes')
+        .annotate(
+            comment_count=Count('comments'),
+            total_likes=Count("likes"))
+        .order_by("?"))
+    main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
+    recent = Blog.objects.select_related("author","category").order_by("-id")
+    popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
+    
     category = Category.objects.annotate(count=Count('blog'))
 
     context = {       
@@ -22,8 +29,8 @@ def index(request):
         'recent' : recent,
         'category': category,
         'popular': popular,
-        'trending_left': trending[:1],
-        'trending_right': trending[1:2],
+        'trending_left': popular[:1],
+        'trending_right': popular[1:2],
         
         
                
