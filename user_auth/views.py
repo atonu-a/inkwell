@@ -59,7 +59,17 @@ def login_view(request):
 
 @login_required(login_url='login')
 def profile_view(request):
-    posts = Blog.objects.annotate(comment_count=Count('comments')).filter(author=request.user).order_by("-id")
+    posts = (
+        Blog.objects
+        .select_related("author", "category")
+        .prefetch_related('likes')
+        .annotate(
+            comment_count=Count('comments'),
+            total_likes=Count("likes")
+        )
+        .filter(author=request.user)
+        .order_by("-id")
+    )
     category = Category.objects.all().order_by("-id")
     blogs_count = posts.count()
     followers_count = request.user.followers.count()

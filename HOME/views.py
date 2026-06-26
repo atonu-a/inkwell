@@ -16,7 +16,8 @@ def index(request):
         .annotate(
             comment_count=Count('comments'),
             total_likes=Count("likes"))
-        .order_by("?"))
+        .order_by("?")
+    )
     
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
