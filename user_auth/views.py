@@ -67,7 +67,6 @@ def profile_view(request):
             comment_count=Count('comments'),
             total_likes=Count("likes")
         )
-        .filter(author=request.user)
         .order_by("-id")
     )
     category = Category.objects.all().order_by("-id")

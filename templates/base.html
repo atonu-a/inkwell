@@ -7,6 +7,9 @@
 	<title>Inkwell - a simple blog website</title>
 	<meta name="description" content="Katen - Minimal Blog & Magazine HTML Theme">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/icon.png' %}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
 		integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
@@ -33,17 +36,12 @@
 <!-- loading -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 <script>
-	// Link click করলে preloader দেখাও
-	document.addEventListener("click", function (e) {
-		const link = e.target.closest("a");
-		if (link && link.href && !link.href.startsWith("#") && link.target !== "_blank") {
-			document.getElementById("preloader").style.display = "block";
+	window.addEventListener("pageshow", function (event) {
+		if (event.persisted) {
+			$("#preloader").hide();
+			$(".skeleton").removeClass("skeleton");
+			$("body").removeClass("skeleton-lock");
 		}
-	});
-
-	// Page load হলে hide করো
-	window.addEventListener("load", function () {
-		document.getElementById("preloader").style.display = "none";
 	});
 </script>
 

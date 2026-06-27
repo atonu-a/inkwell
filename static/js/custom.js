@@ -1,7 +1,4 @@
 
-$(document).ready(function () {
-  $("#preloader").show();
-});
 
 $(window).on("load", function () {
   $("#preloader").delay(50).fadeOut("slow");
