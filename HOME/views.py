@@ -68,7 +68,6 @@ def category(request, slug):
             comment_count=Count('comments'),
             total_likes=Count("likes")
         )
-        .filter(author=request.user)
         .order_by("-id")
     )
     
