@@ -27,7 +27,7 @@
     </p>
   </div>
   <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
-    <i class="fa-solid fa-pen"></i>Edit Profile
+    <i class="fa-solid fa-user-pen"></i>Edit Profile
   </a>
 
 
@@ -92,10 +92,17 @@
                 </div>
                 <div class="more-button float-end">
                   <a href="{% url 'blog_detail' post.blog_slug %}"><span class="icon-options"></span></a>
-                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#deleteModal{{ post.id }}"
-                    style="border: none; background: none" title="Delete this post">
-                    <i class="fa-solid fa-trash-can" style="color: rgb(255, 79, 112)"></i>
-                  </button>
+                  <div class="d-inline-flex align-items-center gap-2">
+                    <a href="{% url 'edit_post' post.blog_slug %}" class="btn p-0 border-0 bg-transparent text-secondary" title="Edit this post">
+                      <i class="fa-regular fa-pen-to-square fs-5 " style="color: rgb(255, 79, 112);"></i>
+                    </a>
+                  
+                    <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal{{ post.id }}" title="Delete this post">
+                      <i class="fa-solid fa-trash-can fs-5" style="color: rgb(255, 79, 112);"></i>
+                    </button>
+                  </div>
+                  
 
                   <div class="modal fade" id="deleteModal{{ post.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">

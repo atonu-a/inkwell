@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-70">
+    <div class="card shadow-sm border-0 p-4" style="width: 100%; max-width: 600px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 fw-bold text-dark">Edit Post</h2>
+
+            {% if messages %}
+            <div class="mb-3">
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show shadow-sm"
+                    role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Title *</label>
+                    <input type="text" name="title" class="form-control" value="{{ post.title }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Thumbnail Image</label>
+                    <input type="file" name="image" accept="image/*" class="form-control">
+                    <small class="text-muted">Current: <a href="{{ post.image.url }}" target="_blank">View Current
+                            Image</a></small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Content *</label>
+                    <textarea name="content" class="form-control" rows="6" required>{{ post.content }}</textarea>
+                </div>
+
+
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-default fw-bold">Update Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

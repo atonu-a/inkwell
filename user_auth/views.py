@@ -138,6 +138,39 @@ def create_post(request):
     
     return render(request,"create.html",{"categories": categories})
 
+
+def edit_post(request, slug):
+    post = get_object_or_404(Blog, blog_slug=slug)
+    if post.author !=request.user and not request.user.is_staff:
+        messages.error(request, "You are not authorized to edit this post.")
+        return redirect('index')
+    
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        
+        post.content = request.POST.get('content')
+        category_id = request.POST.get('category')
+        if category_id:
+            post.category = get_object_or_404(Category, id=category_id)
+            
+        if request.FILES.get('image'):
+            post.image = request.FILES.get('image')
+        post.save()
+        messages.success(request,"Post edited successfully!")
+        
+        return redirect('personal')
+    
+    categories = Category.objects.all()
+        
+    data ={
+        'post': post,
+        'categories':categories
+    }
+
+        
+    
+    return render(request, 'editpost.html', data)
+
 def delete_post(request, slug):
     post = Blog.objects.get(blog_slug = slug)
     post.delete()

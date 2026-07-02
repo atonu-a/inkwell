@@ -16,6 +16,7 @@ urlpatterns = [
     path("delete-post/<slug:slug>/", views.delete_post, name = "delete_post"),
     path('profile/', views.profile_view, name="personal"),
     path('follow/<int:user_id>/', views.toggle_follow, name='toggle_follow'),
+    path('edit-post/<slug:slug>/', views.edit_post, name="edit_post"),
     
     
     
