@@ -10,9 +10,12 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import Follow
+from django.contrib import messages
 
 User = get_user_model()
-# Create your views here.
+
+
+
 
 
 def register_view(request):
@@ -126,6 +129,7 @@ def create_post(request):
             status=status,
             section=section
         )
+        messages.success(request,"Post created successfully!")
         return redirect('index')
     
     categories =  Category.objects.all()
@@ -137,6 +141,7 @@ def create_post(request):
 def delete_post(request, slug):
     post = Blog.objects.get(blog_slug = slug)
     post.delete()
+    messages.error(request,"Post deleted!")
     return redirect("personal")
 
 def add_category(request):
