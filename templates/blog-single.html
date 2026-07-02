@@ -77,7 +77,7 @@
                 />
               </div>
               <div class="details">
-                <h4 class="name"><a href="#">{{comment.name}}</a></h4>
+                <h4 class="name"><a href="{% url 'author_profile' comment.name.username %}">{{comment.name}}</a></h4>
                 <span class="date">{{comment.date}}</span>
                 <p>{{comment.comment}}</p>
                 {% if request.user == comment.name or request.user.is_staff %}
