@@ -160,7 +160,7 @@
               <ul class="list">
                 {% for topic in category %}
                 <li>
-                  <a href="#">{{topic.name}}</a><span>({{topic.count}})</span>
+                  <a href="{% url 'category' topic.slug %}">{{topic.name}}</a><span>({{topic.count}})</span>
                 </li>
                 {% endfor %}
               </ul>
