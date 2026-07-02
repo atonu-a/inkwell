@@ -1,19 +1,23 @@
 {% extends "base.html" %} {% load static %} {% block body %}
 <section class="container user-info gap-5">
   <div class="d-flex flex-column">
-    <div class="d-flex gap-2 gap-md-5 skeleton" >
+    <div class="d-flex gap-2 gap-md-5 skeleton">
 
       <img class="rounded-circle border skeleton" src="{{ request.user.profile.get_profile_pic }}" style="
           width: 100px;
           height: 100px;
           object-fit: cover;
           margin-bottom: 20px;
-        " />
+        " data-bs-toggle="modal" data-bs-target="#profilePicModal" />
       <div class="d-flex flex-column">
-        <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}<i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
+        <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}<i
+            class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
         <p class="skeleton"><i class="fa-solid fa-at"></i> {{request.user.username}}</p>
         <div class="d-flex">
-          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count }}</span></h6>
+          <h6>
+            <i class="fa-solid fa-user-group"></i> Followers
+            <span id="profile-followers-exact-count">{{ followers_count }}</span>
+          </h6>
           <h6>&nbsp; •&nbsp; </h6>
           <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
         </div>
@@ -27,11 +31,28 @@
     </p>
   </div>
   <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
-    <i class="fa-solid fa-user-pen"></i>Edit Profile
+    <i class="fa-solid fa-user-pen"></i> Edit Profile
   </a>
 
 
 </section>
+
+
+<!-- Full profile picture -->
+<div class="modal fade" id="profilePicModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-header border-0 p-0 justify-content-end">
+        <button type="button" class="btn-close btn-close-white mb-2" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0 text-center">
+        <img src="{{ request.user.profile.get_profile_pic }}" alt="Full Profile Picture" class="img-fluid rounded shadow-lg"
+          style="max-height: 80vh; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- section main content -->
@@ -51,7 +72,8 @@
 
             <div class="post post-grid rounded bordered skeleton">
               <div class="thumb top-rounded">
-                <a href="{% url 'category' post.blog_slug %}" class="category-badge position-absolute">{{post.category}}</a>
+                <a href="{% url 'category' post.blog_slug %}"
+                  class="category-badge position-absolute">{{post.category}}</a>
                 <span class="post-format">
                   <i class="icon-picture"></i>
                 </span>
@@ -93,16 +115,17 @@
                 <div class="more-button float-end">
                   <a href="{% url 'blog_detail' post.blog_slug %}"><span class="icon-options"></span></a>
                   <div class="d-inline-flex align-items-center gap-2">
-                    <a href="{% url 'edit_post' post.blog_slug %}" class="btn p-0 border-0 bg-transparent text-secondary" title="Edit this post">
+                    <a href="{% url 'edit_post' post.blog_slug %}"
+                      class="btn p-0 border-0 bg-transparent text-secondary" title="Edit this post">
                       <i class="fa-regular fa-pen-to-square fs-5 " style="color: rgb(255, 79, 112);"></i>
                     </a>
-                  
+
                     <button type="button" class="btn p-0 border-0 bg-transparent" data-bs-toggle="modal"
                       data-bs-target="#deleteModal{{ post.id }}" title="Delete this post">
                       <i class="fa-solid fa-trash-can fs-5" style="color: rgb(255, 79, 112);"></i>
                     </button>
                   </div>
-                  
+
 
                   <div class="modal fade" id="deleteModal{{ post.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">

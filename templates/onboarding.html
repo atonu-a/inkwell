@@ -18,7 +18,7 @@
     <div class="card shadow-sm border-0 p-4" style="width: 100%; max-width: 400px;">
         <div class="card-body">
             <h2 class="card-title text-center mb-1 fw-bold text-dark">Complete Your Profile</h2>
-            <p class="text-center text-muted small mb-4 text-danger">Can be edited later</p>
+            <p class="text-center text-muted small mb-4">Can be edited later</p>
 
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -35,6 +35,8 @@
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-secondary">Profile Picture <span class="text-muted fw-normal">(Optional)</span></label>
                     <input type="file" name="profile_pic" accept="image/*" class="form-control">
+                    <small class="text-muted">Current: <a href="{{ request.user.profile.get_profile_pic }}" target="_blank">View Current
+                            Image</a></small>
                 </div>
 
                 <div class="mb-3">
