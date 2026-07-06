@@ -39,6 +39,9 @@
                     <label for="password" class="form-label small fw-semibold text-secondary">Password</label>
                     <input type="password" name="password" id="password" 
                            class="form-control" placeholder="Enter your password" required>
+                    <div class="text-end mt-2">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none small fw-bold">Forgot Password?</a>
+                    </div>
                 </div>
 
                 <div class="d-grid mt-4">

@@ -51,6 +51,8 @@ def onboarding_view(request):
         birthday = request.POST.get("birthday") or None
         profile_pic = request.FILES.get('profile_pic')    
         profile.email = email 
+        request.user.email = email
+        request.user.save()
         profile.full_name = full_name
         profile.bio = bio
         profile.birthday = birthday
