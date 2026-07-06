@@ -158,8 +158,10 @@
 							<button title="Create a post" class="create icon-button position-relative"
 								onclick="window.location.href='/messages'">
 								<i class="fa-solid fa-paper-plane"></i>
-								<span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
-									<span class="visually-hidden">New alerts</span>
+<!-- 								
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+									<span class="visually-hidden">unread messages</span> -->
 								</span>
 							</button>
 
@@ -179,12 +181,14 @@
 		</header>
 
 		{% if messages %}
-		<div class="row justify-content-center mt-3">
+		<div class="row justify-content-center mt-3 position-sticky">
 			<div class="col-12" style="max-width: 600px;"> {% for message in messages %}
-				<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show shadow-sm"
-					role="alert">
+				<div class="alert alert-warning alert-dismissible fade show shadow-sm position-relative pe-5" role="alert">
+				
 					{{ message }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				
+					<button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y me-3" data-bs-alert
+						aria-label="Close"></button>
 				</div>
 				{% endfor %}
 			</div>

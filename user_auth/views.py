@@ -1,5 +1,6 @@
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
+from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
@@ -14,28 +15,42 @@ from django.contrib import messages
 
 User = get_user_model()
 
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
 
+    class Meta:
+        model = User
 
+        fields = ("username", "email")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
 
 
 def register_view(request):
-    if request.method =='POST':
-        form = UserCreationForm(request.POST)
+    if request.method == 'POST':
+
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request,user)
+            login(request, user)
             return redirect('onboarding')  
     else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form':form})
+        form = CustomUserCreationForm()
+        
+    return render(request, 'register.html', {'form': form})
 
 def onboarding_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
+        email = request.POST.get("email","")
         full_name = request.POST.get("full_name", "")
         bio = request.POST.get("bio", "")
         birthday = request.POST.get("birthday") or None
-        profile_pic = request.FILES.get('profile_pic')     
+        profile_pic = request.FILES.get('profile_pic')    
+        profile.email = email 
         profile.full_name = full_name
         profile.bio = bio
         profile.birthday = birthday
@@ -62,6 +77,7 @@ def login_view(request):
 
 @login_required(login_url='login')
 def profile_view(request):
+
     posts = (
         Blog.objects
         .select_related("author", "category")
@@ -94,6 +110,8 @@ def profile_view(request):
         "followers_count":followers_count,
         
     }
+    if request.user.is_authenticated and not request.user.profile.email:
+        messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
     
     return render(request, "personal.html", context)
 

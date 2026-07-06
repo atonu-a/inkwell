@@ -24,6 +24,11 @@
 
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-secondary">Email Address <span class="text-danger">*</span></label>
+                    <input value="{{ profile.email }}" type="text" name="email" class="form-control"
+                        placeholder="Enter your email" required>
+                </div>
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-secondary">Full Name <span class="text-danger">*</span></label>

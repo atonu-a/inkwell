@@ -5,10 +5,13 @@ from django.core.paginator import Paginator
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
 
 # Create your views here.
 
 def index(request):
+
+        
     posts = (
         Blog.objects
         .select_related("author","category")
@@ -17,7 +20,7 @@ def index(request):
             comment_count=Count('comments'),
             total_likes=Count("likes")
         )
-        .order_by("?")
+        .order_by("id")
     )
     
     paginator = Paginator(posts, 5)
@@ -42,6 +45,8 @@ def index(request):
         
                
     }
+    if request.user.is_authenticated and not request.user.profile.email:
+        messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
     return render(request,"index.html", context)
 
 def blog_detail(request,slug):
