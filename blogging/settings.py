@@ -4,6 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -68,7 +69,17 @@ MIDDLEWARE = [
 
     
 ]
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Real Gmail SMTP Configuration using python-dotenv (.env)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+
+DEFAULT_FROM_EMAIL = f"Inkwell Blog <{os.getenv('EMAIL_USER')}>"
 
 if DEBUG:
     MIDDLEWARE += [
