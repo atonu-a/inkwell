@@ -12,7 +12,11 @@
             <h1 class="title mt-0 mb-3">{{post.title}}</h1>
             <ul class="meta list-inline mb-0">
               <li class="list-inline-item">
-                <a href="{% url 'author_profile' post.author.username %}"
+                <a href="{% if post.author == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' post.author.username %}
+                    {% endif %}"
                   ><img
                     src="{{ post.author.profile.get_profile_pic }}"
                     style="
@@ -77,7 +81,12 @@
                 />
               </div>
               <div class="details">
-                <h4 class="name"><a href="{% url 'author_profile' comment.name.username %}">{{comment.name}}</a></h4>
+                <h4 class="name"><a href="{% if comment.name == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' comment.name.username %}
+                    {% endif %}
+                    ">{{comment.name}}</a></h4>
                 <span class="date">{{comment.date}}</span>
                 <p>{{comment.comment}}</p>
                 {% if request.user == comment.name or request.user.is_staff %}

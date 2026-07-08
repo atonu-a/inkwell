@@ -201,7 +201,11 @@
                 </div>
                 <ul class="meta list-inline mt-4 mb-0">
                   <li class="list-inline-item">
-                    <a href="{% url 'author_profile' post.author.username %}"
+                    <a href="{% if post.author == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' post.author.username %}
+                    {% endif %}"
                       ><img
                         src="{{ post.author.profile.get_profile_pic }}"
                         style="
@@ -274,7 +278,11 @@
                 </div>
                 <ul class="meta list-inline mt-4 mb-0">
                   <li class="list-inline-item">
-                    <a href="{% url 'author_profile' post.author.username %}"
+                    <a href="{% if post.author == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' post.author.username %}
+                    {% endif %}"
                       ><img
                         src="{{ post.author.profile.get_profile_pic }}"
                         style="
@@ -350,7 +358,11 @@
                 <div class="details">
                   <ul class="meta list-inline mb-3">
                     <li class="list-inline-item">
-                      <a class="" href="{% url 'author_profile' post.author.username %}"
+                      <a class="" href="{% if post.author == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' post.author.username %}
+                    {% endif %}"
                         ><img
                           src="{{ post.author.profile.get_profile_pic }}"
                           style="
@@ -472,7 +484,11 @@
                   </h5>
                   <ul class="meta list-inline mt-2 mb-0">
                     <li class="list-inline-item">
-                      <a href="{% url 'author_profile' post.author.username %}">{{post.author}}</a>
+                      <a href="{% if post.author == request.user %}
+                    {% url 'personal' %}
+                    {% else %}
+                    {% url 'author_profile' post.author.username %}
+                    {% endif %}">{{post.author}}</a>
                     </li>
                     <li class="list-inline-item">{{post.date}}</li>
                   </ul>
