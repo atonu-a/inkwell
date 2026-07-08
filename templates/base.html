@@ -181,19 +181,25 @@
 		</header>
 
 		{% if messages %}
-		<div class="row justify-content-center mt-3 position-sticky">
-			<div class="col-12" style="max-width: 600px;"> {% for message in messages %}
-				<div class="alert alert-warning alert-dismissible fade show shadow-sm position-relative pe-5" role="alert">
-				
-					{{ message }}
-				
-					<button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y me-3" data-bs-alert
-						aria-label="Close"></button>
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-		{% endif %}
+<div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050; width: 100%; max-width: 600px; padding: 0 15px;">
+    {% for message in messages %}
+    <div class="alert alert-dismissible fade show shadow-sm position-relative pe-5
+        {% if message.tags == 'success' %}
+        alert-success
+        {% elif message.tags == 'error' %}
+        alert-danger
+        {% elif message.tags == 'warning' %}
+        alert-warning
+        {% else %}
+        alert-info
+        {% endif %}" role="alert">
+        
+        {{ message }}
+        <button type="button" class="btn-close translate-middle-y position-absolute top-50" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 		{% endblock header %}
 
 		{% block body %}

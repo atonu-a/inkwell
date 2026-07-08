@@ -60,6 +60,7 @@ def onboarding_view(request):
             profile.profile_pic = profile_pic
             print(f"Image uploaded: {profile_pic.name}")
         profile.save()
+        messages.success(request, "Profile Edited Successfully!")
         return redirect('personal')
     return render(request, 'onboarding.html', {'profile': profile})       
             
