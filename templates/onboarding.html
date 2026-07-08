@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% block header %}
-    <header class="header-default">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-xl">
-                <a class="navbar-brand" href="{% url 'index' %}">
-                    
-                    <img src="{% static 'images/logo.png' %}" alt="logo" />
-                    
-                </a>
-            </div>
-        </nav>
-    </header>
+<header class="header-default">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-xl">
+            <!-- site logo -->
+            <a class="navbar-brand" href="{%url 'index' %}"><img src="{%static 'images/inkwell_logo.svg' %}" alt="logo"
+                    style="height: auto; width: 180px;" /></a>
+
+        </div>
+    </nav>
+</header>
 {% endblock header %}
 
 {% block body %}
