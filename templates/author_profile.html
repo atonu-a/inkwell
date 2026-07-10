@@ -154,10 +154,22 @@
       })
       .then((data) => {
         const countSpan = btn.querySelector(".like-count");
+        const icon = btn.querySelector("i");
+
         countSpan.textContent = data.total_likes;
+
         if (data.liked) {
           btn.classList.add("btn-default");
           btn.classList.remove("btn-dark");
+
+          // Bounce animation
+          icon.classList.remove("fa-beat");
+          void icon.offsetWidth; // Restart animation
+          icon.classList.add("fa-beat");
+
+          setTimeout(() => {
+            icon.classList.remove("fa-beat");
+          }, 1000);
         } else {
           btn.classList.add("btn-dark");
           btn.classList.remove("btn-default");
@@ -165,7 +177,6 @@
       })
       .catch((error) => console.error("Error:", error));
   }
-
 
   function toggleFollow(btn) {
       const userId = btn.getAttribute('data-user-id');
