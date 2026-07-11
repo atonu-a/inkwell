@@ -35,10 +35,13 @@
                            class="form-control" placeholder="Enter your username" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter password" required>
+                    <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter password" required
+                        style="border-end-end-radius: 0; border-start-end-radius: 0;">
                 
-                    <button class="btn btn-outline-secondary" type="button" class="togglePasswordBtn">
-                        <i class="bi bi-eye-slash togglePasswordIcon"></i>
+                    <!-- কাস্টম স্টাইলসহ বাটন -->
+                    <button class="btn btn-password-toggle" type="button"
+                        style="border: 1px solid #ced4da; border-left: none; background: #fff; color: #6c757d;">
+                        <i class="fa-solid fa-eye-slash togglePasswordIcon"></i>
                     </button>
                 </div>
 
@@ -66,22 +69,19 @@
     </div>
 </div>
 <script>
-    // পেজের সব চোখের বাটন একসাথে লুপ করে হ্যান্ডেল করার জন্য
-    document.querySelectorAll('.input-group').forEach(group => {
+    document.querySelectorAll(".input-group").forEach((group) => {
         const passwordInput = group.querySelector('input[type="password"]');
         const toggleBtn = group.querySelector('button[type="button"]');
-        const icon = group.querySelector('.bi');
+        const icon = group.querySelector(".togglePasswordIcon");
 
-        // যদি ওই গ্রুপে পাসওয়ার্ড ইনপুট এবং বাটন দুইটাই থাকে
         if (passwordInput && toggleBtn && icon) {
-            toggleBtn.addEventListener('click', function () {
-                // টাইপ পাসওয়ার্ড থেকে টেক্সট বা টেক্সট থেকে পাসওয়ার্ড করা
-                const isPassword = passwordInput.getAttribute('type') === 'password';
-                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            toggleBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.getAttribute("type") === "password";
+                passwordInput.setAttribute("type", isPassword ? "text" : "password");
 
-                // আইকন টগল করা
-                icon.classList.toggle('bi-eye');
-                icon.classList.toggle('bi-eye-slash');
+               
+                icon.classList.toggle("fa-eye");
+                icon.classList.toggle("fa-eye-slash");
             });
         }
     });
