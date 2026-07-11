@@ -304,21 +304,12 @@ def password_reset_view(request):
         }
         
         try:
-            # ⚠️ ডোমেন ভেরিফাই হওয়া পর্যন্ত এই লাইনটি সাময়িক কমেন্ট করে রাখুন
-            # resend.Emails.send(params) 
-            
-            # 🚀 লোকাল টেস্টের জন্য ওটিপি কোডটি আপনার টার্মিনালে প্রিন্ট হবে
-            print(f"\n==================================================")
-            print(f"🔑 [LOCAL TEST OTP] for {email} is: {otp_code}")
-            print(f"==================================================\n")
-            
-            messages.success(request, "A 6-digit OTP has been generated! (Check terminal log)")
+            resend.Emails.send(params)
+            messages.success(request, "A 6-digit OTP has been sent to your email.")
             return redirect('password_reset_done')
-            
         except Exception as e:
-            print(f"❌ Resend API Error: {e}")
+            print(f"Resend Error: {e}")
             messages.error(request, "Failed to send email.")
-            return render(request, 'password_reset_form.html')
             
     return render(request, 'password_reset_form.html')
 
