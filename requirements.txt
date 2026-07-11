@@ -25,9 +25,11 @@ psycopg[binary]==3.2.12
 python-discovery==1.1.0
 python-dotenv==1.2.2
 requests==2.33.1
+resend==2.32.2
 setuptools==79.0.1
 six==1.17.0
 sqlparse==0.5.5
+typing_extensions==4.16.0
 tzdata==2025.3
 unicode-slugify==0.1.5
 Unidecode==1.4.0

@@ -1,3 +1,6 @@
+import os
+import random
+import resend
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
@@ -12,6 +15,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import Follow
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.conf import settings
+
 
 User = get_user_model()
 
@@ -266,3 +272,99 @@ def toggle_follow(request, user_id):
         return JsonResponse({'status': 'unfollowed'}) 
     return JsonResponse({'status': 'following'})
 
+
+
+
+# Password reset logic
+resend.api_key=getattr(settings, 'RESEND_API_KEY', None)
+#1. Otpo sending
+# ১. ওটিপি পাঠানোর ভিউ (পাসওয়ার্ড রিসেট ফর্ম)
+def password_reset_view(request):
+    if request.method == "POST":
+        email = request.POST.get('email', '').strip()
+        
+        # কুয়েরিটি সরাসরি ভ্যারিয়েবলে নিয়ে কাউন্ট চেক করুন
+        user_queryset = User.objects.filter(email__iexact=email)
+        
+        if not user_queryset.exists():
+            messages.error(request, "This email address is not registered!")
+            return render(request, 'password_reset_form.html')
+            
+        # ইউজার নিশ্চিতভাবে থাকলেই কেবল নিচের কোড রান হবে
+        otp_code = str(random.randint(100000, 999999))
+        request.session['generated_otp'] = otp_code
+        request.session['otp_email'] = email
+        request.session.set_expiry(300)
+        
+        params: resend.Emails.SendParams = {
+            "from": "Inkwell Blog <noreply@inkwell.pro.bd>",
+            "to": [email],
+            "subject": "Your Inkwell Password Reset OTP",
+            "html": f"<h3>Your Password Reset OTP code is: <b>{otp_code}</b></h3>"
+        }
+        
+        try:
+            # ⚠️ ডোমেন ভেরিফাই হওয়া পর্যন্ত এই লাইনটি সাময়িক কমেন্ট করে রাখুন
+            # resend.Emails.send(params) 
+            
+            # 🚀 লোকাল টেস্টের জন্য ওটিপি কোডটি আপনার টার্মিনালে প্রিন্ট হবে
+            print(f"\n==================================================")
+            print(f"🔑 [LOCAL TEST OTP] for {email} is: {otp_code}")
+            print(f"==================================================\n")
+            
+            messages.success(request, "A 6-digit OTP has been generated! (Check terminal log)")
+            return redirect('password_reset_done')
+            
+        except Exception as e:
+            print(f"❌ Resend API Error: {e}")
+            messages.error(request, "Failed to send email.")
+            return render(request, 'password_reset_form.html')
+            
+    return render(request, 'password_reset_form.html')
+
+# ২. ওটিপি চেক করা
+def password_reset_done_view(request):
+    if request.method == "POST":
+        user_otp = request.POST.get('otp')
+        saved_otp = request.session.get('generated_otp')
+        
+        if saved_otp and user_otp == saved_otp:
+            request.session['otp_verified'] = True
+            del request.session['generated_otp']
+            return redirect('password_reset_confirm')
+        else:
+            messages.error(request, "Invalid or expired OTP!")
+            
+    return render(request, 'password_reset_done.html')
+
+# ৩. নতুন পাসওয়ার্ড সেট করা
+def password_reset_confirm_view(request):
+    if not request.session.get('otp_verified'):
+        messages.error(request, "Please verify your OTP first.")
+        return redirect('password_reset')
+        
+    if request.method == "POST":
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        email = request.session.get('otp_email')
+        
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match!")
+            return render(request, 'password_reset_confirm.html')
+            
+        try:
+            user = User.objects.get(email=email)
+            user.password = make_password(password)
+            user.save()
+            
+            del request.session['otp_email']
+            del request.session['otp_verified']
+            return redirect('password_reset_complete')
+        except Exception as e:
+            messages.error(request, "Something went wrong. Please try again.")
+            
+    return render(request, 'password_reset_confirm.html')
+
+# ৪. সাকসেস পেজ
+def password_reset_complete_view(request):
+    return render(request, 'password_reset_complete.html')
