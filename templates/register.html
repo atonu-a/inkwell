@@ -13,66 +13,125 @@
 </header>
 {% endblock header %}
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 p-4">
-                    <div class="card-body">
-                        <h2 class="card-title text-center fw-bold mb-4">Create New Account</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 p-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center fw-bold mb-4">Create New Account</h2>
 
-                        <form method="POST">
-                            {% csrf_token %}
+                    <form method="POST">
+                        {% csrf_token %}
 
-                            {% for field in form %}
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold text-secondary">{{ field.label }}</label>
-                                {{ field }}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">{{ field.label }}</label>
+                            {{ field }}
 
-                                {% if field.errors %}
-                                <div class="text-danger small mt-1">
-                                    {{ field.errors.0 }}
-                                </div>
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                <div class="form-text text-muted" style="font-size: 0.75rem;">
-                                    {{ field.help_text|safe }}
-                                </div>
-                                {% endif %}
+                            {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ field.errors.0 }}
                             </div>
-                            {% endfor %}
+                            {% endif %}
 
-                            <div class="d-grid gap-2 mt-4">
-                                <button type="submit" class="btn btn-default fw-bold py-2">
-                                    Register
-                                </button>
+                            {% if field.help_text %}
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">
+                                {{ field.help_text|safe }}
                             </div>
-                        </form>
-
-                        <div class="mt-4 text-center small text-muted">
-                            Already have an account?
-                            <a href="{% url 'login' %}" class="text-primary text-decoration-none fw-bold">Login here</a>
+                            {% endif %}
                         </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-default fw-bold py-2">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                    <script>
+                        // ডিয়াঙ্গোর জেনারেট করা পাসওয়ার্ড ফিল্ডগুলো খুঁজে বের করা
+                        const passwordFields = document.querySelectorAll('input[type="password"]');
+
+                        passwordFields.forEach(field => {
+                            // ১. ইনপুট ফিল্ডের বুটস্ট্র্যাপ ডিজাইন ঠিক করা (কোণ গোল হওয়া বন্ধ করা)
+                            field.style.borderEndEndRadius = '0';
+                            field.style.borderStartEndRadius = '0';
+
+                            // ২. ডাইনামিকালি একটি বুটস্ট্র্যাপ input-group তৈরি করা
+                            const inputGroup = document.createElement('div');
+                            inputGroup.className = 'input-group';
+
+                            // ইনপুট ফিল্ডের জায়গায় input-group টাকে বসানো
+                            field.parentNode.insertBefore(inputGroup, field);
+                            inputGroup.appendChild(field);
+
+                            // ৩. চোখের বাটনের এলিমেন্ট তৈরি করা
+                            const button = document.createElement('button');
+                            button.className = 'btn';
+                            button.type = 'button';
+                            button.style.cssText = 'border: 1px solid #EBEBEB; border-left: none; background: #fff; color: #6c757d;';
+                            button.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+
+                            // বাটনটি ইনপুট ফিল্ডের ঠিক ডানপাশে যোগ করা
+                            inputGroup.appendChild(button);
+
+                            // ৪. ক্লিক করলে শো/হাইড হওয়ার লজিক
+                            button.addEventListener('click', function () {
+                                const icon = button.querySelector('i');
+                                if (field.type === 'password') {
+                                    field.type = 'text';
+                                    icon.className = 'fa-solid fa-eye';
+                                } else {
+                                    field.type = 'password';
+                                    icon.className = 'fa-solid fa-eye-slash';
+                                }
+                            });
+                        });
+                    </script>
+
+                    <div class="mt-4 text-center small text-muted">
+                        Already have an account?
+                        <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Login here</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const inputs = document.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                // 'form-control' is the standard Bootstrap class for text inputs
-                // Use 'form-check-input' if you have checkboxes/radios
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    input.classList.add('form-check-input');
-                } else {
-                    input.classList.add('form-control');
-                }
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            // 'form-control' is the standard Bootstrap class for text inputs
+            // Use 'form-check-input' if you have checkboxes/radios
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.classList.add('form-check-input');
+            } else {
+                input.classList.add('form-control');
+            }
         });
-    </script>
+    });
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    document.querySelectorAll(".input-group").forEach((group) => {
+        const passwordInput = group.querySelector('input[type="password"]');
+        const toggleBtn = group.querySelector('button[type="button"]');
+        const icon = group.querySelector(".togglePasswordIcon");
+
+        if (passwordInput && toggleBtn && icon) {
+            toggleBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.getAttribute("type") === "password";
+                passwordInput.setAttribute("type", isPassword ? "text" : "password");
+
+
+                icon.classList.toggle("fa-eye");
+                icon.classList.toggle("fa-eye-slash");
+            });
+        }
+    });
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock body %}
