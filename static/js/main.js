@@ -177,7 +177,7 @@ document.querySelectorAll(".input-group").forEach((group) => {
    });
 
    // --- Back Button Error Fixer ---
-   // Browser window pageshow event check korbe page-ta cache memory theke asche কিনা
+
    window.addEventListener("pageshow", function (event) {
      if (event.persisted) {
        // Jodi cache/history theke page load hoy, tobey sob button reset hobe
