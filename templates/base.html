@@ -291,10 +291,7 @@
 
 				</li>
 
-				<li class="{% if request.path == '/profile/' %} active {% endif %}">
-					<a class="" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i> Profile</a>
 				
-				</li>
 
 				
 
@@ -317,6 +314,13 @@
 				
 				</li>
 
+
+				{% if request.user.is_authenticated %}
+				<li class="{% if request.path == '/profile/' %} active {% endif %}">
+					<a class="" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i> Profile</a>
+				
+				</li>
+
 				<li class="{% if request.path == '/login/' %} active {% endif %}">
 					<a href="#" class="" onclick="event.preventDefault(); document.getElementById('logout').submit()"><i
 							class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
@@ -325,6 +329,17 @@
 
 					</form>
 				</li>
+				{% else %}
+				<li>
+    <form method="POST" action="{% url 'logout_view' %}" id="logout-form">
+        {% csrf_token %}
+        <a class="" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="cursor: pointer;">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </a>
+    </form>
+</li>
+
+				{% endif %}
 
 
 
