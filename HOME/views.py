@@ -180,3 +180,10 @@ def search_view(request):
 
 def comming_soon(request):
     return render(request, "comming.html")
+
+def about(request):
+    category = Category.objects.annotate(count=Count('blog')).order_by("-id")
+    data = {
+        "category":category
+    }
+    return render(request, "about.html", data)

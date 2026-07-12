@@ -121,17 +121,17 @@
 
 								</ul>
 							</li>
-							<li class="nav-item">
-								<button title="Search" class="search nav-link">
-									<i class="fa-solid fa-magnifying-glass"></i>
-									Search
-								</button>
+
+							<li class="nav-item dropdown {% if request.path == '/about/' %} active {% endif %}">
+								<a class="nav-link" href="{%url 'about' %}"><i class="fa-solid fa-circle-info"></i> About</a>
+							
 							</li>
+							
 
 							{% if request.user.is_authenticated %}
 							<li class="nav-item {% if request.path == '/profile/' %} active {% endif %}">
 								<a class="nav-link" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i>
-									 Profile</a>
+									 {{request.user}}</a>
 
 							</li>
 							{% else %}
@@ -163,16 +163,16 @@
 							<button title="Messages and Notifications" class="create icon-button position-relative"
 								onclick="window.location.href='/messages'">
 								<i class="fa-solid fa-paper-plane"></i>
-								<!-- 								
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
-									<span class="visually-hidden">unread messages</span> -->
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+									99+
+									<span class="visually-hidden">unread messages</span>
 								</span>
+
 							</button>
 
-							<!-- <button title="Search" class="search icon-button">
+							<button title="Search" class="search icon-button">
 								<i class="fa-solid fa-magnifying-glass"></i>
-							</button> -->
+							</button>
 
 							</button>
 							<button title="Menu" class="burger-menu icon-button">
@@ -287,17 +287,20 @@
 		<nav class="mt-5">
 			<ul class="vertical-menu">
 				<li class="{% if request.path == '/' %} active {% endif %}">
-					<a class="" href="{%url 'index' %}"><i class="fa-regular fa-house"></i>Home</a>
+					<a class="" href="{%url 'index' %}"><i class="fa-regular fa-house"></i> Home</a>
 
 				</li>
 
 				<li class="{% if request.path == '/profile/' %} active {% endif %}">
-					<a class="" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i>Profile</a>
-
+					<a class="" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i> Profile</a>
+				
 				</li>
 
+				
+
+				
 				<li>
-					<a class=""><i class="fa-solid fa-layer-group"></i>Categories</a>
+					<a class=""><i class="fa-solid fa-layer-group"></i> Categories</a>
 					<ul class="submenu">
 						{% for cat in category %}
 						<li class="{% if request.path == '/category/'|add:cat.slug|add:'/' %}active{% endif %}">
@@ -309,9 +312,14 @@
 					</ul>
 				</li>
 
+				<li class="{% if request.path == '/about/' %} active {% endif %}">
+					<a class="" href="{%url 'about' %}"><i class="fa-solid fa-circle-info"></i>About</a>
+				
+				</li>
+
 				<li class="{% if request.path == '/login/' %} active {% endif %}">
 					<a href="#" class="" onclick="event.preventDefault(); document.getElementById('logout').submit()"><i
-							class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+							class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
 					<form method="POST" action="{% url 'logout_view' %}" id="logout" style="display: none;">
 						{% csrf_token %}
 

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center text-center mb-5">
+        <div class="col-md-8">
+            <span class="badge bg-light text-dark border px-3 py-2 rounded-pill mb-3 fw-semibold">Welcome to
+                Inkwell</span>
+            <h1 class="display-5 fw-bold text-dark mb-3">Where Stories Find Their Voice</h1>
+            <p class="lead text-muted">Inkwell is a modern blogging platform built for writers, thinkers, and creators
+                who want to share their ideas with the world in a clean, distraction-free environment.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <div class="card-body">
+                    <div class="feature-icon mb-3 text-primary fs-3">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-3">Seamless Writing</h3>
+                    <p class="text-secondary mb-0">Express yourself effortlessly. Our platform offers structured
+                        category filtering, profile management, and a robust comment-and-reply system to keep your
+                        readers engaged.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+                <div class="card-body">
+                    <div class="feature-icon mb-3 text-success fs-3">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-3">Grow Your Audience</h3>
+                    <p class="text-secondary mb-0">Build a dedicated community around your passion. Follow your favorite
+                        authors, discover personalized content through tailored onboarding, and interact with fellow
+                        creators.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-light rounded-4 p-4 p-md-5 mb-5 border">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="fw-bold text-dark mb-3">Built with Modern Tech</h2>
+                <p class="text-secondary">Inkwell leverages the power of a robust Django backend paired with a reliable
+                    PostgreSQL database to guarantee top-tier performance, data security, and lightning-fast loading
+                    speeds.</p>
+                <div class="d-flex gap-3 mt-4">
+                    <span class="badge bg-white text-dark border px-3 py-2"><i
+                            class="fa-brands fa-python text-primary me-1"></i> Django</span>
+                    <span class="badge bg-white text-dark border px-3 py-2"><i
+                            class="fa-solid fa-database text-info me-1"></i> PostgreSQL</span>
+                    <span class="badge bg-white text-dark border px-3 py-2"><i
+                            class="fa-brands fa-bootstrap text-purple me-1"></i> Bootstrap 5</span>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="p-4 bg-white rounded-3 shadow-sm border">
+                    <h4 class="fw-bold mb-2">Ready to share your story?</h4>
+                    <p class="small text-muted mb-4">Create your free account today and start publishing on Inkwell
+                        right away.</p>
+                    <a href="{% url 'register_view' %}" class="btn btn-default px-4 fw-bold">Get Started for Free</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <style>
+    /* Styling to match your global look and feel */
+
+</style> -->
+{% endblock body %}
