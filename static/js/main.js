@@ -152,3 +152,41 @@ document.querySelectorAll(".input-group").forEach((group) => {
         }
       });
     });
+
+
+
+
+ document.addEventListener("DOMContentLoaded", function () {
+   const loadingButtons = document.querySelectorAll(".btn-loading");
+
+   loadingButtons.forEach((button) => {
+     const parentForm = button.closest("form");
+
+     if (parentForm) {
+       parentForm.addEventListener("submit", function () {
+         // Elements restore korar jonno text saved kora
+         button.dataset.originalHtml = button.innerHTML;
+
+         button.innerHTML = `
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Processing...
+        `;
+         button.disabled = true;
+       });
+     }
+   });
+
+   // --- Back Button Error Fixer ---
+   // Browser window pageshow event check korbe page-ta cache memory theke asche কিনা
+   window.addEventListener("pageshow", function (event) {
+     if (event.persisted) {
+       // Jodi cache/history theke page load hoy, tobey sob button reset hobe
+       loadingButtons.forEach((button) => {
+         if (button.dataset.originalHtml) {
+           button.innerHTML = button.dataset.originalHtml;
+         }
+         button.disabled = false;
+       });
+     }
+   });
+ });

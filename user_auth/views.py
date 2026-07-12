@@ -17,6 +17,7 @@ from .models import Follow
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
+from django.views.decorators.cache import never_cache
 
 
 User = get_user_model()
@@ -34,7 +35,7 @@ class CustomUserCreationForm(UserCreationForm):
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
 
-
+@never_cache
 def register_view(request):
     if request.method == 'POST':
 
@@ -70,7 +71,7 @@ def onboarding_view(request):
         return redirect('personal')
     return render(request, 'onboarding.html', {'profile': profile})       
             
-    
+@never_cache
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
