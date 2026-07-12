@@ -34,7 +34,7 @@
 </head>
 
 <!-- loading -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 <script>
 	window.addEventListener("pageshow", function (event) {
 		if (event.persisted) {
@@ -104,13 +104,13 @@
 						<ul class="navbar-nav mr-auto">
 
 							<li class="nav-item dropdown {% if request.path == '/' %} active {% endif %}">
-								<a class="nav-link" href="{%url 'index' %}"><i class="fa-regular fa-house"></i>Home</a>
+								<a class="nav-link" href="{%url 'index' %}"><i class="fa-regular fa-house"></i> Home</a>
 
 							</li>
 
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" ><i
-										class="fa-solid fa-layer-group"></i>Categories</a>
+								<a class="nav-link dropdown-toggle"><i class="fa-solid fa-layer-group"></i>
+									Categories</a>
 								<ul class="dropdown-menu">
 									{% for cat in category %}
 									<li
@@ -121,25 +121,30 @@
 
 								</ul>
 							</li>
-
-
-
-
-
-							<li class="nav-item {% if request.path == '/profile/' %} active {% endif %}">
-								<a class="nav-link" href="{%url 'personal' %}"><i
-										class="fa-regular fa-circle-user"></i>Profile</a>
-
+							<li class="nav-item">
+								<button title="Search" class="search nav-link">
+									<i class="fa-solid fa-magnifying-glass"></i>
+									Search
+								</button>
 							</li>
 
+							{% if request.user.is_authenticated %}
+							<li class="nav-item {% if request.path == '/profile/' %} active {% endif %}">
+								<a class="nav-link" href="{%url 'personal' %}"><i class="fa-regular fa-circle-user"></i>
+									 Profile</a>
 
+							</li>
+							{% else %}
 							<li>
 								<form method="POST" action="{% url 'logout_view' %}">
 									{% csrf_token %}
 									<button class="nav-link" type="submit"><i
-											class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
+											class="fa-solid fa-right-to-bracket"></i> Sign In</button>
 								</form>
 							</li>
+							{% endif %}
+
+
 
 
 						</ul>
@@ -155,19 +160,19 @@
 								<i class="fa-solid fa-plus"></i>
 							</button>
 
-							<button title="Create a post" class="create icon-button position-relative"
+							<button title="Messages and Notifications" class="create icon-button position-relative"
 								onclick="window.location.href='/messages'">
 								<i class="fa-solid fa-paper-plane"></i>
-<!-- 								
+								<!-- 								
 								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 
 									<span class="visually-hidden">unread messages</span> -->
 								</span>
 							</button>
 
-							<button title="Search" class="search icon-button">
+							<!-- <button title="Search" class="search icon-button">
 								<i class="fa-solid fa-magnifying-glass"></i>
-							</button>
+							</button> -->
 
 							</button>
 							<button title="Menu" class="burger-menu icon-button">
@@ -180,10 +185,12 @@
 			</nav>
 		</header>
 
+		<!-- Messages -->
 		{% if messages %}
-<div class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050; width: 100%; max-width: 600px; padding: 0 15px;">
-    {% for message in messages %}
-    <div class="alert alert-dismissible fade show shadow-sm position-relative pe-5
+		<div class="position-fixed top-0 start-50 translate-middle-x mt-3"
+			style="z-index: 1050; width: 100%; max-width: 600px; padding: 0 15px;">
+			{% for message in messages %}
+			<div class="alert alert-dismissible fade show shadow-sm position-relative pe-5
         {% if message.tags == 'success' %}
         alert-success
         {% elif message.tags == 'error' %}
@@ -193,13 +200,14 @@
         {% else %}
         alert-info
         {% endif %}" role="alert">
-        
-        {{ message }}
-        <button type="button" class="btn-close translate-middle-y position-absolute top-50" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+
+				{{ message }}
+				<button type="button" class="btn-close translate-middle-y position-absolute top-50"
+					data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
 		{% endblock header %}
 
 		{% block body %}
@@ -215,7 +223,8 @@
 					<div class="row d-flex align-items-center gy-4">
 						<!-- copyright text -->
 						<div class="col-md-4">
-							<span class="copyright">© 2026 Designed and Developed by Atonu Roy Chowdhury and Mst. Afrina Sultana</span>
+							<span class="copyright">© 2026 Designed and Developed by Atonu Roy Chowdhury and Mst. Afrina
+								Sultana</span>
 
 						</div>
 
@@ -288,7 +297,7 @@
 				</li>
 
 				<li>
-					<a class="" ><i class="fa-solid fa-layer-group"></i>Categories</a>
+					<a class=""><i class="fa-solid fa-layer-group"></i>Categories</a>
 					<ul class="submenu">
 						{% for cat in category %}
 						<li class="{% if request.path == '/category/'|add:cat.slug|add:'/' %}active{% endif %}">
