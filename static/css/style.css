@@ -961,6 +961,10 @@ body.down .header-classic .header-bottom.clone {
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
+.canvas-menu .vertical-menu li a:hover{
+  color: #fe4f70;
+
+}
 .canvas-menu .vertical-menu li:after {
   content: "";
   display: block;
@@ -974,6 +978,8 @@ body.down .header-classic .header-bottom.clone {
 }
 .canvas-menu .vertical-menu li.active a {
   color: #fe4f70;
+  font-weight: bold;
+
 }
 .canvas-menu .vertical-menu li.active .submenu a {
   color: #79889e;
