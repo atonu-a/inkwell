@@ -30,7 +30,7 @@
                   />{{post.author}}</a
                 >
               </li>
-              <li class="list-inline-item"><a href="{% url 'blog_detail' post.blog_slug %}">{{post.category}}</a></li>
+              <li class="list-inline-item"><a href="{% url 'category' post.category.slug %}">{{post.category}}</a></li>
               <li class="list-inline-item">{{post.date}}</li>
             </ul>
           </div>
