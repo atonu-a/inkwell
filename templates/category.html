@@ -20,7 +20,7 @@
             <div class="post post-grid rounded bordered">
               <div class="thumb top-rounded">
                 <a
-                  href="{% url 'category' post.blog_slug %}"
+                  href="{% url 'category' post.category.slug %}"
                   class="category-badge position-absolute"
                   >{{post.category}}</a
                 >
