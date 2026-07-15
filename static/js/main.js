@@ -140,53 +140,51 @@ document.querySelectorAll(".input-group").forEach((group) => {
   }
 });
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const inputs = document.querySelectorAll("input, select, textarea");
-      inputs.forEach((input) => {
-        // 'form-control' is the standard Bootstrap class for text inputs
-        // Use 'form-check-input' if you have checkboxes/radios
-        if (input.type === "checkbox" || input.type === "radio") {
-          input.classList.add("form-check-input");
-        } else {
-          input.classList.add("form-control");
-        }
-      });
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  const inputs = document.querySelectorAll("input, select, textarea");
+  inputs.forEach((input) => {
+    // 'form-control' is the standard Bootstrap class for text inputs
+    // Use 'form-check-input' if you have checkboxes/radios
+    if (input.type === "checkbox" || input.type === "radio") {
+      input.classList.add("form-check-input");
+    } else {
+      input.classList.add("form-control");
+    }
+  });
+});
 
+document.addEventListener("DOMContentLoaded", function () {
+  const loadingButtons = document.querySelectorAll(".btn-loading");
 
+  loadingButtons.forEach((button) => {
+    const parentForm = button.closest("form");
+    
 
+    if (parentForm) {
+      parentForm.addEventListener("submit", function (event) {
+        const btnText = button.dataset.text;
+        console.log(btnText);
+        button.dataset.originalHtml = button.innerHTML;
 
- document.addEventListener("DOMContentLoaded", function () {
-   const loadingButtons = document.querySelectorAll(".btn-loading");
-
-   loadingButtons.forEach((button) => {
-     const parentForm = button.closest("form");
-
-     if (parentForm) {
-       parentForm.addEventListener("submit", function () {
-         // Elements restore korar jonno text saved kora
-         button.dataset.originalHtml = button.innerHTML;
-
-         button.innerHTML = `
+        button.innerHTML = `
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Processing...
+          ${btnText}
         `;
-         button.disabled = true;
-       });
-     }
-   });
+        button.disabled = true;
+      });
+    }
+  });
 
-   // --- Back Button Error Fixer ---
+  // --- Back Button Error Fixer ---
 
-   window.addEventListener("pageshow", function (event) {
-     if (event.persisted) {
-       // Jodi cache/history theke page load hoy, tobey sob button reset hobe
-       loadingButtons.forEach((button) => {
-         if (button.dataset.originalHtml) {
-           button.innerHTML = button.dataset.originalHtml;
-         }
-         button.disabled = false;
-       });
-     }
-   });
- });
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      loadingButtons.forEach((button) => {
+        if (button.dataset.originalHtml) {
+          button.innerHTML = button.dataset.originalHtml;
+        }
+        button.disabled = false;
+      });
+    }
+  });
+});

@@ -22,7 +22,9 @@
 
                     <form method="POST">
                         {% csrf_token %}
-
+                        <div class="text-danger small mt-1">
+                            Username can't be changed later.
+                        </div>
                         {% for field in form %}
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-secondary">{{ field.label }}</label>
@@ -43,39 +45,35 @@
                         {% endfor %}
 
                         <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-default fw-bold py-2">
+                            <button type="submit" class="btn btn-default fw-bold py-2 btn-loading" data-text="">
                                 Register
                             </button>
                         </div>
                     </form>
                     <script>
-                        // ডিয়াঙ্গোর জেনারেট করা পাসওয়ার্ড ফিল্ডগুলো খুঁজে বের করা
+
                         const passwordFields = document.querySelectorAll('input[type="password"]');
 
                         passwordFields.forEach(field => {
-                            // ১. ইনপুট ফিল্ডের বুটস্ট্র্যাপ ডিজাইন ঠিক করা (কোণ গোল হওয়া বন্ধ করা)
+
                             field.style.borderEndEndRadius = '0';
                             field.style.borderStartEndRadius = '0';
 
-                            // ২. ডাইনামিকালি একটি বুটস্ট্র্যাপ input-group তৈরি করা
                             const inputGroup = document.createElement('div');
                             inputGroup.className = 'input-group';
 
-                            // ইনপুট ফিল্ডের জায়গায় input-group টাকে বসানো
                             field.parentNode.insertBefore(inputGroup, field);
                             inputGroup.appendChild(field);
 
-                            // ৩. চোখের বাটনের এলিমেন্ট তৈরি করা
+
                             const button = document.createElement('button');
                             button.className = 'btn';
                             button.type = 'button';
                             button.style.cssText = 'border: 1px solid #EBEBEB; border-left: none; background: #fff; color: #6c757d;';
                             button.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
 
-                            // বাটনটি ইনপুট ফিল্ডের ঠিক ডানপাশে যোগ করা
                             inputGroup.appendChild(button);
 
-                            // ৪. ক্লিক করলে শো/হাইড হওয়ার লজিক
                             button.addEventListener('click', function () {
                                 const icon = button.querySelector('i');
                                 if (field.type === 'password') {
