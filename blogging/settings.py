@@ -51,10 +51,10 @@ INSTALLED_APPS = [
     'user_auth',
 
 ]
-# if DEBUG:
-#     INSTALLED_APPS += [
-#         "debug_toolbar",
-#     ]
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
 
 
 MIDDLEWARE = [
@@ -73,15 +73,15 @@ MIDDLEWARE = [
 # Resend API Configuration
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 
-# if DEBUG:
-#     MIDDLEWARE += [
-#         "debug_toolbar.middleware.DebugToolbarMiddleware",
-#     ]
+if DEBUG:
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
 
-# if DEBUG:
-#     INTERNAL_IPS = [
-#         "127.0.0.1",
-#     ]
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 ROOT_URLCONF  = 'blogging.urls'
 
