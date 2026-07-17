@@ -1,16 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count
 from .models import *
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
+from django.template.loader import render_to_string
 
 
-def index(request):
-
-        
+# Method for rendering/getting posts
+def get_posts():
     posts = (
         Blog.objects
         .select_related("author","category")
@@ -21,12 +21,46 @@ def index(request):
         )
         .order_by("id")
     )
-    
-    paginator = Paginator(posts, 5)
+    return posts
+
+
+
+# Method for infinite scrolling
+def load_posts(request):
+    paginator = Paginator(get_posts(), 6)
+    page = request.GET.get("page", 1)
+
+    try:
+        posts = paginator.page(page)
+    except EmptyPage:
+        return JsonResponse({
+            "html": "",
+            "has_next": False,
+        })
+
+    print("Requested page:", page)
+    print("Total pages:", paginator.num_pages)
+    print("Current page:", posts.number)
+    print("Has next:", posts.has_next())
+
+    html = render_to_string(
+        "partials/posts.html",
+        {"posts": posts},
+        request=request,
+    )
+
+    return JsonResponse({
+        "html": html,
+        "has_next": posts.has_next(),
+    })
+
+
+# Index/Home Page
+def index(request):
+    paginator = Paginator(get_posts(), 6)
     page = request.GET.get("page")
-    # posts = paginator.get_page(page)
-    
-    
+    posts = paginator.get_page(page)
+     
     main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
     recent = Blog.objects.select_related("author","category").order_by("-id")
     popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
@@ -49,8 +83,9 @@ def index(request):
         messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
     return render(request,"index.html", context)
 
+
+# Blog Details page
 def blog_detail(request,slug):
-    
     category = Category.objects.annotate(count=Count('blog'))
     post = get_object_or_404(Blog, blog_slug = slug)
     comments = Comment.objects.filter(blog_id  = post.id).order_by("-date")
@@ -61,6 +96,8 @@ def blog_detail(request,slug):
                
     }
     return render(request, "blog-single.html", context)
+
+# Category Page
 def category(request, slug):
     category = Category.objects.annotate(count=Count('blog')).order_by("-id")
     current_category = get_object_or_404(Category, slug=slug)

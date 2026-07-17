@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("app.js successfully loaded with pure JS!");
-});
+
 
 // Function-ke window object-e diye global kora holo jate HTML er onclick ota khuje pay
 window.likePost = function (btn) {
@@ -158,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadingButtons.forEach((button) => {
     const parentForm = button.closest("form");
-    
 
     if (parentForm) {
       parentForm.addEventListener("submit", function (event) {
@@ -188,3 +185,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Infinite Scrolling
+let currentPage = 2;
+let loading = false;
+let hasNext = true;
+
+async function loadPosts() {
+  if (loading || !hasNext) return;
+
+  loading = true;
+  console.log(1);
+
+  document.getElementById("loading").style.display = "flex";
+
+  const response = await fetch(`/load-posts?page=${currentPage}`);
+
+  const data = await response.json();
+
+  document
+    .getElementById("posts-container")
+    .insertAdjacentHTML("beforeend", data.html);
+    console.log(2);
+
+  hasNext = data.has_next;
+  currentPage++;
+  loading = false;
+  console.log(3);
+  document.getElementById("loading").style.display = "none";
+  console.log(4);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    loadPosts();
+  }
+});
+
+observer.observe(document.getElementById("load-trigger"));
