@@ -24,7 +24,8 @@ def index(request):
     
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
-    posts = paginator.get_page(page)
+    # posts = paginator.get_page(page)
+    
     
     main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
     recent = Blog.objects.select_related("author","category").order_by("-id")

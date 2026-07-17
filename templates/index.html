@@ -344,76 +344,7 @@
             <div class="col-lg-12">
               <!-- post -->
               {% for post in posts %}
-              <div class="post post-list clearfix">
-                <div class="thumb rounded">
-                  <span class="post-format-sm">
-                    <i class="icon-picture"></i>
-                  </span>
-                  <a href="{% url 'blog_detail' post.blog_slug %}">
-                    <div class="inner">
-                      <img src="{{post.image.url}}" alt="post-title" />
-                    </div>
-                  </a>
-                </div>
-                <div class="details">
-                  <ul class="meta list-inline mb-3">
-                    <li class="list-inline-item">
-                      <a class="" href="{% if post.author == request.user %}
-                    {% url 'personal' %}
-                    {% else %}
-                    {% url 'author_profile' post.author.username %}
-                    {% endif %}"
-                        ><img
-                          src="{{ post.author.profile.get_profile_pic }}"
-                          style="
-                            height: 32px;
-                            width: 32px;
-                            object-fit: cover;
-                            border-radius: 50%;
-                          "
-                          class="author"
-                          alt="author"
-                        />
-                        {{post.author}}
-                      </a>
-                    </li>
-                    <li class="list-inline-item">
-                      <a href="{% url 'category' post.category.slug %}">{{post.category}}</a>
-                    </li>
-                    <li class="list-inline-item">{{post.date}}</li>
-                  </ul>
-                  <h5 class="post-title">
-                    <a href="{% url 'blog_detail' post.blog_slug %}"
-                      >{{post.title}}</a
-                    >
-                  </h5>
-                  <p class="excerpt mb-0">{{post.content|truncatewords:10}}</p>
-                  <div class="post-bottom clearfix d-flex align-items-center">
-                    <div class="me-auto">
-                      <button
-                        type="button"
-                        id="like-btn-{{ post.blog_slug }}"
-                        class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
-                        data-url="{% url 'like' post.blog_slug %}"
-                        onclick="likePost(this)"
-                      >
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span class="like-count">{{ post.total_likes }}</span>
-                      </button>
-
-                      <a class="btn btn-sm btn-dark" href="">
-                        <i class="fa-solid fa-comment">
-                        </i> {{post.comment_count}}
-                      </a>
-                    </div>
-                    <div class="more-button float-end">
-                      <a href="{% url 'blog_detail' post.blog_slug %}"
-                        ><span class="icon-options"></span
-                      ></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {% include "partials/posts.html" %}
               {% endfor %}
             </div>
           </div>
