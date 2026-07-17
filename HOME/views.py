@@ -27,7 +27,7 @@ def get_posts():
 
 # Method for infinite scrolling
 def load_posts(request):
-    paginator = Paginator(get_posts(), 6)
+    paginator = Paginator(get_posts(), 5)
     page = request.GET.get("page", 1)
 
     try:
@@ -57,7 +57,7 @@ def load_posts(request):
 
 # Index/Home Page
 def index(request):
-    paginator = Paginator(get_posts(), 6)
+    paginator = Paginator(get_posts(), 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
      
