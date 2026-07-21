@@ -123,8 +123,7 @@
               {% if forloop.first %}
               <div class="post">
                 <div class="thumb rounded">
-                  <a href="{% url 'category' post.category.slug %}" class="category-badge position-absolute">{{
-                    post.category }}</a>
+                  <a href="{% url 'category' post.category.slug %}" class="category-badge position-absolute">{{ post.category }}</a>
                   <span class="post-format"><i class="icon-picture"></i></span>
                   <a href="{% url 'blog_detail' post.blog_slug %}">
                     <div class="inner">
@@ -183,8 +182,7 @@
               {% if forloop.first %}
               <div class="post">
                 <div class="thumb rounded">
-                  <a href="{% url 'category' post.category.slug %}" class="category-badge position-absolute">{{
-                    post.category }}</a>
+                  <a href="{% url 'category' post.category.slug %}" class="category-badge position-absolute">{{ post.category }}</a>
                   <span class="post-format"><i class="icon-picture"></i></span>
                   <a href="{% url 'blog_detail' post.blog_slug %}">
                     <div class="inner">

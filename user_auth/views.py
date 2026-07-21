@@ -18,6 +18,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from django.views.decorators.cache import never_cache
+from django.template.loader import render_to_string
 
 
 User = get_user_model()
@@ -284,7 +285,7 @@ def password_reset_view(request):
     if request.method == "POST":
         email = request.POST.get('email', '').strip()
         
-        # কুয়েরিটি সরাসরি ভ্যারিয়েবলে নিয়ে কাউন্ট চেক করুন
+        # কুয়েরিটি সরাসরি ভ্যারিয়েবলে নিয়ে কাউন্ট চেক করুন
         user_queryset = User.objects.filter(email__iexact=email)
         
         if not user_queryset.exists():
@@ -296,12 +297,21 @@ def password_reset_view(request):
         request.session['generated_otp'] = otp_code
         request.session['otp_email'] = email
         request.session.set_expiry(300)
-        
-        params: resend.Emails.SendParams = {
+
+        user = user_queryset.first()  # আগের queryset reuse করুন
+
+        # HTML টেমপ্লেটটিকে ডাইনামিক ডেটা দিয়ে স্ট্রিংয়ে কনভার্ট করা
+        html_content = render_to_string('email/otp_template.html', {
+            'username': user.username,
+            'otp': otp_code
+        })
+
+        # Resend-এ রেডিমেড HTML স্ট্রিং পাঠানো
+        params = {
             "from": "Inkwell Blog <noreply@inkwell.pro.bd>",
             "to": [email],
             "subject": "Your Inkwell Password Reset OTP",
-            "html": f"<h3>Your Password Reset OTP code is: <b>{otp_code}</b></h3>"
+            "html": html_content,
         }
         
         try:
@@ -313,7 +323,8 @@ def password_reset_view(request):
             messages.error(request, "Failed to send email.")
             
     return render(request, 'password_reset_form.html')
-
+            
+    return render(request, 'password_reset_form.html')
 # ২. ওটিপি চেক করা
 def password_reset_done_view(request):
     if request.method == "POST":
