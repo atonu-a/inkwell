@@ -79,7 +79,7 @@ def index(request):
         
                
     }
-    if request.user.is_authenticated and not request.user.profile.email:
+    if request.user.is_authenticated and not request.user.email:
         messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
     return render(request,"index.html", context)
 

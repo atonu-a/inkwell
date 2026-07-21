@@ -35,6 +35,13 @@ class CustomUserCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+            
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email'] # ইমেইল নিশ্চিতভাবে অ্যাসাইন করা
+        if commit:
+            user.save()
+        return user
 
 @never_cache
 def register_view(request):
@@ -58,7 +65,6 @@ def onboarding_view(request):
         bio = request.POST.get("bio", "")
         birthday = request.POST.get("birthday") or None
         profile_pic = request.FILES.get('profile_pic')    
-        profile.email = email 
         request.user.email = email
         request.user.save()
         profile.full_name = full_name
@@ -121,7 +127,7 @@ def profile_view(request):
         "followers_count":followers_count,
         
     }
-    if request.user.is_authenticated and not request.user.profile.email:
+    if request.user.is_authenticated and not request.user.email:
         messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
     
     return render(request, "personal.html", context)
