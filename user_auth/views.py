@@ -19,6 +19,8 @@ from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 
 User = get_user_model()
@@ -79,8 +81,16 @@ def register_view(request):
 @login_required(login_url='login')
 def send_verification_otp_view(request):
     email = request.user.email
+    # ১. ইমেইল ফিল্ড খালি বা ফরমেট ঠিক আছে কিনা চেক
     if not email:
-        messages.error(request, "Please add an email address to your profile first!")
+        messages.error(request, "No email address found in your profile!")
+        return redirect('onboarding')
+
+    try:
+        # Django-র ডিফল্ট ইমেইল ভ্যালিডেটর দিয়ে ইমেইলের ফরমেট সঠিক কিনা চেক
+        validate_email(email)
+    except ValidationError:
+        messages.error(request, "Your email address format is invalid! Please update it.")
         return redirect('onboarding')
 
     otp_code = str(random.randint(100000, 999999))

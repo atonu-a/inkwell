@@ -38,7 +38,7 @@
                         </span>
                         {% else %}
                         {% if not request.user.profile.is_email_verified %}
-                        <a href="{% url 'send_verification_otp' %}" class="btn btn-danger btn-sm">Verify</a>
+                        <a href="{% url 'send_verification_otp' %}" class="btn btn-default btn-sm btn-loading mt-2" data-text="">Verify</a>
                         {% endif %}
                         {% endif %}
                 </div>
