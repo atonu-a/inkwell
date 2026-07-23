@@ -23,7 +23,6 @@ packaging==26.1
 phonenumbers==9.0.33
 pillow==12.1.1
 platformdirs==4.9.2
-psycopg2==2.9.11
 psycopg2-binary==2.9.12
 python-discovery==1.1.0
 python-dotenv==1.2.2
