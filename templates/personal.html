@@ -10,8 +10,17 @@
           margin-bottom: 20px;
         " data-bs-toggle="modal" data-bs-target="#profilePicModal" />
       <div class="d-flex flex-column">
-        <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}<i
-            class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i></h4>
+        <h4 class="skeleton" style="margin-bottom: 0">{{request.user.profile.full_name}}
+          {% if request.user.profile.is_email_verified %}
+          <span class="verified-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L2.34 8.156a.733.733 0 0 1 .031-1.047.73.73 0 0 1 1.047.031l3.028 3.028 5.297-5.2z" />
+            </svg>
+            Verified
+          </span>
+          {% endif %}
+        </h4>
         <p class="skeleton"><i class="fa-solid fa-at"></i> {{request.user.username}}</p>
         <div class="d-flex">
           <h6>
@@ -33,6 +42,7 @@
   <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
     <i class="fa-solid fa-user-pen"></i> Edit Profile
   </a>
+  
 
 
 </section>
@@ -47,8 +57,8 @@
           aria-label="Close"></button>
       </div>
       <div class="modal-body p-0 text-center">
-        <img src="{{ request.user.profile.get_profile_pic }}" alt="Full Profile Picture" class="img-fluid rounded shadow-lg"
-          style="max-height: 80vh; object-fit: contain;">
+        <img src="{{ request.user.profile.get_profile_pic }}" alt="Full Profile Picture"
+          class="img-fluid rounded shadow-lg" style="max-height: 80vh; object-fit: contain;">
       </div>
     </div>
   </div>

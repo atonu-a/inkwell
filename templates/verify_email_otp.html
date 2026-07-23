@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+<header class="header-default">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-xl">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'images/inkwell_logo.svg' %}" alt="logo" style="height: auto; width: 180px;" />
+            </a>
+        </div>
+    </nav>
+</header>
+{% endblock header %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center min-vh-70">
+    <div class="card shadow-sm border-0 p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-2 fw-bold text-dark">Verify Email</h2>
+            <p class="small text-muted text-center mb-4">
+                We've sent a 6-digit verification code to your email. It is valid for 10 minutes.
+            </p>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show"
+                role="alert">
+                <small>{{ message }}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="{% url 'verify_email_otp' %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_otp" class="form-label small fw-semibold text-secondary">6-Digit OTP</label>
+                    <input type="text" name="otp" id="id_otp" maxlength="6" pattern="\d{6}"
+                        class="form-control text-center fw-bold fs-4" placeholder="******" required autocomplete="off">
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-default btn-loading" data-text="Verifying...">Verify
+                        OTP</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="small text-muted mb-0">Didn't get code?
+                    <a href="{% url 'send_verification_otp' %}" class="text-decoration-none fw-bold btn-loading">Resend
+                        OTP</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

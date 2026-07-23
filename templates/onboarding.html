@@ -28,6 +28,19 @@
                     <label class="form-label small fw-semibold text-secondary">Email Address <span class="text-danger">*</span></label>
                     <input value="{{ request.user.email }}" type="text" name="email" class="form-control"
                         placeholder="Enter your email" required>
+                        {% if request.user.profile.is_email_verified %}
+                        <span class="verified-badge mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L2.34 8.156a.733.733 0 0 1 .031-1.047.73.73 0 0 1 1.047.031l3.028 3.028 5.297-5.2z" />
+                            </svg>
+                            Verified
+                        </span>
+                        {% else %}
+                        {% if not request.user.profile.is_email_verified %}
+                        <a href="{% url 'send_verification_otp' %}" class="btn btn-danger btn-sm">Verify</a>
+                        {% endif %}
+                        {% endif %}
                 </div>
 
                 <div class="mb-3">

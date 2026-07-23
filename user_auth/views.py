@@ -22,7 +22,7 @@ from django.template.loader import render_to_string
 
 
 User = get_user_model()
-
+# user registration form
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -46,17 +46,95 @@ class CustomUserCreationForm(UserCreationForm):
 @never_cache
 def register_view(request):
     if request.method == 'POST':
-
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('onboarding')  
+            
+            # রেজিস্ট্রেশনের পর অটো OTP পাঠানো
+            otp_code = str(random.randint(100000, 999999))
+            request.session['email_verify_otp'] = otp_code
+            request.session['email_to_verify'] = user.email
+            request.session.set_expiry(600)
+
+            params = {
+                "from": "Inkwell Blog <noreply@inkwell.pro.bd>",
+                "to": [user.email],
+                "subject": "Verify Your Inkwell Email",
+                "html": f"<h3>Welcome to Inkwell!</h3><p>Your verification OTP is: <strong>{otp_code}</strong></p>"
+            }
+            try:
+                resend.Emails.send(params)
+                messages.success(request, "Registration successful! Please verify your email.")
+                return redirect('verify_email_otp')
+            except Exception as e:
+                print(f"Resend Error: {e}")
+                return redirect('onboarding')
     else:
         form = CustomUserCreationForm()
         
     return render(request, 'register.html', {'form': form})
 
+# ১. ইমেল ভেরিফিকেশনের OTP পাঠানো
+@login_required(login_url='login')
+def send_verification_otp_view(request):
+    email = request.user.email
+    if not email:
+        messages.error(request, "Please add an email address to your profile first!")
+        return redirect('onboarding')
+
+    otp_code = str(random.randint(100000, 999999))
+    request.session['email_verify_otp'] = otp_code
+    request.session['email_to_verify'] = email
+    request.session.set_expiry(600)  # ১০ মিনিট মেয়ার
+
+    params = {
+        "from": "Inkwell Blog <noreply@inkwell.pro.bd>",
+        "to": [email],
+        "subject": "Verify Your Inkwell Account Email",
+        "html": f"""
+            <h3>Email Verification Code</h3>
+            <p>Hello <strong>{request.user.username}</strong>,</p>
+            <p>Your OTP for email verification is: <strong>{otp_code}</strong></p>
+            <p>This code will expire in 10 minutes.</p>
+        """
+    }
+
+    try:
+        resend.Emails.send(params)
+        messages.success(request, f"A 6-digit verification code has been sent to {email}.")
+        return redirect('verify_email_otp')
+    except Exception as e:
+        print(f"Resend Error: {e}")
+        messages.error(request, "Failed to send verification email.")
+        return redirect('personal')
+
+
+# ২. OTP সাবমিট ও ভেরিফাই করা
+@login_required(login_url='login')
+def verify_email_otp_view(request):
+    if request.method == "POST":
+        user_otp = request.POST.get('otp', '').strip()
+        saved_otp = request.session.get('email_verify_otp')
+
+        if saved_otp and user_otp == saved_otp:
+            profile, _ = Profile.objects.get_or_create(user=request.user)
+            profile.is_email_verified = True
+            profile.save()
+
+            # সেশন ক্লিয়ার
+            request.session.pop('email_verify_otp', None)
+            request.session.pop('email_to_verify', None)
+
+            messages.success(request, "Your email address has been verified successfully!")
+            return redirect('personal')
+        else:
+            messages.error(request, "Invalid or expired OTP code!")
+
+    return render(request, 'verify_email_otp.html')
+
+
+# User profile setup form
 def onboarding_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
@@ -76,8 +154,9 @@ def onboarding_view(request):
         profile.save()
         messages.success(request, "Profile Edited Successfully!")
         return redirect('personal')
-    return render(request, 'onboarding.html', {'profile': profile})       
-            
+    return render(request, 'onboarding.html', {'profile': profile})                 
+
+# Login form
 @never_cache
 def login_view(request):
     if request.method == 'POST':
@@ -91,7 +170,7 @@ def login_view(request):
             
     return render(request, 'login.html',  {'form':form})
 
-
+# user profile
 @login_required(login_url='login')
 def profile_view(request):
 
@@ -127,18 +206,25 @@ def profile_view(request):
         "followers_count":followers_count,
         
     }
-    if request.user.is_authenticated and not request.user.email:
-        messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
+    # profile_view-এর একদম শেষের কন্ডিশনটি এভাবে বদলে দাও:
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    if request.user.is_authenticated:
+        if not request.user.email:
+            messages.warning(request, "Please add a valid email address to your profile!")
+        elif not profile.is_email_verified:
+            messages.warning(request, "Your email is not verified yet! Please verify your email to secure your account.")
     
     return render(request, "personal.html", context)
 
-
+# logout system
 def logout_view(request):
     if request.method == "POST":
         logout(request)
         return redirect('login')
     return redirect("personal")
 
+# post creation form
 @login_required(login_url='login')
 def create_post(request):
     if request.method == 'POST':
@@ -173,7 +259,7 @@ def create_post(request):
     
     return render(request,"create.html",{"categories": categories})
 
-
+# post edit form
 def edit_post(request, slug):
     post = get_object_or_404(Blog, blog_slug=slug)
     if post.author !=request.user and not request.user.is_staff:
@@ -206,12 +292,14 @@ def edit_post(request, slug):
     
     return render(request, 'editpost.html', data)
 
+# post delete system
 def delete_post(request, slug):
     post = Blog.objects.get(blog_slug = slug)
     post.delete()
     messages.error(request,"Post deleted!")
     return redirect("personal")
 
+# category addition form
 def add_category(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -221,6 +309,7 @@ def add_category(request):
         return redirect("create_post")
     return redirect("create_post")
 
+# author profile
 def author_profile(request, username):
     author_name = get_object_or_404(User, username=username)
     posts = (
@@ -264,6 +353,7 @@ def author_profile(request, username):
     }
     return render(request, 'author_profile.html', context)
     
+# follow system
 @login_required(login_url="login")
 def toggle_follow(request, user_id):
     if request.method != "POST":
@@ -280,12 +370,8 @@ def toggle_follow(request, user_id):
         return JsonResponse({'status': 'unfollowed'}) 
     return JsonResponse({'status': 'following'})
 
-
-
-
 # Password reset logic
 resend.api_key=getattr(settings, 'RESEND_API_KEY', None)
-#1. Otpo sending
 # ১. ওটিপি পাঠানোর ভিউ (পাসওয়ার্ড রিসেট ফর্ম)
 def password_reset_view(request):
     if request.method == "POST":
@@ -331,6 +417,7 @@ def password_reset_view(request):
     return render(request, 'password_reset_form.html')
             
     return render(request, 'password_reset_form.html')
+
 # ২. ওটিপি চেক করা
 def password_reset_done_view(request):
     if request.method == "POST":

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_email_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
     full_name = models.CharField(max_length=150, blank =True)
     profile_pic = models.ImageField(upload_to='profile/', blank=True, null=True)

@@ -3369,3 +3369,18 @@ body.skeleton-lock {
   ) !important;
 }
 
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #d1e7dd; /* Bootstrap Alert Success BG */
+    color: #0f5132;            /* Bootstrap Alert Success Text */
+    border: 1px dashed #0f5132; /* Bootstrap Alert Success Border */
+    border-radius: 50px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.verified-badge svg {
+    margin-right: 5px;
+}
