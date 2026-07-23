@@ -15,6 +15,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key')
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
+WSGI_APPLICATION = 'blogging.wsgi.application'
+
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://inkwell-blogs.up.railway.app',
