@@ -137,7 +137,7 @@ def verify_email_otp_view(request):
             request.session.pop('email_to_verify', None)
 
             messages.success(request, "Your email address has been verified successfully!")
-            return redirect('personal')
+            return redirect('onboarding')
         else:
             messages.error(request, "Invalid or expired OTP code!")
 
