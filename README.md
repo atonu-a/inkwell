@@ -5,9 +5,6 @@ Inkwell is a responsive and feature-rich full-stack blogging platform built usin
 ## 🚀 Live Demo & Repository
 - **Live Link:** [www.inkwell.pro.bd](https://www.inkwell.pro.bd)
 - **GitHub Repository:** [https://github.com/atonu-a/inkwell](https://github.com/atonu-a/inkwell)
-
-> ⚠️ **Note on Live Demo:** This application is hosted on Render's free tier. If the site takes around 40-50 seconds to load initially, it is completely normal as the free server goes to sleep after inactivity and needs a spin-up time to wake back up. Thank you for your patience!
-
 ---
 
 ## ✨ Features
