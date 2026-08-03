@@ -65,27 +65,27 @@ def index(request):
     page = request.GET.get("page")
     posts = paginator.get_page(page)
      
-    main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
-    recent = Blog.objects.select_related("author","category").order_by("-id")
-    popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
+    # main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
+    # recent = Blog.objects.select_related("author","category").order_by("-id")
+    # popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
     
-    category = Category.objects.annotate(count=Count('blog'))
+    # category = Category.objects.annotate(count=Count('blog'))
 
-    context = {       
-        'posts' : posts,
-        'main_post' : main_post,
-        'recent' : recent,
-        'category': category,
-        'popular': popular,
-        'trending_left': popular[:1],
-        'trending_right': popular[1:2],
+    # context = {       
+    #     'posts' : posts,
+    #     'main_post' : main_post,
+    #     'recent' : recent,
+    #     'category': category,
+    #     'popular': popular,
+    #     'trending_left': popular[:1],
+    #     'trending_right': popular[1:2],
         
         
                
-    }
-    if request.user.is_authenticated and not request.user.email:
-        messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
-    return render(request,"index.html", context)
+    # }
+    # if request.user.is_authenticated and not request.user.email:
+    #     messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
+    return render(request,"index.html")
 
 
 # Blog Details page
