@@ -60,7 +60,6 @@ class Blog(models.Model):
     
     def __str__(self) -> str:
         return f"{self.title} ({self.category})"
-# Create your models here.
 
 
 class Comment(models.Model):
