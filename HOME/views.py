@@ -10,6 +10,10 @@ from django.template.loader import render_to_string
 
 
 # Method for rendering/getting posts
+from django.http import HttpResponse
+
+def test(request):
+    return HttpResponse("OK")
 def get_posts():
     posts = (
         Blog.objects
