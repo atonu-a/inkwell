@@ -140,7 +140,7 @@ STORAGES = {
     },
 }
 
-# পুরনো কনভেনশনের জন্য (নিরাপত্তার খাতিরে রেখে দেওয়া)
+
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
