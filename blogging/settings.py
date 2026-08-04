@@ -53,10 +53,10 @@ INSTALLED_APPS = [
     'user_auth',
 
 ]
-# if DEBUG:
-#     INSTALLED_APPS += [
-#         "debug_toolbar",
-#     ]
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
 
 
 MIDDLEWARE = [
@@ -75,15 +75,15 @@ MIDDLEWARE = [
 # Resend API Configuration
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 
-# if DEBUG:
-#     MIDDLEWARE += [
-#         "debug_toolbar.middleware.DebugToolbarMiddleware",
-#     ]
+if DEBUG:
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
 
-# if DEBUG:
-#     INTERNAL_IPS = [
-#         "127.0.0.1",
-#     ]
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 ROOT_URLCONF  = 'blogging.urls'
 
@@ -113,17 +113,13 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
-
-# Static & Media Files
+# Static & Media Files Settings
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
-
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Cloudinary credentials
 CLOUDINARY_STORAGE = {
@@ -132,20 +128,17 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", 
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage", # Manifest কেটে শুধু Compressed দিন
     },
 }
 
+STATICFILES_STORAGE = 'whitenoise.storage.WhiteNoiseStorage'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
