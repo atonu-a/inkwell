@@ -134,13 +134,14 @@
 
 							</li>
 							{% else %}
-							<li>
-								<form method="POST" action="{% url 'logout_view' %}">
+							<li class="nav-item dropdown">
+								<form  method="POST" action="{% url 'logout_view' %}">
 									{% csrf_token %}
-									<button class="nav-link" type="submit"><i
-											class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+									<button class="nav-link" type="submit" style="border: none!important; background:transparent"><i
+											class="fa-solid fa-right-to-bracket"></i> Sign In</>
 								</form>
 							</li>
+							
 							{% endif %}
 
 
