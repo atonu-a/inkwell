@@ -18,19 +18,31 @@ from django.http import HttpResponse
 
 def test(request):
     return HttpResponse("OK")
+# Method for rendering/getting posts
+
 def get_posts():
     posts = (
         Blog.objects
-        .select_related("author","category")
-        .prefetch_related('likes')
+        .select_related(
+            "author",
+            "author__profile",
+            "category",
+        )
+        .prefetch_related("likes")
         .annotate(
-            comment_count=Count('comments'),
-            total_likes=Count("likes")
+            comment_count=Count(
+                "comments",
+                distinct=True
+            ),
+            total_likes=Count(
+                "likes",
+                distinct=True
+            )
         )
         .order_by("id")
     )
-    return posts
 
+    return posts
 
 
 # Method for infinite scrolling
@@ -63,7 +75,6 @@ def load_posts(request):
     })
 
 
-# Index/Home Page
 def index(request):
 
     total_start = time.perf_counter()
@@ -78,13 +89,16 @@ def index(request):
             query_start = time.perf_counter()
 
             try:
-                return execute(sql, params, many, context)
+                return execute(
+                    sql,
+                    params,
+                    many,
+                    context
+                )
 
             finally:
-                duration = time.perf_counter() - query_start
-
                 self.queries.append({
-                    "time": duration,
+                    "time": time.perf_counter() - query_start,
                     "sql": sql,
                 })
 
@@ -92,16 +106,28 @@ def index(request):
 
     with connection.execute_wrapper(query_timer):
 
-        paginator = Paginator(get_posts(), 5)
+
+        paginator = Paginator(
+            get_posts(),
+            5
+        )
 
         page = request.GET.get("page")
+
         posts = paginator.get_page(page)
 
         main_post = (
             Blog.objects
-            .select_related("author", "category")
+            .select_related(
+                "author",
+                "author__profile",
+                "category",
+            )
             .annotate(
-                like_count=Count("likes")
+                like_count=Count(
+                    "likes",
+                    distinct=True
+                )
             )
             .order_by(
                 "-like_count",
@@ -111,15 +137,27 @@ def index(request):
 
         recent = (
             Blog.objects
-            .select_related("author", "category")
+            .select_related(
+                "author",
+                "author__profile",
+                "category",
+            )
             .order_by("-id")
         )
 
-        popular = (
+
+        popular = list(
             Blog.objects
-            .select_related("author", "category")
+            .select_related(
+                "author",
+                "author__profile",
+                "category",
+            )
             .annotate(
-                like_count=Count("likes")
+                like_count=Count(
+                    "likes",
+                    distinct=True
+                )
             )
             .order_by(
                 "-like_count",
@@ -130,9 +168,16 @@ def index(request):
         category = (
             Category.objects
             .annotate(
-                count=Count("blog")
+                count=Count(
+                    "blog",
+                    distinct=True
+                )
             )
         )
+
+        trending_left = popular[:1]
+
+        trending_right = popular[1:2]
 
         context = {
             "posts": posts,
@@ -140,12 +185,14 @@ def index(request):
             "recent": recent,
             "category": category,
             "popular": popular,
-            "trending_left": popular[:1],
-            "trending_right": popular[1:2],
+            "trending_left": trending_left,
+            "trending_right": trending_right,
         }
 
-        if request.user.is_authenticated and not request.user.email:
-
+        if (
+            request.user.is_authenticated
+            and not request.user.email
+        ):
             messages.warning(
                 request,
                 "To activate the password reset feature please add an valid email address to your profile!"
@@ -157,16 +204,21 @@ def index(request):
             context
         )
 
-    total_time = time.perf_counter() - total_start
+    total_time = (
+        time.perf_counter()
+        - total_start
+    )
 
     db_time = sum(
         query["time"]
         for query in query_timer.queries
     )
 
+
     print("\n" + "=" * 80)
     print("INDEX QUERY PROFILE")
     print("=" * 80)
+
 
     for number, query in enumerate(
         sorted(
@@ -177,40 +229,52 @@ def index(request):
         start=1
     ):
 
+        print(f"\nQUERY #{number}")
+
         print(
-            f"\nQUERY #{number}"
+            f"TIME: "
+            f"{query['time'] * 1000:.2f} ms"
         )
 
         print(
-            f"TIME: {query['time'] * 1000:.2f} ms"
+            f"SQL: "
+            f"{query['sql']}"
         )
 
-        print(
-            f"SQL: {query['sql']}"
-        )
 
     print("\n" + "-" * 80)
 
     print(
-        f"DB TIME: {db_time:.4f}s"
+        f"DB TIME: "
+        f"{db_time:.4f}s"
     )
 
     print(
-        f"DB QUERIES: {len(query_timer.queries)}"
+        f"DB QUERIES: "
+        f"{len(query_timer.queries)}"
     )
 
     print(
-        f"INDEX TOTAL: {total_time:.4f}s"
+        f"INDEX TOTAL: "
+        f"{total_time:.4f}s"
     )
 
     print("=" * 80 + "\n")
 
-    response["X-Index-Time"] = f"{total_time:.4f}s"
-    response["X-DB-Time"] = f"{db_time:.4f}s"
-    response["X-DB-Queries"] = str(len(query_timer.queries))
+    response["X-Index-Time"] = (
+        f"{total_time:.4f}s"
+    )
+
+    response["X-DB-Time"] = (
+        f"{db_time:.4f}s"
+    )
+
+    response["X-DB-Queries"] = (
+        str(len(query_timer.queries))
+    )
+
 
     return response
-
 
 # Blog Details page
 def blog_detail(request,slug):
