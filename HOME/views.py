@@ -9,6 +9,9 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 import time
 
+from django.db import connection
+from django.db.models import Count
+
 
 # Method for rendering/getting posts
 from django.http import HttpResponse
@@ -62,39 +65,90 @@ def load_posts(request):
 
 # Index/Home Page
 def index(request):
-    
+
     total_start = time.perf_counter()
 
-    paginator = Paginator(get_posts(), 5)
-    page = request.GET.get("page")
-    posts = paginator.get_page(page)
-     
-    main_post = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")[:1]
-    recent = Blog.objects.select_related("author","category").order_by("-id")
-    popular = Blog.objects.select_related("author","category").annotate(like_count=Count('likes')).order_by('-like_count', "-id")
-    
-    category = Category.objects.annotate(count=Count('blog'))
+    class QueryTimer:
+        def __init__(self):
+            self.total_time = 0
+            self.query_count = 0
 
-    context = {       
-        'posts' : posts,
-        'main_post' : main_post,
-        'recent' : recent,
-        'category': category,
-        'popular': popular,
-        'trending_left': popular[:1],
-        'trending_right': popular[1:2],
-        
-        
-               
-    }
-    if request.user.is_authenticated and not request.user.email:
-        messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
-    response = render(request, "index.html", context)
+        def __call__(self, execute, sql, params, many, context):
+            query_start = time.perf_counter()
 
-    print("INDEX TOTAL:", time.perf_counter() - total_start)
+            try:
+                return execute(sql, params, many, context)
+            finally:
+                self.total_time += time.perf_counter() - query_start
+                self.query_count += 1
+
+    query_timer = QueryTimer()
+
+    with connection.execute_wrapper(query_timer):
+
+        paginator = Paginator(get_posts(), 5)
+
+        page = request.GET.get("page")
+        posts = paginator.get_page(page)
+
+        main_post = (
+            Blog.objects
+            .select_related("author", "category")
+            .annotate(like_count=Count("likes"))
+            .order_by("-like_count", "-id")[:1]
+        )
+
+        recent = (
+            Blog.objects
+            .select_related("author", "category")
+            .order_by("-id")
+        )
+
+        popular = (
+            Blog.objects
+            .select_related("author", "category")
+            .annotate(like_count=Count("likes"))
+            .order_by("-like_count", "-id")
+        )
+
+        category = (
+            Category.objects
+            .annotate(count=Count("blog"))
+        )
+
+        context = {
+            "posts": posts,
+            "main_post": main_post,
+            "recent": recent,
+            "category": category,
+            "popular": popular,
+            "trending_left": popular[:1],
+            "trending_right": popular[1:2],
+        }
+
+        if request.user.is_authenticated and not request.user.email:
+            messages.warning(
+                request,
+                "To activate the password reset feature please add an valid email address to your profile!"
+            )
+
+        response = render(
+            request,
+            "index.html",
+            context
+        )
+
+    total_time = time.perf_counter() - total_start
+
+    response["X-Index-Time"] = f"{total_time:.4f}s"
+    response["X-DB-Time"] = f"{query_timer.total_time:.4f}s"
+    response["X-DB-Queries"] = str(query_timer.query_count)
+
+    print("INDEX TOTAL:", total_time)
+    print("DB TIME:", query_timer.total_time)
+    print("DB QUERIES:", query_timer.query_count)
 
     return response
-
 
 
 # Blog Details page
