@@ -61,6 +61,7 @@ def load_posts(request):
 
 # Index/Home Page
 def index(request):
+    return HttpResponse("TEST")
     paginator = Paginator(get_posts(), 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
