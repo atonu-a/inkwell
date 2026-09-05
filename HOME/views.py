@@ -20,31 +20,6 @@ def test(request):
     return HttpResponse("OK")
 # Method for rendering/getting posts
 
-def get_posts():
-    posts = (
-        Blog.objects
-        .select_related(
-            "author",
-            "author__profile",
-            "category",
-        )
-        .prefetch_related("likes")
-        .annotate(
-            comment_count=Count(
-                "comments",
-                distinct=True
-            ),
-            total_likes=Count(
-                "likes",
-                distinct=True
-            )
-        )
-        .order_by("id")
-    )
-
-    return posts
-
-
 # Method for infinite scrolling
 def load_posts(request):
     paginator = Paginator(get_posts(), 5)
@@ -74,6 +49,32 @@ def load_posts(request):
         "has_next": posts.has_next(),
     })
 
+# Method for rendering/getting posts
+
+def get_posts():
+    posts = (
+        Blog.objects
+        .select_related(
+            "author",
+            "author__profile",
+            "category",
+        )
+        .prefetch_related("likes")
+        .annotate(
+            comment_count=Count(
+                "comments",
+                distinct=True
+            ),
+            total_likes=Count(
+                "likes",
+                distinct=True
+            )
+        )
+        .order_by("id")
+    )
+
+    return posts
+
 
 def index(request):
 
@@ -84,8 +85,14 @@ def index(request):
         def __init__(self):
             self.queries = []
 
-        def __call__(self, execute, sql, params, many, context):
-
+        def __call__(
+            self,
+            execute,
+            sql,
+            params,
+            many,
+            context
+        ):
             query_start = time.perf_counter()
 
             try:
@@ -102,10 +109,15 @@ def index(request):
                     "sql": sql,
                 })
 
+
     query_timer = QueryTimer()
+
 
     with connection.execute_wrapper(query_timer):
 
+        # =================================================
+        # Main Posts / Pagination
+        # =================================================
 
         paginator = Paginator(
             get_posts(),
@@ -116,35 +128,17 @@ def index(request):
 
         posts = paginator.get_page(page)
 
-        main_post = (
-            Blog.objects
-            .select_related(
-                "author",
-                "author__profile",
-                "category",
-            )
-            .annotate(
-                like_count=Count(
-                    "likes",
-                    distinct=True
-                )
-            )
-            .order_by(
-                "-like_count",
-                "-id"
-            )[:1]
-        )
 
-        recent = (
-            Blog.objects
-            .select_related(
-                "author",
-                "author__profile",
-                "category",
-            )
-            .order_by("-id")
-        )
-
+        # =================================================
+        # Popular Posts
+        # =================================================
+        #
+        # Homepage currently needs only the first 4
+        # popular posts.
+        #
+        # We fetch them ONCE and reuse the same Python list
+        # for main_post + trending sections.
+        #
 
         popular = list(
             Blog.objects
@@ -162,8 +156,35 @@ def index(request):
             .order_by(
                 "-like_count",
                 "-id"
-            )
+            )[:4]
         )
+
+
+        # =================================================
+        # Main Post
+        # =================================================
+
+        main_post = popular[:1]
+
+
+        # =================================================
+        # Recent Posts
+        # =================================================
+
+        recent = (
+            Blog.objects
+            .select_related(
+                "author",
+                "author__profile",
+                "category",
+            )
+            .order_by("-id")
+        )
+
+
+        # =================================================
+        # Categories
+        # =================================================
 
         category = (
             Category.objects
@@ -175,9 +196,19 @@ def index(request):
             )
         )
 
+
+        # =================================================
+        # Trending
+        # =================================================
+
         trending_left = popular[:1]
 
         trending_right = popular[1:2]
+
+
+        # =================================================
+        # Context
+        # =================================================
 
         context = {
             "posts": posts,
@@ -189,6 +220,11 @@ def index(request):
             "trending_right": trending_right,
         }
 
+
+        # =================================================
+        # Email Warning
+        # =================================================
+
         if (
             request.user.is_authenticated
             and not request.user.email
@@ -198,11 +234,21 @@ def index(request):
                 "To activate the password reset feature please add an valid email address to your profile!"
             )
 
+
+        # =================================================
+        # Render
+        # =================================================
+
         response = render(
             request,
             "index.html",
             context
         )
+
+
+    # =====================================================
+    # Performance Profiling
+    # =====================================================
 
     total_time = (
         time.perf_counter()
@@ -261,6 +307,11 @@ def index(request):
 
     print("=" * 80 + "\n")
 
+
+    # =====================================================
+    # Performance Headers
+    # =====================================================
+
     response["X-Index-Time"] = (
         f"{total_time:.4f}s"
     )
@@ -275,7 +326,6 @@ def index(request):
 
 
     return response
-
 # Blog Details page
 def blog_detail(request,slug):
     category = Category.objects.annotate(count=Count('blog'))
