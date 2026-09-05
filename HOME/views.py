@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
 from django.template.loader import render_to_string
+import time
 
 
 # Method for rendering/getting posts
@@ -61,7 +62,9 @@ def load_posts(request):
 
 # Index/Home Page
 def index(request):
-    return HttpResponse("TEST")
+    
+    total_start = time.perf_counter()
+
     paginator = Paginator(get_posts(), 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
@@ -86,7 +89,11 @@ def index(request):
     }
     if request.user.is_authenticated and not request.user.email:
         messages.warning(request, "To activate the password reset feature please add an valid email address to your profile!")
-    return render(request,"index.html", context)
+    response = render(request, "index.html", context)
+
+    print("INDEX TOTAL:", time.perf_counter() - total_start)
+
+    return response
 
 
 
