@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 import time
 
 from django.db import connection
-from django.db.models import Count
+
 
 
 # Method for rendering/getting posts
@@ -69,18 +69,24 @@ def index(request):
     total_start = time.perf_counter()
 
     class QueryTimer:
+
         def __init__(self):
-            self.total_time = 0
-            self.query_count = 0
+            self.queries = []
 
         def __call__(self, execute, sql, params, many, context):
+
             query_start = time.perf_counter()
 
             try:
                 return execute(sql, params, many, context)
+
             finally:
-                self.total_time += time.perf_counter() - query_start
-                self.query_count += 1
+                duration = time.perf_counter() - query_start
+
+                self.queries.append({
+                    "time": duration,
+                    "sql": sql,
+                })
 
     query_timer = QueryTimer()
 
@@ -94,8 +100,13 @@ def index(request):
         main_post = (
             Blog.objects
             .select_related("author", "category")
-            .annotate(like_count=Count("likes"))
-            .order_by("-like_count", "-id")[:1]
+            .annotate(
+                like_count=Count("likes")
+            )
+            .order_by(
+                "-like_count",
+                "-id"
+            )[:1]
         )
 
         recent = (
@@ -107,13 +118,20 @@ def index(request):
         popular = (
             Blog.objects
             .select_related("author", "category")
-            .annotate(like_count=Count("likes"))
-            .order_by("-like_count", "-id")
+            .annotate(
+                like_count=Count("likes")
+            )
+            .order_by(
+                "-like_count",
+                "-id"
+            )
         )
 
         category = (
             Category.objects
-            .annotate(count=Count("blog"))
+            .annotate(
+                count=Count("blog")
+            )
         )
 
         context = {
@@ -127,6 +145,7 @@ def index(request):
         }
 
         if request.user.is_authenticated and not request.user.email:
+
             messages.warning(
                 request,
                 "To activate the password reset feature please add an valid email address to your profile!"
@@ -140,13 +159,55 @@ def index(request):
 
     total_time = time.perf_counter() - total_start
 
-    response["X-Index-Time"] = f"{total_time:.4f}s"
-    response["X-DB-Time"] = f"{query_timer.total_time:.4f}s"
-    response["X-DB-Queries"] = str(query_timer.query_count)
+    db_time = sum(
+        query["time"]
+        for query in query_timer.queries
+    )
 
-    print("INDEX TOTAL:", total_time)
-    print("DB TIME:", query_timer.total_time)
-    print("DB QUERIES:", query_timer.query_count)
+    print("\n" + "=" * 80)
+    print("INDEX QUERY PROFILE")
+    print("=" * 80)
+
+    for number, query in enumerate(
+        sorted(
+            query_timer.queries,
+            key=lambda x: x["time"],
+            reverse=True
+        ),
+        start=1
+    ):
+
+        print(
+            f"\nQUERY #{number}"
+        )
+
+        print(
+            f"TIME: {query['time'] * 1000:.2f} ms"
+        )
+
+        print(
+            f"SQL: {query['sql']}"
+        )
+
+    print("\n" + "-" * 80)
+
+    print(
+        f"DB TIME: {db_time:.4f}s"
+    )
+
+    print(
+        f"DB QUERIES: {len(query_timer.queries)}"
+    )
+
+    print(
+        f"INDEX TOTAL: {total_time:.4f}s"
+    )
+
+    print("=" * 80 + "\n")
+
+    response["X-Index-Time"] = f"{total_time:.4f}s"
+    response["X-DB-Time"] = f"{db_time:.4f}s"
+    response["X-DB-Queries"] = str(len(query_timer.queries))
 
     return response
 
