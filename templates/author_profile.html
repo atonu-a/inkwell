@@ -10,8 +10,11 @@
           margin-bottom: 20px;
         " />
       <div class="d-flex flex-column ">
-        <h4 class="skeleton" style="margin-bottom: 0">{{author_name.profile.full_name}}<i class="fa-solid fa-circle-check"
-            style="color: rgb(52, 153, 236);"></i></h4>
+        <h4 class="skeleton" style="margin-bottom: 0">{{author_name.profile.full_name}}
+          {% if request.author_profile.profile.is_email_verified %}
+          <i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i>
+          {% endif %}
+        </h4>
         <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p> 
         <div class="d-flex">
           <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count }}</span></h6>
