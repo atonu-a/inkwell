@@ -845,7 +845,6 @@ body.down .header-classic .header-bottom.clone {
 }
 .header-right .header-buttons {
   display: flex;
-
 }
 .header-right .header-buttons button {
   margin-left: 4px;
@@ -962,9 +961,8 @@ body.down .header-classic .header-bottom.clone {
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-.canvas-menu .vertical-menu li a:hover{
+.canvas-menu .vertical-menu li a:hover {
   color: #fe4f70;
-
 }
 .canvas-menu .vertical-menu li:after {
   content: "";
@@ -980,7 +978,6 @@ body.down .header-classic .header-bottom.clone {
 .canvas-menu .vertical-menu li.active a {
   color: #fe4f70;
   font-weight: bold;
-
 }
 .canvas-menu .vertical-menu li.active .submenu a {
   color: #79889e;
@@ -3293,7 +3290,6 @@ button:focus {
   }
 }
 
-
 /* Custom styles */
 .login-btn.custom-btn {
   color: #fff !important;
@@ -3370,17 +3366,45 @@ body.skeleton-lock {
 }
 
 .verified-badge {
-    display: inline-flex;
-    align-items: center;
-    background-color: #d1e7dd; /* Bootstrap Alert Success BG */
-    color: #0f5132;            /* Bootstrap Alert Success Text */
-    border: 1px dashed #0f5132; /* Bootstrap Alert Success Border */
-    border-radius: 50px;
-    padding: 3px 10px;
-    font-size: 13px;
-    font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  background-color: #d1e7dd; /* Bootstrap Alert Success BG */
+  color: #0f5132; /* Bootstrap Alert Success Text */
+  border: 1px dashed #0f5132; /* Bootstrap Alert Success Border */
+  border-radius: 50px;
+  padding: 3px 10px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .verified-badge svg {
-    margin-right: 5px;
+  margin-right: 5px;
+}
+
+/* Profile photo adjusting */
+.crop-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crop-modal-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 420px;
+}
+
+.crop-image-wrap {
+  max-height: 60vh;
+}
+
+.crop-image-wrap img {
+  display: block;
+  max-width: 100%;
 }

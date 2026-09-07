@@ -1,5 +1,3 @@
-
-
 // Function-ke window object-e diye global kora holo jate HTML er onclick ota khuje pay
 window.likePost = function (btn) {
   const url = btn.dataset.url;
@@ -206,7 +204,7 @@ async function loadPosts() {
   document
     .getElementById("posts-container")
     .insertAdjacentHTML("beforeend", data.html);
-    console.log(2);
+  console.log(2);
 
   hasNext = data.has_next;
   currentPage++;
@@ -223,3 +221,4 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 observer.observe(document.getElementById("load-trigger"));
+

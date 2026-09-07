@@ -25,43 +25,78 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label class="form-label small fw-semibold text-secondary">Email Address <span class="text-danger">*</span></label>
+                    <label class="form-label small fw-semibold text-secondary">Email Address <span
+                            class="text-danger">*</span></label>
                     <input value="{{ request.user.email }}" type="text" name="email" class="form-control"
                         placeholder="Enter your email" required>
-                        {% if request.user.profile.is_email_verified %}
-                        <span class="verified-badge mt-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L2.34 8.156a.733.733 0 0 1 .031-1.047.73.73 0 0 1 1.047.031l3.028 3.028 5.297-5.2z" />
-                            </svg>
-                            Verified
-                        </span>
-                        {% else %}
-                        {% if not request.user.profile.is_email_verified %}
-                        <a href="{% url 'send_verification_otp' %}" class="btn btn-default btn-sm btn-loading mt-2" data-text="">Verify</a>
-                        {% endif %}
-                        {% endif %}
+                    {% if request.user.profile.is_email_verified %}
+                    <span class="verified-badge mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L2.34 8.156a.733.733 0 0 1 .031-1.047.73.73 0 0 1 1.047.031l3.028 3.028 5.297-5.2z" />
+                        </svg>
+                        Verified
+                    </span>
+                    {% else %}
+                    {% if not request.user.profile.is_email_verified %}
+                    <a href="{% url 'send_verification_otp' %}" class="btn btn-default btn-sm btn-loading mt-2"
+                        data-text="">Verify</a>
+                    {% endif %}
+                    {% endif %}
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label small fw-semibold text-secondary">Full Name <span class="text-danger">*</span></label>
-                    <input  value="{{ profile.full_name }}" type="text" name="full_name" class="form-control" placeholder="Enter your full name" required>
+                    <label class="form-label small fw-semibold text-secondary">Full Name <span
+                            class="text-danger">*</span></label>
+                    <input value="{{ profile.full_name }}" type="text" name="full_name" class="form-control"
+                        placeholder="Enter your full name" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-secondary">Bio </label>
-                    <textarea rows="6" name="bio" class="form-control" placeholder="Add a short details about you">{{ profile.bio }}</textarea>
+                    <textarea rows="6" name="bio" class="form-control"
+                        placeholder="Add a short details about you">{{ profile.bio }}</textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label small fw-semibold text-secondary">Profile Picture <span class="text-muted fw-normal">(Optional)</span></label>
-                    <input type="file" name="profile_pic" accept="image/*" class="form-control">
-                    <small class="text-muted">Current: <a href="{{ request.user.profile.get_profile_pic }}" target="_blank">View Current
-                            Image</a></small>
+                    <label class="form-label small fw-semibold text-secondary">Profile Picture <span
+                            class="text-muted fw-normal">(Optional)</span></label>
+
+                    <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="form-control"
+                        style="display:none;">
+
+                    <div class="d-flex align-items-center gap-3">
+                        <img id="profilePicPreview" src="{{ request.user.profile.get_profile_pic }}"
+                            class="rounded-circle border"
+                            style="width:64px;height:64px;object-fit:cover;cursor:pointer;"
+                            onclick="document.getElementById('profilePicInput').click()">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            onclick="document.getElementById('profilePicInput').click()">
+                            Select or Edit Image
+                        </button>
+                    </div>
                 </div>
 
+                <div id="cropModal" class="crop-modal-overlay" style="display:none;">
+                    <div class="crop-modal-box">
+                        <h6 class="mb-3">Adjust Your Photo</h6>
+                        <div class="crop-image-wrap">
+                            <img id="cropTargetImage" src="" alt="crop preview">
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-3">
+                            <button type="button" id="cropCancelBtn"
+                                class="btn btn-secondary btn-sm">Cancel</button>
+                            <button type="button" id="cropConfirmBtn" class="btn btn-default btn-sm">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
                 <div class="mb-3">
-                    <label class="form-label small fw-semibold text-secondary">Birthday <span class="text-muted fw-normal">(Optional)</span></label>
-                    <input  value="{{ profile.birthday|date:'Y-m-d' }}" type="date" name="birthday" class="form-control">
+                    <label class="form-label small fw-semibold text-secondary">Birthday <span
+                            class="text-muted fw-normal">(Optional)</span></label>
+                    <input value="{{ profile.birthday|date:'Y-m-d' }}" type="date" name="birthday" class="form-control">
                 </div>
 
                 <div class="d-grid mt-4">
@@ -76,5 +111,7 @@
         </div>
     </div>
 </div>
+
+
 
 {% endblock body %}
