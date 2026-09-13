@@ -43,7 +43,7 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, related_name='blog', on_delete=models.CASCADE)
     blog_slug = AutoSlugField(populate_from ="title", unique=True)
     date = models.DateField(auto_now_add=True)
-    status = models.CharField(choices=STATUS, max_length=1,default="PUBLISH")
+    status = models.CharField(choices=STATUS, max_length=10,default="PUBLISH")
     section = models.CharField(max_length=20, choices=SECTION, default="Recent")
     likes = models.ManyToManyField(User, related_name="posts", blank=True)
     

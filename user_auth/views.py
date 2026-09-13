@@ -486,13 +486,13 @@ def create_post(request):
         content = request.POST.get("content")
         category_id = request.POST.get("category")
 
-        status = "1"
-        section = "Recent"
+        # status = "1"
+        # section = "Recent"
 
-        if request.user.is_staff:
+        # if request.user.is_staff:
 
-            status = request.POST.get("status")
-            section = request.POST.get("section")
+        #     status = request.POST.get("status")
+        #     section = request.POST.get("section")
 
         Blog.objects.create(
             title=title,
@@ -500,8 +500,8 @@ def create_post(request):
             image=image,
             content=content,
             category_id=category_id,
-            status=status,
-            section=section,
+            # status=status,
+            # section=section,
         )
 
         messages.success(

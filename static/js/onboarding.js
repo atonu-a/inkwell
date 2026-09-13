@@ -1,5 +1,6 @@
 // Image upload and crop
-(function () {
+try{
+  (function () {
   const fileInput = document.getElementById("profilePicInput");
   const preview = document.getElementById("profilePicPreview");
   const modal = document.getElementById("cropModal");
@@ -66,3 +67,8 @@
     );
   });
 })();
+}
+catch (error){
+  console.log(error
+  )
+}

@@ -75,257 +75,45 @@ def get_posts():
 
     return posts
 
-
 def index(request):
+    # Fetch popular blogs once and derive subsets from the list
+    popular = list(
+        Blog.objects
+        .select_related("author", "author__profile", "category")
+        .annotate(like_count=Count("likes", distinct=True))
+        .order_by("-like_count", "-id")[:4]
+    )
+    
+    paginator = Paginator(get_posts(), 5)
+    posts = paginator.get_page(request.GET.get("page"))
+    
+    recent = Blog.objects.select_related(
+        "author", 
+        "author__profile", 
+        "category"
+    ).order_by("-id")
+    
+    category = Category.objects.annotate(
+        count=Count("blog", distinct=True)
+    )
 
-    total_start = time.perf_counter()
+    context = {
+        "posts": posts,
+        "popular": popular,
+        "main_post": popular[:1],
+        "trending_left": popular[:1],
+        "trending_right": popular[1:2],
+        "recent": recent,
+        "category": category,
+    }
 
-    class QueryTimer:
-
-        def __init__(self):
-            self.queries = []
-
-        def __call__(
-            self,
-            execute,
-            sql,
-            params,
-            many,
-            context
-        ):
-            query_start = time.perf_counter()
-
-            try:
-                return execute(
-                    sql,
-                    params,
-                    many,
-                    context
-                )
-
-            finally:
-                self.queries.append({
-                    "time": time.perf_counter() - query_start,
-                    "sql": sql,
-                })
-
-
-    query_timer = QueryTimer()
-
-
-    with connection.execute_wrapper(query_timer):
-
-        # =================================================
-        # Main Posts / Pagination
-        # =================================================
-
-        paginator = Paginator(
-            get_posts(),
-            5
-        )
-
-        page = request.GET.get("page")
-
-        posts = paginator.get_page(page)
-
-
-        # =================================================
-        # Popular Posts
-        # =================================================
-        #
-        # Homepage currently needs only the first 4
-        # popular posts.
-        #
-        # We fetch them ONCE and reuse the same Python list
-        # for main_post + trending sections.
-        #
-
-        popular = list(
-            Blog.objects
-            .select_related(
-                "author",
-                "author__profile",
-                "category",
-            )
-            .annotate(
-                like_count=Count(
-                    "likes",
-                    distinct=True
-                )
-            )
-            .order_by(
-                "-like_count",
-                "-id"
-            )[:4]
-        )
-
-
-        # =================================================
-        # Main Post
-        # =================================================
-
-        main_post = popular[:1]
-
-
-        # =================================================
-        # Recent Posts
-        # =================================================
-
-        recent = (
-            Blog.objects
-            .select_related(
-                "author",
-                "author__profile",
-                "category",
-            )
-            .order_by("-id")
-        )
-
-
-        # =================================================
-        # Categories
-        # =================================================
-
-        category = (
-            Category.objects
-            .annotate(
-                count=Count(
-                    "blog",
-                    distinct=True
-                )
-            )
-        )
-
-
-        # =================================================
-        # Trending
-        # =================================================
-
-        trending_left = popular[:1]
-
-        trending_right = popular[1:2]
-
-
-        # =================================================
-        # Context
-        # =================================================
-
-        context = {
-            "posts": posts,
-            "main_post": main_post,
-            "recent": recent,
-            "category": category,
-            "popular": popular,
-            "trending_left": trending_left,
-            "trending_right": trending_right,
-        }
-
-
-        # =================================================
-        # Email Warning
-        # =================================================
-
-        if (
-            request.user.is_authenticated
-            and not request.user.email
-        ):
-            messages.warning(
-                request,
-                "To activate the password reset feature please add an valid email address to your profile!"
-            )
-
-
-        # =================================================
-        # Render
-        # =================================================
-
-        response = render(
+    if request.user.is_authenticated and not request.user.email:
+        messages.warning(
             request,
-            "index.html",
-            context
+            "To activate the password reset feature please add a valid email address to your profile!"
         )
 
-
-    # =====================================================
-    # Performance Profiling
-    # =====================================================
-
-    total_time = (
-        time.perf_counter()
-        - total_start
-    )
-
-    db_time = sum(
-        query["time"]
-        for query in query_timer.queries
-    )
-
-
-    print("\n" + "=" * 80)
-    print("INDEX QUERY PROFILE")
-    print("=" * 80)
-
-
-    for number, query in enumerate(
-        sorted(
-            query_timer.queries,
-            key=lambda x: x["time"],
-            reverse=True
-        ),
-        start=1
-    ):
-
-        print(f"\nQUERY #{number}")
-
-        print(
-            f"TIME: "
-            f"{query['time'] * 1000:.2f} ms"
-        )
-
-        print(
-            f"SQL: "
-            f"{query['sql']}"
-        )
-
-
-    print("\n" + "-" * 80)
-
-    print(
-        f"DB TIME: "
-        f"{db_time:.4f}s"
-    )
-
-    print(
-        f"DB QUERIES: "
-        f"{len(query_timer.queries)}"
-    )
-
-    print(
-        f"INDEX TOTAL: "
-        f"{total_time:.4f}s"
-    )
-
-    print("=" * 80 + "\n")
-
-
-    # =====================================================
-    # Performance Headers
-    # =====================================================
-
-    response["X-Index-Time"] = (
-        f"{total_time:.4f}s"
-    )
-
-    response["X-DB-Time"] = (
-        f"{db_time:.4f}s"
-    )
-
-    response["X-DB-Queries"] = (
-        str(len(query_timer.queries))
-    )
-
-
-    return response
+    return render(request, "index.html", context)
 # Blog Details page
 def blog_detail(request,slug):
     category = Category.objects.annotate(count=Count('blog'))
