@@ -22,19 +22,19 @@ class Category(models.Model):
         return self.name
 
 class Blog(models.Model):
-    STATUS = (
-        ('0', "DRAFT"),
-        ('1', "PUBLISH")
-    )
+    # STATUS = (
+    #     ('0', "DRAFT"),
+    #     ('1', "PUBLISH")
+    # )
     
-    SECTION = (
-        ("Recent", "Recent"),
-        ("Popular", "Popular"),
-        ("Trending", "Trending"),
-        ("Main_Post", "Main_Post")
+    # SECTION = (
+    #     ("Recent", "Recent"),
+    #     ("Popular", "Popular"),
+    #     ("Trending", "Trending"),
+    #     ("Main_Post", "Main_Post")
         
         
-    )
+    # )
     
     title = models.CharField(max_length=100)
     author= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -43,8 +43,8 @@ class Blog(models.Model):
     category = models.ForeignKey(Category, related_name='blog', on_delete=models.CASCADE)
     blog_slug = AutoSlugField(populate_from ="title", unique=True)
     date = models.DateField(auto_now_add=True)
-    status = models.CharField(choices=STATUS, max_length=10,default="PUBLISH")
-    section = models.CharField(max_length=20, choices=SECTION, default="Recent")
+    # status = models.CharField(choices=STATUS, max_length=10,default="PUBLISH")
+    # section = models.CharField(max_length=20, choices=SECTION, default="Recent")
     likes = models.ManyToManyField(User, related_name="posts", blank=True)
     
     
