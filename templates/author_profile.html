@@ -15,17 +15,18 @@
           <i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i>
           {% endif %}
         </h4>
-        <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p> 
+        <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
         <div class="d-flex">
-          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count }}</span></h6>
+          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count
+              }}</span></h6>
           <h6>&nbsp; •&nbsp; </h6>
           <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
         </div>
       </div>
-      
+
 
     </div>
-          
+
     <p class="skeleton"><i class="fa-regular fa-clipboard"></i> {{author_name.profile.bio}}</p>
 
     <p class="skeleton">
@@ -34,9 +35,10 @@
     <div class="">
       <button class="btn btn-default mb-4 px-3 skeleton" id="follow-btn" data-user-id="{{ author_name.id }}"
         onclick="toggleFollow(this)">
-      
-        <i class="{% if is_following %}fa-solid fa-heart-circle-check{% else %}fa-solid fa-heart-circle-plus{% endif %}"></i>
-      
+
+        <i
+          class="{% if is_following %}fa-solid fa-heart-circle-check{% else %}fa-solid fa-heart-circle-plus{% endif %}"></i>
+
         <span>
           {% if is_following %}Following{% else %}Follow{% endif %}
         </span>
@@ -44,6 +46,7 @@
       <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
         <i class="fa-solid fa-paper-plane"></i> Message
       </a>
+      <a class="btn btn-secondary mb-4"><i class="fa-solid fa-ellipsis-vertical"></i></a>
     </div>
 
   </div>
@@ -83,7 +86,8 @@
               <div class="details">
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
-                    <a href="{% url 'author_profile' post.author.username %}"><img src="{{ post.author.profile.get_profile_pic }}"
+                    <a href="{% url 'author_profile' post.author.username %}"><img
+                        src="{{ post.author.profile.get_profile_pic }}"
                         style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
                         alt="author" />{{post.author}}</a>
                   </li>

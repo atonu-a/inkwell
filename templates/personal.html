@@ -33,10 +33,14 @@
       <i class="fa-solid fa-cake-candles"></i> {{request.user.profile.birthday}}
     </p>
   </div>
-  <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
-    <i class="fa-solid fa-user-pen"></i> Edit Profile
-  </a>
-  
+  <div>
+    <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'onboarding' %}" id="edit">
+      <i class="fa-solid fa-user-pen"></i> Edit Profile
+    </a>
+    <a class="btn btn-secondary mb-4"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+  </div>
+
+
 
 
 </section>
@@ -90,7 +94,8 @@
               <div class="details">
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
-                    <a href="{%url 'personal' request.user.username%}"><img src="{{ post.author.profile.get_profile_pic }}"
+                    <a href="{%url 'personal' request.user.username%}"><img
+                        src="{{ post.author.profile.get_profile_pic }}"
                         style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
                         alt="author" />{{post.author}}</a>
                   </li>
