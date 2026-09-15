@@ -90,7 +90,7 @@
               <div class="details">
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
-                    <a href="{%url 'personal' %}"><img src="{{ post.author.profile.get_profile_pic }}"
+                    <a href="{%url 'personal' request.user.username%}"><img src="{{ post.author.profile.get_profile_pic }}"
                         style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
                         alt="author" />{{post.author}}</a>
                   </li>

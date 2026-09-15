@@ -349,7 +349,7 @@ def login_view(request):
                 user
             )
 
-            return redirect("personal")
+            return redirect("personal" , username = request.user.username)
 
     else:
 
@@ -721,12 +721,11 @@ def author_profile(request, username):
         "is_following": is_following,
         "followers_count": followers_count,
     }
-
-    return render(
-        request,
-        "author_profile.html",
-        context
-    )
+    if request.user == author_name:
+        return render(request, 'personal.html', context)
+    else:
+        return render(request,"author_profile.html",context)
+    
 
 
 # =========================================================
