@@ -8,17 +8,11 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.template.loader import render_to_string
 import time
-
+from .models import Blog, Comment
 from django.db import connection
-
-
-
-# Method for rendering/getting posts
 from django.http import HttpResponse
 
-def test(request):
-    return HttpResponse("OK")
-# Method for rendering/getting posts
+
 
 # Method for infinite scrolling
 def load_posts(request):
@@ -50,7 +44,6 @@ def load_posts(request):
     })
 
 # Method for rendering/getting posts
-
 def get_posts():
     posts = (
         Blog.objects
@@ -75,27 +68,18 @@ def get_posts():
 
     return posts
 
+# Home page
 def index(request):
-    # Fetch popular blogs once and derive subsets from the list
-    popular = list(
-        Blog.objects
-        .select_related("author", "author__profile", "category")
-        .annotate(like_count=Count("likes", distinct=True))
-        .order_by("-like_count", "-id")[:4]
-    )
-    
+    popular = list(Blog.objects.select_related("author", "author__profile", "category").annotate(like_count=Count("likes", distinct=True)).order_by("-like_count", "-id")[:4]) 
     paginator = Paginator(get_posts(), 5)
     posts = paginator.get_page(request.GET.get("page"))
-    
     recent = Blog.objects.select_related(
         "author", 
         "author__profile", 
         "category"
     ).order_by("-id")
     
-    category = Category.objects.annotate(
-        count=Count("blog", distinct=True)
-    )
+    category = Category.objects.annotate(count=Count("blog", distinct=True))
 
     context = {
         "posts": posts,
@@ -114,6 +98,7 @@ def index(request):
         )
 
     return render(request, "index.html", context)
+
 # Blog Details page
 def blog_detail(request,slug):
     category = Category.objects.annotate(count=Count('blog'))
@@ -165,7 +150,7 @@ def category(request, slug):
     }
     return render(request, "category.html",context)
 
-
+# Post Like
 @login_required(login_url="login")
 def like_view(request, slug):
     post = get_object_or_404(Blog, blog_slug = slug)
@@ -185,9 +170,7 @@ def like_view(request, slug):
         "total_likes" : post.total_likes()
     })
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment
-
+# Add comment
 def add_comment(request, slug):
     if request.method == "POST":
         post = get_object_or_404(Blog, blog_slug=slug)
@@ -259,3 +242,47 @@ def about(request):
         "category":category
     }
     return render(request, "about.html", data)
+
+
+
+
+
+#Errors handling
+def error_400(request, exception):
+    return render(request, "error.html", {
+        "error_code": 400,
+        "error_title": "Bad Request",
+        "error_message": "The request could not be processed."
+    }, status=400)
+
+
+def error_403(request, exception):
+    return render(request, "error.html", {
+        "error_code": 403,
+        "error_title": "Access Denied",
+        "error_message": "You don't have permission to access this page."
+    }, status=403)
+
+
+def error_404(request, exception):
+    return render(request, "error.html", {
+        "error_code": 404,
+        "error_title": "Page Not Found",
+        "error_message": "The page you're looking for doesn't exist."
+    }, status=404)
+
+
+def error_500(request):
+    return render(request, "error.html", {
+        "error_code": 500,
+        "error_title": "Something Went Wrong",
+        "error_message": "Something went wrong on our side."
+    }, status=500)
+
+
+def csrf_failure(request, reason=""):
+    return render(request, "error.html", {
+        "error_code": 403,
+        "error_title": "Security Verification Failed",
+        "error_message": "Your security verification failed. Please refresh the page and try again."
+    }, status=403)

@@ -24,6 +24,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.inkwell.pro.bd'
 ]
 
+CSRF_FAILURE_VIEW = "HOME.views.csrf_failure"
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
