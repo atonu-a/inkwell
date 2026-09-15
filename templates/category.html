@@ -37,7 +37,7 @@
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
                     <a href="{% if post.author == request.user %}
-                    {% url 'personal' %}
+                    {% url 'personal' request.user.username %}
                     {% else %}
                     {% url 'author_profile' post.author.username %}
                     {% endif %}"

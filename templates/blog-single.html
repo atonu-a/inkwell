@@ -13,7 +13,7 @@
             <ul class="meta list-inline mb-0">
               <li class="list-inline-item">
                 <a href="{% if post.author == request.user %}
-                    {% url 'personal' %}
+                    {% url 'personal' request.user.username %}
                     {% else %}
                     {% url 'author_profile' post.author.username %}
                     {% endif %}"
@@ -82,7 +82,7 @@
               </div>
               <div class="details">
                 <h4 class="name"><a href="{% if comment.name == request.user %}
-                    {% url 'personal' %}
+                    {% url 'personal' request.user.username %}
                     {% else %}
                     {% url 'author_profile' comment.name.username %}
                     {% endif %}

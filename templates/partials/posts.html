@@ -15,7 +15,7 @@
         <ul class="meta list-inline mb-3">
             <li class="list-inline-item">
                 <a class="" href="{% if post.author == request.user %}
-                    {% url 'personal' %}
+                    {% url 'personal' request.user.username  %}
                     {% else %}
                     {% url 'author_profile' post.author.username %}
                     {% endif %}"><img src="{{ post.author.profile.get_profile_pic }}" style="

@@ -105,7 +105,7 @@
             </form>
 
             <div class="text-center mt-3">
-                <a href="{% url 'personal' %}" class="text-muted small text-decoration-none">Skip for now →</a>
+                <a href="{% url 'personal' request.user.username %}" class="text-muted small text-decoration-none">Skip for now →</a>
             </div>
 
         </div>
