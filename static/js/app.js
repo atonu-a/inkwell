@@ -145,3 +145,20 @@ if (imgInput) {
     });
   }
 }
+
+// URl copy function
+function copyUrl(url, button) {
+  const fullUrl = window.location.origin + url;
+
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    const originalText = button.innerHTML;
+
+    button.innerHTML = `
+                <i class="fa-solid fa-clipboard-check "></i> Copied!
+            `;
+
+    setTimeout(() => {
+      button.innerHTML = originalText;
+    }, 1500);
+  });
+}

@@ -610,7 +610,10 @@ def delete_post(request, slug):
         "Post deleted!"
     )
 
-    return redirect("personal")
+    return redirect(
+        "personal",
+        username=request.user.username,
+    )
 
 
 # =========================================================

@@ -32,7 +32,7 @@
       <i class="fa-solid fa-cake-candles"></i> {{author_name.profile.birthday}}
     </p>
     <div class="">
-      <button class="btn btn-default mb-4 px-3 skeleton" id="follow-btn" data-user-id="{{ author_name.id }}"
+      <button class="btn btn-default btn-sm mb-4 px-3 skeleton" id="follow-btn" data-user-id="{{ author_name.id }}"
         onclick="toggleFollow(this)">
 
         <i
@@ -42,10 +42,13 @@
           {% if is_following %}Following{% else %}Follow{% endif %}
         </span>
       </button>
-      <a class="btn btn-default mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
+      <a class="btn btn-default btn-sm mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
         <i class="fa-solid fa-paper-plane"></i> Message
       </a>
-      <a class="btn btn-secondary mb-4"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+      <button type="button" class="btn btn-default btn-sm mb-4"
+        onclick='copyUrl("{% url 'author_profile' author_name.username %}", this)'>
+        <i class="fa-solid fa-share-nodes "></i> Share
+      </button>
     </div>
 
   </div>
