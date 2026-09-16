@@ -81,7 +81,8 @@
                   </a>
                 </div>
                 <div class="more-button float-end">
-                  <button type="button" class="dropdown-item"> <i class="fa-solid fa-share-nodes me-2"></i> </button>
+                  <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i
+                      class="fa-solid fa-share-nodes me-2"></i> </button>
                 </div>
               </div>
             </div>

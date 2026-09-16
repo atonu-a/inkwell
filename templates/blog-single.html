@@ -32,7 +32,7 @@
               </ul>
 
               {% if post.author == request.user %}
-                <div class="d-flex">
+                <div class="d-flex gap-2">
                   <button onclick="window.location.href='{% url 'edit_post' post.blog_slug %}'" class="btn text-info" onmouseover="this.style.border='1px solid #0dcaf0'" onmouseout="this.style.border='1px solid transparent'">
                     <i class="fa-regular fa-pen-to-square me-2"></i>
                     Edit
@@ -42,6 +42,8 @@
                     <i class="fa-solid fa-trash-can me-2"></i>
                     Delete
                   </button>
+
+                  <button type="button" class="btn text-secondary" onmouseover="this.style.border='1px solid #6c757d '" onmouseout="this.style.border='1px solid transparent'" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i class="fa-solid fa-share-nodes me-2"></i> Share</button>
 
 
                   <!-- Delete Modal -->
@@ -116,7 +118,7 @@
                   <i class="fa-solid fa-thumbs-up"></i>
                   <span class="like-count">{{ post.total_likes }}</span>
                 </button>
-                <button type="button" class="btn btn-sm btn-dark"><i class="fa-solid fa-share-nodes me-2"></i> Share</button>
+                <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i class="fa-solid fa-share-nodes me-2"></i> </button>
               </div>
             </div>
           </div>

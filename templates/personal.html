@@ -34,10 +34,10 @@
     </p>
   </div>
   <div class="d-flex flex-row gap-1">
-    <a class="btn btn-default btn-sm mb-4 " href="{% url 'onboarding' %}" id="edit">
+    <a class="btn btn-default btn-sm mb-4 skeleton" href="{% url 'onboarding' %}" id="edit">
       <i class="fa-solid fa-user-pen"></i> Edit
     </a>
-    <button type="button" class="btn btn-default btn-sm mb-4" onclick='copyUrl("{% url "personal" request.user.username %}", this)'>
+    <button type="button" class="btn btn-default btn-sm mb-4 skeleton" onclick='copyUrl("{% url "personal" request.user.username %}", this)'>
       <i class="fa-solid fa-share-nodes "></i> Share
     </button>
   </div>
@@ -145,10 +145,8 @@
 
                     <!-- Share -->
                     <li>
-                      <button type="button" class="dropdown-item">
-                        <i class="fa-solid fa-share-nodes me-2"></i>
-                        Share
-                      </button>
+                      <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i
+                          class="fa-solid fa-share-nodes me-2"></i> </button>
                     </li>
 
                     <!-- Delete -->

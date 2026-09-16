@@ -17,7 +17,8 @@
         </h4>
         <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
         <div class="d-flex">
-          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count }}</span></h6>
+          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count
+              }}</span></h6>
           <h6>&nbsp; •&nbsp; </h6>
           <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
         </div>
@@ -45,8 +46,8 @@
       <a class="btn btn-default btn-sm mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
         <i class="fa-solid fa-paper-plane"></i> Message
       </a>
-      <button type="button" class="btn btn-default btn-sm mb-4 skeleton"
-        onclick='copyUrl("{% url 'author_profile' author_name.username %}", this)'>
+      <button type="button" class="btn btn-default btn-sm mb-4 skeleton" onclick='copyUrl("{% url 'author_profile'
+        author_name.username %}", this)'>
         <i class="fa-solid fa-share-nodes "></i> Share
       </button>
     </div>
@@ -115,7 +116,7 @@
                   </a>
                 </div>
                 <div class="more-button float-end">
-                  <button type="button" class="dropdown-item"> <i class="fa-solid fa-share-nodes me-2"></i> </button>
+                  <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i class="fa-solid fa-share-nodes me-2"></i> </button>
 
                 </div>
               </div>
