@@ -785,8 +785,10 @@ body.down .header-classic .header-bottom.clone {
   width: 100%;
   padding: 0.6rem 1.5rem;
   clear: both;
+  font-family: inherit;
   font-weight: 400;
   font-size: 13px;
+  line-height: 1.5;
   color: #79889e;
   text-align: inherit;
   text-decoration: none;
@@ -802,6 +804,15 @@ body.down .header-classic .header-bottom.clone {
 .dropdown-item:hover {
   color: #fe4f70;
   background-color: transparent;
+}
+
+.more-button .dropdown-menu .dropdown-item {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #79889e;
+  appearance: none;
 }
 
 .dropdown-divider {
@@ -1283,7 +1294,7 @@ section {
   margin-right: 12px;
   vertical-align: middle;
 }
-.post .post-bottom .social-share .toggle-button {
+.social-share .toggle-button {
   font-size: 16px;
   color: #9faabb;
   background-color: transparent;
@@ -1291,18 +1302,20 @@ section {
   padding: 0;
   vertical-align: middle;
 }
-.post .post-bottom .social-share .icons {
+.social-share .icons {
   display: inline;
   vertical-align: middle;
 }
-.post .post-bottom .social-share .icons li a {
+.social-share .icons li a {
   color: #9faabb;
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
 }
-.post .post-bottom .social-share .icons li a:hover {
+.social-share .icons li a:hover {
   color: #203656;
 }
-.post .post-bottom .social-share .icons li:not(:last-child) {
+.social-share .icons li:not(:last-child) {
   margin-right: 0.8rem;
 }
 .post .post-bottom .more-button a {
@@ -3408,3 +3421,10 @@ body.skeleton-lock {
   display: block;
   max-width: 100%;
 }
+
+.options {
+  padding: 9.5px 16px;
+  margin-bottom: 24px;
+}
+
+
