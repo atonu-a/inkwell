@@ -45,8 +45,7 @@
       <a class="btn btn-default btn-sm mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
         <i class="fa-solid fa-paper-plane"></i> Message
       </a>
-      <button type="button" class="btn btn-default btn-sm mb-4 skeleton" onclick='copyUrl("{% url 'author_profile'
-        author_name.username %}", this)'>
+      <button type="button" class="btn btn-default btn-sm mb-4 skeleton" onclick='copyUrl("{% url "author_profile" author_name.username %}", this)'>
         <i class="fa-solid fa-share-nodes "></i> Share
       </button>
     </div>
