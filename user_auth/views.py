@@ -1003,3 +1003,6 @@ def password_reset_complete_view(request):
         request,
         "password_reset_complete.html"
     )
+    
+def saved_blog(request):
+    return render(request, "saved.html")
