@@ -52,6 +52,25 @@ body[data-theme="dark"] #preloader {
   background: var(--site-bg) !important;
 }
 
+.logo-theme {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-theme svg {
+  display: block;
+  width: 180px;
+  height: auto;
+}
+
+.logo-theme .brand-word {
+  fill: var(--site-header);
+}
+
+.logo-theme .brand-dot {
+  fill: var(--accent);
+}
+
 h1,
 h2,
 h3,

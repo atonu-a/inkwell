@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 {% block header %}
-    		<header class="header-default">
-			<nav class="navbar navbar-expand-lg">
-				<div class="container-xl">
-					<!-- site logo -->
-                    <a class="navbar-brand" href="{%url 'index' %}"><img src="{%static 'images/inkwell_logo.svg' %}" alt="logo"
-                            style="height: auto; width: 180px;" /></a>
+<header class="header-default">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-xl">
+            <!-- site logo -->
+            <a class="navbar-brand logo-theme" href="{%url 'index' %}" aria-label="Inkwell home">
+                <svg viewBox="0 0 450 120" role="img" aria-label="Inkwell logo">
+                    <text x="20" y="90" class="brand-word" font-family="Arial, sans-serif" font-weight="700"
+                        font-size="100">Inkwell<tspan class="brand-dot">.</tspan></text>
+                </svg>
+            </a>
 
-				</div>
-			</nav>
-		</header>
+        </div>
+    </nav>
+</header>
 {% endblock header %}
 {% block body %}
 
@@ -31,13 +35,14 @@
 
                 <div class="mb-3">
                     <label for="username" class="form-label small fw-semibold text-secondary">Username</label>
-                    <input type="text" name="username" id="username" 
-                           class="form-control" placeholder="Enter your username" required>
+                    <input type="text" name="username" id="username" class="form-control"
+                        placeholder="Enter your username" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter password" required
+                    <input type="password" name="password" id="id_password" class="form-control"
+                        placeholder="Enter password" required
                         style="border-end-end-radius: 0; border-start-end-radius: 0;">
-                
+
                     <!-- কাস্টম স্টাইলসহ বাটন -->
                     <button class="btn btn-password-toggle" type="button"
                         style="border-left: none; background: #e8f0fe; color: #6c757d;">
@@ -50,7 +55,8 @@
                     <input type="password" name="password" id="password" 
                            class="form-control" placeholder="Enter your password" required> -->
                     <div class="text-end mt-2">
-                        <a href="{% url 'password_reset' %}" class="text-decoration-none small fw-bold">Forgot Password?</a>
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none small fw-bold">Forgot
+                            Password?</a>
                     </div>
                 </div>
 
@@ -61,7 +67,7 @@
 
 
             <div class="text-center mt-4">
-                <p class="small text-muted mb-0">Don't have an account? 
+                <p class="small text-muted mb-0">Don't have an account?
                     <a href="{% url 'register_view' %}" class="text-decoration-none fw-bold">Create one now</a>
                 </p>
             </div>
