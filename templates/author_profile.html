@@ -1,154 +1,268 @@
 {% extends "base.html" %} {% load static %} {% block body %}
-<section class="container user-info gap-5">
-  <div class="d-flex flex-column">
-    <div class="d-flex gap-2 gap-md-5 skeleton">
+<div class="author-profile-dark">
+  <section class="container user-info gap-5">
+    <div class="d-flex flex-column">
+      <div class="d-flex gap-2 gap-md-5 skeleton">
 
-      <img class="rounded-circle border skeleton" src="{{ author_name.profile.get_profile_pic }}" style="
+        <img class="rounded-circle border skeleton" src="{{ author_name.profile.get_profile_pic }}" style="
           width: 100px;
           height: 100px;
           object-fit: cover;
           margin-bottom: 20px;
         " />
-      <div class="d-flex flex-column ">
-        <h4 class="skeleton" style="margin-bottom: 0">{{author_name.profile.full_name}}
-          {% if request.author_profile.profile.is_email_verified %}
-          <i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i>
-          {% endif %}
-        </h4>
-        <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
-        <div class="d-flex">
-          <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count  }}</span></h6>
-          <h6>&nbsp; •&nbsp; </h6>
-          <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
+        <div class="d-flex flex-column ">
+          <h4 class="skeleton" style="margin-bottom: 0">{{author_name.profile.full_name}}
+            {% if request.author_profile.profile.is_email_verified %}
+            <i class="fa-solid fa-circle-check" style="color: rgb(52, 153, 236);"></i>
+            {% endif %}
+          </h4>
+          <p class="skeleton"><i class="fa-solid fa-at"></i> {{author_name.username}}</p>
+          <div class="d-flex">
+            <h6 id=""><i class="fa-solid fa-user-group"></i> Followers <span id="followers-count">{{ followers_count
+                }}</span></h6>
+            <h6>&nbsp; •&nbsp; </h6>
+            <h6><i class="fa-solid fa-newspaper"></i> Posts {{ blogs_count }}</h6>
+          </div>
         </div>
+
+
       </div>
 
+      <p class="skeleton"><i class="fa-regular fa-clipboard"></i> {{author_name.profile.bio}}</p>
+
+      <p class="skeleton">
+        <i class="fa-solid fa-cake-candles"></i> {{author_name.profile.birthday}}
+      </p>
+      <div class="">
+        <button class="btn btn-default btn-sm mb-4 px-3 skeleton" id="follow-btn" data-user-id="{{ author_name.id }}"
+          onclick="toggleFollow(this)">
+
+          <i
+            class="{% if is_following %}fa-solid fa-heart-circle-check{% else %}fa-solid fa-heart-circle-plus{% endif %}"></i>
+
+          <span>
+            {% if is_following %}Following{% else %}Follow{% endif %}
+          </span>
+        </button>
+        <a class="btn btn-default btn-sm mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
+          <i class="fa-solid fa-paper-plane"></i> Message
+        </a>
+        <button type="button" class="btn btn-default btn-sm mb-4 skeleton"
+          onclick='copyUrl("{% url "author_profile" author_name.username %}", this)'>
+          <i class="fa-solid fa-share-nodes "></i> Share
+        </button>
+      </div>
 
     </div>
 
-    <p class="skeleton"><i class="fa-regular fa-clipboard"></i> {{author_name.profile.bio}}</p>
 
-    <p class="skeleton">
-      <i class="fa-solid fa-cake-candles"></i> {{author_name.profile.birthday}}
-    </p>
-    <div class="">
-      <button class="btn btn-default btn-sm mb-4 px-3 skeleton" id="follow-btn" data-user-id="{{ author_name.id }}"
-        onclick="toggleFollow(this)">
-
-        <i
-          class="{% if is_following %}fa-solid fa-heart-circle-check{% else %}fa-solid fa-heart-circle-plus{% endif %}"></i>
-
-        <span>
-          {% if is_following %}Following{% else %}Follow{% endif %}
-        </span>
-      </button>
-      <a class="btn btn-default btn-sm mb-4 px-3 skeleton" href="{% url 'messages' %}" id="edit">
-        <i class="fa-solid fa-paper-plane"></i> Message
-      </a>
-      <button type="button" class="btn btn-default btn-sm mb-4 skeleton" onclick='copyUrl("{% url "author_profile" author_name.username %}", this)'>
-        <i class="fa-solid fa-share-nodes "></i> Share
-      </button>
-    </div>
-
-  </div>
+  </section>
 
 
-</section>
+  <!-- section main content -->
 
+  <section class="main-content">
+    <div class="container-xl">
+      <div class="section-header skeleton">
+        <h3 class="section-title ">All Posts</h3>
+        <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
+      </div>
+      <div class="row gy-4">
+        <div class="col-lg-12">
+          <div class="row gy-4">
+            {% for post in posts %}
+            <div class="col-md-4">
+              <!-- post -->
 
-<!-- section main content -->
-
-<section class="main-content">
-  <div class="container-xl">
-    <div class="section-header skeleton">
-      <h3 class="section-title ">All Posts</h3>
-      <img src="{%static 'images/wave.svg' %}" class="wave" alt="wave" />
-    </div>
-    <div class="row gy-4">
-      <div class="col-lg-12">
-        <div class="row gy-4">
-          {% for post in posts %}
-          <div class="col-md-4">
-            <!-- post -->
-
-            <div class="post post-grid rounded bordered skeleton">
-              <div class="thumb top-rounded">
-                <a href="{% url 'category' post.blog_slug %}"
-                  class="category-badge position-absolute">{{post.category}}</a>
-                <span class="post-format">
-                  <i class="icon-picture"></i>
-                </span>
-                <a href="{% url 'blog_detail' post.blog_slug %}">
-                  <div class="inner">
-                    <img src="{{post.image.url}}" alt="post-title" />
-                  </div>
-                </a>
-              </div>
-              <div class="details">
-                <ul class="meta list-inline mb-0">
-                  <li class="list-inline-item">
-                    <a href="{% url 'author_profile' post.author.username %}"><img
-                        src="{{ post.author.profile.get_profile_pic }}"
-                        style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
-                        alt="author" />{{post.author}}</a>
-                  </li>
-                  <li class="list-inline-item">{{post.date}}</li>
-                </ul>
-                <h5 class="post-title mb-3 mt-3">
-                  <a href="{% url 'blog_detail' post.blog_slug %}"
-                    title="{{post.title}}">{{post.title|truncatechars:25}}</a>
-                </h5>
-                <p class="excerpt mb-0">{{post.content|truncatechars:30}}</p>
-              </div>
-              <div class="post-bottom clearfix d-flex align-items-center">
-                <div class="social-share me-auto">
-                  <button type="button" id="like-btn-{{ post.blog_slug }}"
-                    class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
-                    data-url="{% url 'like' post.blog_slug %}" onclick="likePost(this)">
-                    <i class="fa-solid fa-thumbs-up"></i>
-                    <span class="like-count">{{ post.total_likes }}</span>
-                  </button>
-                  <a class="btn btn-sm btn-dark" href="">
-                    <i class="fa-solid fa-comment">
-                    </i> {{post.comment_count}}
+              <div class="post post-grid rounded bordered skeleton">
+                <div class="thumb top-rounded">
+                  <a href="{% url 'category' post.blog_slug %}"
+                    class="category-badge position-absolute">{{post.category}}</a>
+                  <span class="post-format">
+                    <i class="icon-picture"></i>
+                  </span>
+                  <a href="{% url 'blog_detail' post.blog_slug %}">
+                    <div class="inner">
+                      <img src="{{post.image.url}}" alt="post-title" />
+                    </div>
                   </a>
                 </div>
-                <div class="more-button float-end">
-                  <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug %}", this)'> <i class="fa-solid fa-share-nodes me-2"></i> </button>
+                <div class="details">
+                  <ul class="meta list-inline mb-0">
+                    <li class="list-inline-item">
+                      <a href="{% url 'author_profile' post.author.username %}"><img
+                          src="{{ post.author.profile.get_profile_pic }}"
+                          style="height:32px; width: 32px; object-fit:cover; border-radius:50%;" class="author"
+                          alt="author" />{{post.author}}</a>
+                    </li>
+                    <li class="list-inline-item">{{post.date}}</li>
+                  </ul>
+                  <h5 class="post-title mb-3 mt-3">
+                    <a href="{% url 'blog_detail' post.blog_slug %}"
+                      title="{{post.title}}">{{post.title|truncatechars:25}}</a>
+                  </h5>
+                  <p class="excerpt mb-0">{{post.content|truncatechars:30}}</p>
+                </div>
+                <div class="post-bottom clearfix d-flex align-items-center">
+                  <div class="social-share me-auto">
+                    <button type="button" id="like-btn-{{ post.blog_slug }}"
+                      class="btn btn-sm btn-dark {% if request.user in post.likes.all %}btn-default{% else %}btn-dark{% endif %}"
+                      data-url="{% url 'like' post.blog_slug %}" onclick="likePost(this)">
+                      <i class="fa-solid fa-thumbs-up"></i>
+                      <span class="like-count">{{ post.total_likes }}</span>
+                    </button>
+                    <a class="btn btn-sm btn-dark" href="">
+                      <i class="fa-solid fa-comment">
+                      </i> {{post.comment_count}}
+                    </a>
+                  </div>
+                  <div class="more-button float-end">
+                    <button type="button" class="dropdown-item" onclick='copyUrl("{% url 'blog_detail' post.blog_slug
+                      %}", this)'> <i class="fa-solid fa-share-nodes me-2"></i> </button>
 
+                  </div>
                 </div>
               </div>
             </div>
+            {% endfor %}
           </div>
-          {% endfor %}
-        </div>
 
-        <nav class="">
-          <ul class="pagination justify-content-center skeleton">
-            {% if posts.has_previous %}
-            <li class="page-item" aria-current="page">
-              <a class="page-link" href="?page={{posts.previous_page_number}}">Prev</a>
-            </li>
-            {% endif %} {% for num in posts.paginator.page_range %}
-            <li class="page-item {% if num == posts.number %}active{% endif %}">
-              <a class="page-link" href="?page={{num}}">{{num}}</a>
-            </li>
-            {% endfor %} {% if posts.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{posts.next_page_number}}">Next</a>
-            </li>
-            {% endif %}
-          </ul>
-        </nav>
+          <nav class="">
+            <ul class="pagination justify-content-center skeleton">
+              {% if posts.has_previous %}
+              <li class="page-item" aria-current="page">
+                <a class="page-link" href="?page={{posts.previous_page_number}}">Prev</a>
+              </li>
+              {% endif %} {% for num in posts.paginator.page_range %}
+              <li class="page-item {% if num == posts.number %}active{% endif %}">
+                <a class="page-link" href="?page={{num}}">{{num}}</a>
+              </li>
+              {% endfor %} {% if posts.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{posts.next_page_number}}">Next</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<script>
+  <!-- <style>
+    .author-profile-dark {
+      background: linear-gradient(180deg, #0b1120 0%, #111827 100%);
+      color: #e5e7eb;
+      padding: 24px 0 60px;
+    }
+
+    .author-profile-dark .container,
+    .author-profile-dark .main-content,
+    .author-profile-dark .section-header,
+    .author-profile-dark .post,
+    .author-profile-dark .details,
+    .author-profile-dark .page-item .page-link,
+    .author-profile-dark .btn,
+    .author-profile-dark .dropdown-item {
+      transition: all 0.2s ease;
+    }
+
+    .author-profile-dark .user-info,
+    .author-profile-dark .main-content,
+    .author-profile-dark .post,
+    .author-profile-dark .details,
+    .author-profile-dark .page-item .page-link {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: rgba(148, 163, 184, 0.2);
+      color: #f8fafc;
+    }
+
+    .author-profile-dark h4,
+    .author-profile-dark h5,
+    .author-profile-dark h6,
+    .author-profile-dark p,
+    .author-profile-dark .post-title a,
+    .author-profile-dark .meta a,
+    .author-profile-dark .excerpt,
+    .author-profile-dark .section-title,
+    .author-profile-dark .page-link,
+    .author-profile-dark .category-badge,
+    .author-profile-dark .fa-solid,
+    .author-profile-dark .fa-regular,
+    .author-profile-dark .fa-brands,
+    .author-profile-dark .btn,
+    .author-profile-dark .dropdown-item {
+      color: #e5e7eb !important;
+    }
+
+    .author-profile-dark .post {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.3);
+    }
+
+    .author-profile-dark .post .details {
+      background: transparent;
+      border: none;
+    }
+
+    .author-profile-dark .category-badge {
+      background: rgba(37, 99, 235, 0.9);
+      border: 1px solid rgba(191, 219, 254, 0.2);
+      color: #f8fafc !important;
+    }
+
+    .author-profile-dark .btn-default,
+    .author-profile-dark .btn-dark,
+    .author-profile-dark .btn {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #f8fafc !important;
+    }
+
+    .author-profile-dark .btn-default:hover,
+    .author-profile-dark .btn-dark:hover,
+    .author-profile-dark .btn:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+
+    .author-profile-dark .page-item.active .page-link {
+      background: rgba(59, 130, 246, 0.8);
+      border-color: rgba(96, 165, 250, 0.4);
+      color: white !important;
+    }
+
+    .author-profile-dark .page-item .page-link {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    .author-profile-dark .page-link:hover {
+      background: rgba(30, 41, 59, 0.9);
+    }
+
+    .author-profile-dark .dropdown-item {
+      background: transparent;
+      border: none;
+    }
+
+    .author-profile-dark .social-share .btn {
+      margin-right: 8px;
+    }
+
+    .author-profile-dark .rounded,
+    .author-profile-dark .top-rounded,
+    .author-profile-dark .inner img,
+    .author-profile-dark .author {
+      border-color: rgba(148, 163, 184, 0.2) !important;
+    }
+  </style> -->
+
+  <script>
 
 
 
-</script>
+  </script>
 
+</div>
 {% endblock body %}

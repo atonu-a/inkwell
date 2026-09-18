@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="{% static 'css/slick.css' %}" type="text/css" media="all">
 	<link rel="stylesheet" href="{% static 'css/simple-line-icons.css' %}" type="text/css" media="all">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
+	<link rel="stylesheet" href="{% static 'css/theme.css' %}" type="text/css" media="all">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 
@@ -46,7 +47,7 @@
 	});
 </script>
 
-<body class="skeleton-lock">
+<body class="skeleton-lock" data-theme="light">
 	<!-- <script>
 		const cursor = Cursorly.init({
 			cursor: 15, // Index of the cursor icon (default: 0)
@@ -179,7 +180,11 @@
 								<i class="fa-solid fa-magnifying-glass"></i>
 							</button>
 
+							<button title="Toggle theme" class="theme-toggle icon-button" type="button"
+								aria-label="Toggle theme">
+								<i class="fa-solid fa-moon"></i>
 							</button>
+
 							<button title="Menu" class="burger-menu icon-button">
 								<i class="fa-solid fa-bars"></i>
 							</button>
@@ -377,6 +382,7 @@
 	<script src="{% static 'js/main.js' %}"></script>
 	<script src="{% static 'js/onboarding.js' %}"></script>
 	<script src="{% static 'js/app.js' %}"></script>
+	<script src="{% static 'js/theme.js' %}"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 

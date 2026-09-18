@@ -12,10 +12,10 @@
 <section class="main-content">
   <div class="container-xl">
     <div class="row gy-4">
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="row gy-4">
           {% for post in blog_posts %}
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <!-- post -->
             <div class="post post-grid rounded bordered">
               <div class="thumb top-rounded">
@@ -116,8 +116,12 @@
           </ul>
         </nav>
       </div>
-      <div class="col-lg-4">
+
+
+
+      {% comment %} <div class="col-lg-4">
         <!-- sidebar -->
+
         <div class="sidebar">
           <!-- widget categories -->
           <div class="widget rounded">
@@ -141,7 +145,8 @@
             </div>
           </div>
         </div>
-      </div>
+        
+      </div> {% endcomment %}
     </div>
   </div>
 </section>
