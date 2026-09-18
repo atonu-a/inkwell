@@ -577,7 +577,7 @@ def edit_post(request, slug):
             "Post edited successfully!"
         )
 
-        return redirect("personal")
+        return redirect("personal", request.user.username)
 
     categories = Category.objects.all()
 
