@@ -31,7 +31,7 @@ body[data-theme="dark"] {
   --shadow: rgba(2, 6, 23, 0.35);
   --heading: #f8fafc;
   --link: #f8fafc;
-  --accent: #f472b6;
+  --accent: #fe4f70;
   --card-bg: rgba(15, 23, 42, 0.96);
   --input-bg: rgba(15, 23, 42, 0.9);
   --tag-bg: rgba(244, 114, 182, 0.16);
@@ -90,7 +90,6 @@ body[data-theme="dark"] .dropdown-menu a,
 body[data-theme="dark"] .dropdown-item,
 body[data-theme="dark"] .social-icons a,
 body[data-theme="dark"] .nav-link,
-body[data-theme="dark"] .vertical-menu a,
 body[data-theme="dark"] .text-dark,
 body[data-theme="dark"] .text-body,
 body[data-theme="dark"] .text-secondary,
@@ -99,6 +98,15 @@ body[data-theme="dark"] .header-default,
 body[data-theme="dark"] .btn-default,
 body[data-theme="dark"] .page-header {
   color: var(--site-header) !important;
+}
+
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:focus,
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:active,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active > a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:focus {
+  color: var(--accent) !important;
 }
 
 body[data-theme="dark"] .header-default,
@@ -212,12 +220,21 @@ body[data-theme="dark"] .dropdown-menu {
   border: 1px solid var(--border) !important;
 }
 
-body[data-theme="dark"] .dropdown-item:hover,
+/* body[data-theme="dark"] .dropdown-item:hover,
 body[data-theme="dark"] .nav-link:hover,
 body[data-theme="dark"] .vertical-menu a:hover,
-body[data-theme="dark"] a:hover {
+ {
   color: var(--heading) !important;
   opacity: 0.9;
+} */
+body[data-theme="dark"] a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:focus,
+body[data-theme="dark"] .canvas-menu .vertical-menu li > a:active,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active > a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:focus {
+  color: var(--accent) !important;
 }
 
 body[data-theme="dark"] .social-icons a,

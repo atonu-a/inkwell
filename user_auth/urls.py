@@ -18,6 +18,7 @@ urlpatterns = [
     path('profile/<str:username>', views.profile_view, name="personal"),
     path('follow/<int:user_id>/', views.toggle_follow, name='toggle_follow'),
     path('edit-post/<slug:slug>/', views.edit_post, name="edit_post"),
+    path('saved-blogs/', views.saved_blog, name="saved_blogs"),
     path('send-verification-otp/', views.send_verification_otp_view, name='send_verification_otp'),
     path('verify-email-otp/', views.verify_email_otp_view, name='verify_email_otp'),
     path('password-reset/', views.password_reset_view, name='password_reset'),
