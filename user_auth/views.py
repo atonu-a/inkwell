@@ -577,7 +577,7 @@ def edit_post(request, slug):
             "Post edited successfully!"
         )
 
-        return redirect("personal")
+        return redirect("personal", request.user.username)
 
     categories = Category.objects.all()
 
@@ -1003,11 +1003,3 @@ def password_reset_complete_view(request):
         request,
         "password_reset_complete.html"
     )
-    
-
-# =========================================================
-# Save a Blog
-# =========================================================
-
-def saved_blog(request):
-    return render(request, "saved.html")
