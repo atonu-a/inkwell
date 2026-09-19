@@ -107,12 +107,13 @@ body[data-theme="dark"] .canvas-menu .vertical-menu li > a:visited {
   color: var(--site-header) !important;
 }
 
-/* body[data-theme="dark"] .canvas-menu .vertical-menu li form a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a:visited,
 body[data-theme="dark"] .canvas-menu .vertical-menu li form a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li form a:focus,
 body[data-theme="dark"] .canvas-menu .vertical-menu li form a:active {
   color: var(--button-text) !important;
-} */
+}
 
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:focus,
