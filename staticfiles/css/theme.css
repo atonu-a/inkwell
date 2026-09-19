@@ -107,11 +107,27 @@ body[data-theme="dark"] .canvas-menu .vertical-menu li > a:visited {
   color: var(--site-header) !important;
 }
 
-body[data-theme="dark"] .canvas-menu .vertical-menu li form a,
-body[data-theme="dark"] .canvas-menu .vertical-menu li form a:visited,
-body[data-theme="dark"] .canvas-menu .vertical-menu li form a:hover,
-body[data-theme="dark"] .canvas-menu .vertical-menu li form a:focus,
-body[data-theme="dark"] .canvas-menu .vertical-menu li form a:active {
+body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:visited,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:hover,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:focus,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:active {
   color: var(--button-text) !important;
 }
 
