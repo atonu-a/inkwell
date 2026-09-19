@@ -108,10 +108,26 @@ body[data-theme="dark"] .canvas-menu .vertical-menu li > a:visited {
 }
 
 body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin,
-body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin:visited,
-body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin:hover,
-body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin:focus,
-body[data-theme="dark"] .canvas-menu .vertical-menu li a.vertical-menu-signin:active {
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:visited,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:hover,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:focus,
+body[data-theme="dark"]
+  .canvas-menu
+  .vertical-menu
+  li
+  a.vertical-menu-signin:active {
   color: var(--button-text) !important;
 }
 
