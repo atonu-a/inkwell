@@ -329,7 +329,7 @@
 							class="fa-solid fa-circle-user"></i> Profile</a>
 
 				</li>
-				<li class="{% if request.path == '/saved-blogs' %} active {% endif %}">
+				<li class="{% if request.path == '/saved-blogs/' %} active {% endif %}">
 					<a class="" href="{%url 'saved_blogs' %}"><i class="fa-solid fa-bookmark"></i> Saved</a>
 
 				</li>
@@ -343,9 +343,9 @@
 				</li>
 				{% else %}
 				<li>
-					<form method="POST" action="{% url 'logout_view' %}" id="logout-form" style="color: white !important;">
+					<form method="POST" action="{% url 'logout_view' %}" id="logout-form" >
 						{% csrf_token %}
-						<a class="text-light" href="#"
+						<a class="" href="#"
 							onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
 							style="cursor: pointer;">
 							<i class="fa-solid fa-right-to-bracket"></i> Sign In

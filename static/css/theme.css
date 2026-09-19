@@ -101,9 +101,18 @@ body[data-theme="dark"] .page-header {
 }
 
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:visited {
   color: var(--site-header) !important;
 }
+
+/* body[data-theme="dark"] .canvas-menu .vertical-menu li form a,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a:hover,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a:focus,
+body[data-theme="dark"] .canvas-menu .vertical-menu li form a:active {
+  color: var(--button-text) !important;
+} */
 
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:focus,
@@ -236,6 +245,7 @@ body[data-theme="dark"] a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:focus,
 body[data-theme="dark"] .canvas-menu .vertical-menu li > a:active,
+body[data-theme="dark"] .canvas-menu .vertical-menu li.active > a,
 body[data-theme="dark"] .canvas-menu .vertical-menu li.active > a,
 body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:hover,
 body[data-theme="dark"] .canvas-menu .vertical-menu li.active .submenu a:focus {
