@@ -345,7 +345,7 @@
 				<li>
 					<form method="POST" action="{% url 'logout_view' %}" id="logout-form" >
 						{% csrf_token %}
-						<a class="" href="#"
+						<a class="vertical-menu-signin" href="#"
 							onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
 							style="cursor: pointer;">
 							<i class="fa-solid fa-right-to-bracket"></i> Sign In
