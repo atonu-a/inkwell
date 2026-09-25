@@ -322,7 +322,8 @@ def onboarding_view(request):
     return render(
         request,
         "onboarding.html",
-        {"profile": profile}
+        {"profile": profile},
+         username = request.user.username
     )
 
 
