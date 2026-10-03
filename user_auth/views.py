@@ -260,7 +260,7 @@ def verify_email_otp_view(request):
 # Onboarding
 # =========================================================
 
-def onboarding_view(request, username):
+def onboarding_view(request):
 
     profile, created = Profile.objects.get_or_create(
         user=request.user
@@ -323,7 +323,6 @@ def onboarding_view(request, username):
         request,
         "onboarding.html",
         {"profile": profile},
-         username = request.user.username
     )
 
 
