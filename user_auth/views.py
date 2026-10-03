@@ -317,7 +317,7 @@ def onboarding_view(request):
             "Profile Edited Successfully!"
         )
 
-        return redirect("personal")
+        return redirect("personal", username = request.user.username)
 
     return render(
         request,
