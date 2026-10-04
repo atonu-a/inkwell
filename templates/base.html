@@ -149,7 +149,7 @@
 									{% csrf_token %}
 									<button class="nav-link" type="submit"
 										style="border: none!important; background:transparent"><i
-											class="fa-solid fa-right-to-bracket"></i> Sign In</>
+											class="fa-solid fa-right-to-bracket"></i> Sign in</>
 								</form>
 							</li>
 
@@ -336,9 +336,9 @@
 
 				</li>
 				<li class="text-danger">
-					<a href="#" class="text-danger"
+					<a href="#" class="text-danger fw-bolder"
 						onclick="event.preventDefault(); document.getElementById('logout').submit()"><i
-							class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+							class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</a>
 					<form method="POST" action="{% url 'logout_view' %}" id="logout" style="display: none;">
 						{% csrf_token %}
 
@@ -351,7 +351,7 @@
 						<a class="vertical-menu-signin" href="#"
 							onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
 							style="cursor: pointer;">
-							<i class="fa-solid fa-right-to-bracket"></i> Sign In
+							<i class="fa-solid fa-right-to-bracket"></i> Sign in
 						</a>
 					</form>
 				</li>
